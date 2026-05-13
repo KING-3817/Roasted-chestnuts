@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>군밤 타이쿤</title>
+
+<style>
+:root{
+ --bg:#0d0a08;
+ --metal1:#5e5955;
+ --metal2:#2a2623;
+ --metal3:#120f0d;
+ --text:#fff;
+}
+
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ -webkit-tap-highlight-color:transparent;
+ user-select:none;
+}
+
+html,body{
+ width:100%;
+ height:100%;
+ overflow:hidden;
+ background:#000;
+ font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;
+}
+
+body{
+ display:flex;
+ justify-content:center;
+ align-items:center;
+}
+
+.app{
+ width:min(100vw,calc(100vh * 9 / 16));
+ height:min(100vh,calc(100vw * 16 / 9));
+ aspect-ratio:9/16;
+ overflow:hidden;
+ background:#111;
+ position:relative;
+ color:#fff;
+}
+
+.topbar{
+ height:6.2%;
+ display:grid;
+ grid-template-columns:1fr 1fr .8fr .8fr 1fr .9fr;
+ gap:5px;
+ padding:4px 8px 6px;
+ background:linear-gradient(to bottom,#2a211c,#14110f);
+}
+
+.topitem,.status{
+ border-radius:10px;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ font-size:11px;
+ font-weight:900;
+ background:#1b1715;
+ border:1px solid rgba(255,255,255,.08);
+}
+
+.status.on{background:#45621e;}
+.status.off{background:#742d25;}
+
+.main{
+ height:93.8%;
+ padding:0 8px 8px;
+ display:grid;
+ grid-template-rows:21% 43% 36%;
+ gap:8px;
+}
+
+/* 창문 */
+
+.window{
+ position:relative;
+ overflow:hidden;
+ border-radius:20px;
+ border:2px solid #674b39;
+ background:#000;
+}
+
+.bg{
+ position:absolute;
+ inset:0;
+ width:100%;
+ height:100%;
+ object-fit:cover;
+}
+
+.orders{
+ position:absolute;
+ top:8px;
+ left:8px;
+ right:8px;
+ display:grid;
+ grid-template-columns:1fr 1fr 1fr;
+ gap:6px;
+ z-index:5;
+}
+
+.order{
+ opacity:0;
+ transition:.45s;
+}
+
+.order.show{
+ opacity:1;
+}
+
+.bubble{
+ background:#f3eadb;
+ color:#1b1510;
+ border-radius:14px;
+ padding:6px;
+ min-height:42px;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ text-align:center;
+ font-size:9px;
+ line-height:1.2;
+ font-weight:900;
+}
+
+.badge{
+ margin-top:3px;
+ border-radius:999px;
+ padding:3px;
+ text-align:center;
+ font-size:8px;
+ font-weight:900;
+ color:#fff;
+}
+
+.wait{background:#9b692d;}
+.done{background:#4d9031;}
+
+.guests{
+ position:absolute;
+ inset:0;
+}
+
+.guest{
+ position:absolute;
+ bottom:-28%;
+ width:31%;
+ opacity:0;
+ transform:translateY(10px);
+ transition:opacity .45s,transform .45s;
+}
+
+.guest.show{
+ opacity:1;
+ transform:translateY(0);
+}
+
+.guest img{
+ width:100%;
+ display:block;
+}
+
+.g1{left:0;}
+.g2{left:34%;width:33%;}
+.g3{right:0;}
+
+/* 기계 */
+
+.machine{
+ display:grid;
+ grid-template-columns:.72fr 1.8fr .72fr;
+}
+
+.panel{
+ background:linear-gradient(to bottom,var(--metal1),var(--metal2) 40%,var(--metal3));
+ border:1px solid rgba(255,255,255,.08);
+}
+
+.left{
+ border-radius:20px 0 0 20px;
+ padding:12px 8px;
+ display:grid;
+ grid-template-rows:1fr 1fr;
+ gap:8px;
+ border-right:none;
+}
+
+.slot{
+ position:relative;
+ border-radius:16px;
+ overflow:hidden;
+ background:linear-gradient(to bottom,#69635f,#3b3733 45%,#191614);
+}
+
+.slot-hole{
+ position:absolute;
+ left:15%;
+ right:15%;
+ top:18%;
+ bottom:18%;
+ border-radius:14px;
+ background:linear-gradient(to bottom,#1d1d1d,#050505);
+}
+
+.slot-title{
+ position:absolute;
+ top:5px;
+ left:9px;
+ font-size:9px;
+ font-weight:900;
+ color:#fff;
+}
+
+.center{
+ border-right:none;
+ padding:8px;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+}
+
+.grill-wrap{
+ width:100%;
+ height:100%;
+ position:relative;
+ overflow:hidden;
+ border-radius:18px;
+ background:#090807;
+}
+
+.grill{
+ position:absolute;
+ width:88%;
+ height:68%;
+ object-fit:contain;
+ left:50%;
+ top:38%;
+ transform:translate(-50%,-50%);
+}
+
+.timer-box{
+ position:absolute;
+ top:8px;
+ left:50%;
+ transform:translateX(-50%);
+ z-index:5;
+ background:#0f0c0a;
+ border-radius:10px;
+ padding:4px 8px;
+ display:flex;
+ gap:4px;
+ font-size:11px;
+ font-weight:900;
+ border:1px solid rgba(255,255,255,.08);
+}
+
+.timer-target{
+ color:#ffd768;
+}
+
+.tray{
+ position:absolute;
+ left:50%;
+ transform:translateX(-50%);
+ bottom:66px;
+ width:78%;
+ min-height:48px;
+ border-radius:12px;
+ padding:6px;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ gap:4px;
+ flex-wrap:wrap;
+ background:rgba(0,0,0,.5);
+ border:1px solid rgba(255,255,255,.08);
+ z-index:5;
+}
+
+.tray img{
+ width:24px;
+ height:24px;
+ object-fit:contain;
+}
+
+.tray.empty{
+ opacity:.7;
+ font-size:11px;
+ font-weight:900;
+}
+
+.heatbox{
+ position:absolute;
+ left:5%;
+ right:5%;
+ bottom:8px;
+ border-radius:12px;
+ padding:6px;
+ background:#0d0b09;
+ border:1px solid rgba(255,255,255,.08);
+}
+
+.heatbar{
+ height:16px;
+ border-radius:999px;
+ overflow:hidden;
+ position:relative;
+ background:linear-gradient(
+ 90deg,
+ #c53a22 0%,
+ #ff9828 20%,
+ #ffe56a 35%,
+ #5fa642 50%,
+ #ffe56a 65%,
+ #ff9828 80%,
+ #c53a22 100%
+);
+}
+
+.fill{
+ position:absolute;
+ left:0;
+ top:0;
+ bottom:0;
+ width:0%;
+ background:rgba(255,255,255,.13);
+}
+
+.cursor{
+ position:absolute;
+ top:-4px;
+ width:4px;
+ height:24px;
+ background:#000;
+ border-radius:999px;
+ transform:translateX(-50%);
+}
+
+.labels{
+ margin-top:4px;
+ display:flex;
+ justify-content:space-between;
+ font-size:8px;
+ font-weight:900;
+}
+
+.right{
+ border-radius:0 20px 20px 0;
+ padding:8px;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+}
+
+.actions{
+ width:100%;
+ height:100%;
+ display:flex;
+ flex-direction:column;
+ gap:10px;
+ justify-content:center;
+ align-items:center;
+}
+
+.action{
+ width:82%;
+ height:31%;
+ border:none;
+ border-radius:18px;
+ color:#fff;
+ font-size:11px;
+ font-weight:900;
+}
+
+.toggle{background:#668b2f;}
+.take{background:#87532b;}
+.insert{background:#406f98;}
+
+/* 하단 */
+
+.bottom{
+ overflow:hidden;
+ display:grid;
+ grid-template-columns:1.45fr .95fr;
+ gap:8px;
+}
+
+.stock,.menu{
+ overflow:hidden;
+ border-radius:20px;
+ border:1px solid rgba(255,255,255,.08);
+ background:linear-gradient(to bottom,#2d231e,#14110f);
+}
+
+.title{
+ padding:7px 12px 5px;
+ font-size:13px;
+ font-weight:900;
+}
+
+.stock-scroll{
+ height:calc(100% - 30px);
+ overflow-y:auto;
+ padding:0 8px 8px;
+}
+
+.stock-scroll::-webkit-scrollbar{
+ display:none;
+}
+
+.stock-grid{
+ display:grid;
+ grid-template-columns:1fr 1fr 1fr;
+ gap:8px;
+}
+
+.card{
+ min-height:96px;
+ border-radius:14px;
+ border:2px solid rgba(255,255,255,.06);
+ background:#1a1512;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ padding:6px;
+ position:relative;
+ color:#fff;
+}
+
+.card.selected{
+ border-color:#4df34b;
+ box-shadow:0 0 14px rgba(77,243,75,.24);
+}
+
+.card img{
+ width:100%;
+ height:44px;
+ object-fit:contain;
+}
+
+.name{
+ margin-top:3px;
+ font-size:8px;
+ line-height:1.15;
+ text-align:center;
+ font-weight:900;
+ color:#fff;
+}
+
+.qty{
+ margin-top:auto;
+ font-size:11px;
+ font-weight:900;
+ color:#fff;
+}
+
+.under{
+ filter:brightness(1.5) saturate(.6);
+}
+
+.good{
+ filter:brightness(1.42);
+}
+
+.dark{
+ filter:brightness(.4) contrast(1.4);
+}
+
+.menu-grid{
+ height:calc(100% - 30px);
+ padding:0 8px 8px;
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ grid-template-rows:repeat(3,1fr);
+ gap:8px;
+}
+
+.mbtn{
+ border:none;
+ border-radius:16px;
+ color:#fff;
+ font-size:10px;
+ line-height:1.15;
+ font-weight:900;
+}
+
+.m1{background:#668c2f;}
+.m2{background:#406f98;}
+.m3{background:#7d60a3;}
+.m4{background:#87532c;}
+.m5{background:#7b2d24;}
+.m6{background:#555;}
+
+/* 칼 */
+
+.peel-overlay{
+ position:absolute;
+ inset:0;
+ background:rgba(0,0,0,.78);
+ display:none;
+ justify-content:center;
+ align-items:center;
+ z-index:200;
+}
+
+.peel-overlay.show{
+ display:flex;
+}
+
+.peel-card{
+ width:min(72vw,260px);
+ border-radius:22px;
+ background:#15110f;
+ border:1px solid rgba(255,255,255,.08);
+ padding:14px;
+ position:relative;
+ overflow:hidden;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ gap:8px;
+ touch-action:none;
+}
+
+.peel-card img{
+ width:100%;
+ height:160px;
+ object-fit:contain;
+ filter:brightness(.7);
+}
+
+.peel-name{
+ font-size:13px;
+ font-weight:900;
+}
+
+.peel-count{
+ font-size:11px;
+ font-weight:900;
+ color:#7ef47b;
+}
+
+.peel-hint{
+ font-size:11px;
+ font-weight:900;
+ color:#d9c8a7;
+}
+
+.peel-trails{
+ position:absolute;
+ inset:0;
+ pointer-events:none;
+}
+
+.trail{
+ position:absolute;
+ height:6px;
+ border-radius:999px;
+ background:rgba(255,255,255,.95);
+ box-shadow:0 0 16px rgba(255,255,255,.5);
+ transform-origin:left center;
+ animation:fadeTrail .34s ease-out forwards;
+}
+
+@keyframes fadeTrail{
+ from{opacity:.95;}
+ to{opacity:0;transform:scaleX(.8);}
+}
+
+/* 상점 */
+
+.shop-overlay{
+ position:absolute;
+ inset:0;
+ background:rgba(0,0,0,.8);
+ display:none;
+ justify-content:center;
+ align-items:center;
+ z-index:300;
+}
+
+.shop-overlay.show{
+ display:flex;
+}
+
+.shop-box{
+ width:82%;
+ border-radius:22px;
+ background:#171310;
+ border:1px solid rgba(255,255,255,.08);
+ padding:18px;
+}
+
+.shop-title{
+ font-size:18px;
+ font-weight:900;
+ margin-bottom:14px;
+ text-align:center;
+}
+
+.shop-item{
+ border-radius:18px;
+ background:#241c18;
+ padding:12px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:10px;
+}
+
+.shop-item img{
+ width:52px;
+ height:52px;
+ object-fit:contain;
+}
+
+.buy-btn{
+ border:none;
+ border-radius:12px;
+ background:#688d31;
+ color:#fff;
+ font-weight:900;
+ padding:10px 14px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<div class="topbar">
+ <div class="topitem">💵 <span id="money">12000</span></div>
+ <div class="topitem">🕒 18:45</div>
+ <div class="topitem">🙂 4.6</div>
+ <div class="topitem">👥 <span id="guestCount">0</span>/3</div>
+ <div class="topitem">🛍 <span id="bagCount">3</span></div>
+ <div class="status off" id="shopStatus">영업 종료</div>
+</div>
+
+<div class="main">
+
+<section class="window">
+
+<img class="bg" src="Background.png">
+
+<div class="orders">
+ <div class="order" id="order0"><div class="bubble" id="bubble0"></div><div class="badge wait" id="badge0">주문 대기</div></div>
+ <div class="order" id="order1"><div class="bubble" id="bubble1"></div><div class="badge wait" id="badge1">주문 대기</div></div>
+ <div class="order" id="order2"><div class="bubble" id="bubble2"></div><div class="badge wait" id="badge2">주문 대기</div></div>
+</div>
+
+<div class="guests">
+ <div class="guest g1" id="guest0"><img src="Guest.png"></div>
+ <div class="guest g2" id="guest1"><img src="Guest.png"></div>
+ <div class="guest g3" id="guest2"><img src="Guest.png"></div>
+</div>
+
+</section>
+
+<section class="machine">
+
+<div class="panel left">
+
+ <div class="slot">
+  <div class="slot-title">투입구</div>
+  <div class="slot-hole"></div>
+ </div>
+
+ <div class="slot">
+  <div class="slot-title">배출구</div>
+  <div class="slot-hole"></div>
+ </div>
+
+</div>
+
+<div class="panel center">
+
+<div class="grill-wrap">
+
+ <div class="timer-box">
+  <div id="timerNow">0.00</div>
+  <div>/</div>
+  <div class="timer-target" id="timerTarget">0.00</div>
+ </div>
+
+ <div class="tray empty" id="tray">재료를 넣으세요</div>
+
+ <img class="grill" src="Grill.png">
+
+ <div class="heatbox">
+
+  <div class="heatbar">
+   <div class="fill" id="fill"></div>
+   <div class="cursor" id="cursor"></div>
+  </div>
+
+  <div class="labels">
+   <span>덜 익음</span>
+   <span>적정</span>
+   <span>많이 익음</span>
+  </div>
+
+ </div>
+
+</div>
+
+</div>
+
+<div class="panel right">
+
+<div class="actions">
+
+ <button class="action toggle" id="cookBtn">🔥<br>굽기 시작</button>
+
+ <button class="action take" id="takeBtn">🌰<br>꺼내기</button>
+
+ <button class="action insert" id="insertBtn">📥<br>투입구에 넣기</button>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="bottom">
+
+<div class="stock">
+
+ <div class="title">재고</div>
+
+ <div class="stock-scroll">
+  <div class="stock-grid" id="stockGrid"></div>
+ </div>
+
+</div>
+
+<div class="menu">
+
+ <div class="title">행동</div>
+
+ <div class="menu-grid">
+
+  <button class="mbtn m1" id="shopBtn">🏪 장사 시작</button>
+
+  <button class="mbtn m2" id="knifeBtn">🔪 칼 사용하기</button>
+
+  <button class="mbtn m3" id="bagBtn">🛍 봉지 꺼내기 (×3)</button>
+
+  <button class="mbtn m4" id="storeBtn">🏬 상점</button>
+
+  <button class="mbtn m5" id="discardBtn">🗑 폐기</button>
+
+  <button class="mbtn m6" id="clearBtn">❌ 선택 해제</button>
+
+ </div>
+
+</div>
+
+</section>
+
+</div>
+
+<div class="peel-overlay" id="peelOverlay">
+
+<div class="peel-card" id="peelCard">
+
+ <div class="peel-trails" id="peelTrails"></div>
+
+ <img id="peelImg">
+
+ <div class="peel-name" id="peelName"></div>
+
+ <div class="peel-count" id="peelCount"></div>
+
+ <div class="peel-hint">스와이프해서 자르기</div>
+
+</div>
+
+</div>
+
+<div class="shop-overlay" id="shopOverlay">
+
+<div class="shop-box">
+
+ <div class="shop-title">상점</div>
+
+ <div class="shop-item">
+
+  <img src="paperbag.png">
+
+  <div>
+   봉지 ×10<br>
+   1000원
+  </div>
+
+  <button class="buy-btn" id="buyBagBtn">구매</button>
+
+ </div>
+
+</div>
+
+</div>
+
+<script>
+const META={
+ raw_shell:{name:'생 밤 (겉껍질)',img:'1.png',next:'raw_inner'},
+ raw_inner:{name:'생 밤 (속껍질)',img:'2.png',next:'cut_raw'},
+ cut_raw:{name:'칼집을 낸 생 밤 (속껍질)',img:'3.png'},
+
+ under_inner:{name:'덜 익은 군밤 (속껍질)',img:'3.png',next:'under'},
+ under:{name:'덜 익은 군밤',img:'6.png',cls:'under'},
+
+ perfect_inner:{name:'잘 익은 군밤 (속껍질)',img:'4.png',next:'perfect'},
+ perfect:{name:'잘 익은 군밤',img:'6.png',cls:'good'},
+
+ burnt_inner:{name:'탄 군밤 (속껍질)',img:'5.png',cls:'dark',next:'burnt'},
+ burnt:{name:'탄 군밤',img:'6.png',cls:'dark'}
+};
+
+const ORDER=[
+'raw_shell','raw_inner','cut_raw',
+'under_inner','under',
+'perfect_inner','perfect',
+'burnt_inner','burnt'
+];
+
+const inventory={
+ raw_shell:50,
+ raw_inner:0,
+ cut_raw:0,
+ under_inner:0,
+ under:0,
+ perfect_inner:0,
+ perfect:0,
+ burnt_inner:0,
+ burnt:0
+};
+
+let bags=3;
+let bagInventory=[];
+let selected=null;
+let selectedBag=0;
+
+let grill=[];
+
+let current=0;
+let target=0;
+
+let cooking=false;
+let timer=null;
+
+let money=12000;
+
+let peelType=null;
+let peelPointer=null;
+let peelingCount=0;
+let peelingTotal=0;
+
+let shopOpen=false;
+let guestLoop=null;
+
+const guests=[
+ {slot:0,active:false},
+ {slot:1,active:false},
+ {slot:2,active:false}
+];
+
+const stockGrid=document.getElementById('stockGrid');
+const tray=document.getElementById('tray');
+const peelOverlay=document.getElementById('peelOverlay');
+const peelCard=document.getElementById('peelCard');
+
+function renderInventory(){
+
+ stockGrid.innerHTML='';
+
+ ORDER.forEach(type=>{
+
+  if(inventory[type]<=0)return;
+
+  const meta=META[type];
+
+  const card=document.createElement('button');
+
+  card.className='card'+(selected===type?' selected':'');
+
+  card.innerHTML=`
+   <img src="${meta.img}" class="${meta.cls||''}">
+   <div class="name">${meta.name}</div>
+   <div class="qty">×${inventory[type]}</div>
+  `;
+
+  card.onclick=()=>{
+   selected=type;
+   renderInventory();
+  };
+
+  if(selected==='bag'){
+
+   let hold;
+
+   card.addEventListener('pointerdown',()=>{
+
+    hold=setTimeout(()=>{
+
+     const bag=bagInventory[selectedBag];
+
+     if(!bag)return;
+
+     if(bag.items.length>=15)return;
+
+     inventory[type]--;
+
+     bag.items.push(type);
+
+     bag.name=`봉지 (${bag.items.length}/15)`;
+
+     renderInventory();
+
+    },350);
+
+   });
+
+   card.addEventListener('pointerup',()=>clearTimeout(hold));
+   card.addEventListener('pointerleave',()=>clearTimeout(hold));
+
+  }
+
+  stockGrid.appendChild(card);
+
+ });
+
+ bagInventory.forEach((bag,index)=>{
+
+  const card=document.createElement('button');
+
+  card.className='card'+(selected==='bag' && selectedBag===index?' selected':'');
+
+  card.innerHTML=`
+   <img src="paperbag.png">
+   <div class="name">${bag.name}</div>
+   <div class="qty">×1</div>
+  `;
+
+  card.onclick=()=>{
+   selected='bag';
+   selectedBag=index;
+   renderInventory();
+  };
+
+  stockGrid.appendChild(card);
+
+ });
+
+ document.getElementById('bagBtn').textContent=`🛍 봉지 꺼내기 (×${bags})`;
+ document.getElementById('bagCount').textContent=bags;
+}
+
+function updateTray(){
+
+ tray.innerHTML='';
+
+ if(grill.length===0){
+  tray.classList.add('empty');
+  tray.textContent='재료를 넣으세요';
+  return;
+ }
+
+ tray.classList.remove('empty');
+
+ grill.forEach(type=>{
+
+  const img=document.createElement('img');
+
+  img.src=META[type].img;
+  img.className=META[type].cls||'';
+
+  tray.appendChild(img);
+
+ });
+
+}
+
+function updateGauge(){
+
+ document.getElementById('timerNow').textContent=current.toFixed(2);
+ document.getElementById('timerTarget').textContent=target.toFixed(2);
+
+ const pct=Math.min((current/(target*2))*100,100);
+
+ document.getElementById('fill').style.width=pct+'%';
+ document.getElementById('cursor').style.left=pct+'%';
+}
+
+function insertItem(){
+
+ if(!selected)return;
+ if(!META[selected])return;
+ if(inventory[selected]<=0)return;
+ if(grill.length>=10)return;
+
+ inventory[selected]--;
+
+ grill.push(selected);
+
+ if(grill.length===1){
+  target=Math.random()*2+4;
+ }
+
+ target+=0.35;
+
+ renderInventory();
+ updateTray();
+ updateGauge();
+}
+
+function toggleCooking(){
+
+ if(grill.length===0)return;
+
+ if(cooking){
+
+  clearInterval(timer);
+
+  cooking=false;
+
+  document.getElementById('cookBtn').innerHTML='🔥<br>굽기 시작';
+
+  return;
+ }
+
+ cooking=true;
+
+ document.getElementById('cookBtn').innerHTML='⏸<br>굽기 멈춤';
+
+ timer=setInterval(()=>{
+
+  current+=0.01;
+  current=Number(current.toFixed(2));
+
+  updateGauge();
+
+ },10);
+}
+
+function resultType(type){
+
+ const shell=type.includes('inner') || type.includes('raw');
+
+ if(current < target-0.25){
+  return shell?'under_inner':'under';
+ }
+
+ if(current <= target+0.25){
+  return shell?'perfect_inner':'perfect';
+ }
+
+ return shell?'burnt_inner':'burnt';
+}
+
+function takeOut(){
+
+ if(grill.length===0)return;
+
+ clearInterval(timer);
+
+ cooking=false;
+
+ document.getElementById('cookBtn').innerHTML='🔥<br>굽기 시작';
+
+ grill.forEach(type=>{
+  inventory[resultType(type)]++;
+ });
+
+ grill=[];
+
+ current=0;
+ target=0;
+
+ updateTray();
+ updateGauge();
+ renderInventory();
+}
+
+function toggleShop(){
+
+ shopOpen=!shopOpen;
+
+ const btn=document.getElementById('shopBtn');
+ const status=document.getElementById('shopStatus');
+
+ if(shopOpen){
+
+  btn.textContent='🏪 장사 종료';
+
+  status.textContent='영업중';
+  status.className='status on';
+
+  guestLoop=setInterval(spawnGuest,2500);
+
+ }else{
+
+  btn.textContent='🏪 장사 시작';
+
+  status.textContent='영업 종료';
+  status.className='status off';
+
+  clearInterval(guestLoop);
+
+  guests.forEach(g=>{
+
+   g.active=false;
+
+   document.getElementById('guest'+g.slot).classList.remove('show');
+   document.getElementById('order'+g.slot).classList.remove('show');
+
+  });
+
+  updateGuestCount();
+ }
+}
+
+function randomOrder(){
+
+ const r=Math.random();
+
+ if(r<0.75)return 'perfect';
+ if(r<0.9)return 'under';
+
+ return 'burnt';
+}
+
+function spawnGuest(){
+
+ const empty=guests.find(v=>!v.active);
+
+ if(!empty)return;
+
+ empty.active=true;
+ empty.want=randomOrder();
+
+ const guest=document.getElementById('guest'+empty.slot);
+ const order=document.getElementById('order'+empty.slot);
+ const bubble=document.getElementById('bubble'+empty.slot);
+
+ if(empty.want==='perfect'){
+  bubble.innerHTML='잘 익은 군밤<br>1봉지요!';
+ }
+
+ if(empty.want==='under'){
+  bubble.innerHTML='덜 익은 군밤<br>주세요!';
+ }
+
+ if(empty.want==='burnt'){
+  bubble.innerHTML='탄 군밤<br>주세요!';
+ }
+
+ guest.classList.add('show');
+ order.classList.add('show');
+
+ guest.onclick=()=>deliverBag(empty);
+
+ updateGuestCount();
+}
+
+function deliverBag(data){
+
+ if(selected!=='bag')return;
+
+ const bag=bagInventory[selectedBag];
+
+ if(!bag)return;
+
+ if(bag.items.length===0)return;
+
+ const ok=bag.items.every(v=>v===data.want);
+
+ if(!ok)return;
+
+ money+=5000;
+
+ document.getElementById('money').textContent=money;
+
+ bagInventory.splice(selectedBag,1);
+
+ selected=null;
+
+ document.getElementById('badge'+data.slot).textContent='완료';
+ document.getElementById('badge'+data.slot).className='badge done';
+
+ setTimeout(()=>{
+
+  document.getElementById('guest'+data.slot).classList.remove('show');
+  document.getElementById('order'+data.slot).classList.remove('show');
+
+  data.active=false;
+
+  updateGuestCount();
+
+ },700);
+
+ renderInventory();
+}
+
+function updateGuestCount(){
+
+ document.getElementById('guestCount').textContent=
+ guests.filter(v=>v.active).length;
+}
+
+document.getElementById('insertBtn').onclick=insertItem;
+document.getElementById('cookBtn').onclick=toggleCooking;
+document.getElementById('takeBtn').onclick=takeOut;
+document.getElementById('shopBtn').onclick=toggleShop;
+
+document.getElementById('clearBtn').onclick=()=>{
+
+ selected=null;
+ renderInventory();
+};
+
+document.getElementById('discardBtn').onclick=()=>{
+
+ if(!selected)return;
+ if(!inventory[selected])return;
+
+ inventory[selected]--;
+
+ renderInventory();
+};
+
+document.getElementById('bagBtn').onclick=()=>{
+
+ if(bags<=0)return;
+
+ bags--;
+
+ bagInventory.push({
+  name:'봉지 (0/15)',
+  items:[]
+ });
+
+ renderInventory();
+};
+
+document.getElementById('knifeBtn').onclick=()=>{
+
+ if(!selected)return;
+ if(!META[selected].next)return;
+ if(inventory[selected]<=0)return;
+
+ peelType=selected;
+ peelingCount=0;
+ peelingTotal=inventory[selected];
+
+ document.getElementById('peelImg').src=META[selected].img;
+ document.getElementById('peelName').textContent=META[selected].name;
+ document.getElementById('peelCount').textContent=`0 / ${peelingTotal}`;
+
+ peelOverlay.classList.add('show');
+};
+
+function addTrail(x1,y1,x2,y2){
+
+ const dx=x2-x1;
+ const dy=y2-y1;
+
+ const len=Math.hypot(dx,dy);
+
+ if(len<10)return;
+
+ const line=document.createElement('div');
+
+ line.className='trail';
+
+ line.style.width=len+'px';
+ line.style.left=x1+'px';
+ line.style.top=y1+'px';
+ line.style.transform=`rotate(${Math.atan2(dy,dx)}rad)`;
+
+ document.getElementById('peelTrails').appendChild(line);
+
+ setTimeout(()=>line.remove(),340);
+}
+
+peelCard.addEventListener('pointerdown',(e)=>{
+
+ peelPointer={
+  startX:e.clientX,
+  startY:e.clientY,
+  lastX:e.clientX,
+  lastY:e.clientY,
+  sliced:false
+ };
+});
+
+peelCard.addEventListener('pointermove',(e)=>{
+
+ if(!peelPointer)return;
+
+ const box=peelCard.getBoundingClientRect();
+
+ addTrail(
+  peelPointer.lastX-box.left,
+  peelPointer.lastY-box.top,
+  e.clientX-box.left,
+  e.clientY-box.top
+ );
+
+ const dx=e.clientX-peelPointer.startX;
+ const dy=e.clientY-peelPointer.startY;
+
+ peelPointer.lastX=e.clientX;
+ peelPointer.lastY=e.clientY;
+
+ if(!peelPointer.sliced && Math.hypot(dx,dy)>40){
+
+  peelPointer.sliced=true;
+
+  if(inventory[peelType]>0){
+
+   inventory[peelType]--;
+   inventory[META[peelType].next]++;
+
+   peelingCount++;
+
+   document.getElementById('peelCount').textContent=
+   `${peelingCount} / ${peelingTotal}`;
+
+   renderInventory();
+  }
+
+  if(inventory[peelType]<=0){
+   peelOverlay.classList.remove('show');
+  }
+
+  setTimeout(()=>{
+   peelPointer=null;
+  },60);
+ }
+});
+
+peelOverlay.addEventListener('click',(e)=>{
+
+ if(e.target===peelOverlay){
+  peelOverlay.classList.remove('show');
+ }
+});
+
+const shopOverlay=document.getElementById('shopOverlay');
+
+document.getElementById('storeBtn').onclick=()=>{
+ shopOverlay.classList.add('show');
+};
+
+shopOverlay.onclick=(e)=>{
+
+ if(e.target===shopOverlay){
+  shopOverlay.classList.remove('show');
+ }
+};
+
+document.getElementById('buyBagBtn').onclick=()=>{
+
+ if(money<1000)return;
+
+ money-=1000;
+
+ bags+=10;
+
+ document.getElementById('money').textContent=money;
+
+ renderInventory();
+};
+
+renderInventory();
+updateTray();
+updateGauge();
+
+</script>
+
+</body>
+</html>
