@@ -1,1392 +1,1552 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
 <title>군밤 타이쿤</title>
-
 <style>
-:root{
- --bg:#0d0a08;
- --metal1:#5e5955;
- --metal2:#2a2623;
- --metal3:#120f0d;
- --text:#fff;
-}
-
-*{
- margin:0;
- padding:0;
- box-sizing:border-box;
- -webkit-tap-highlight-color:transparent;
- user-select:none;
-}
-
-html,body{
- width:100%;
- height:100%;
- overflow:hidden;
- background:#000;
- font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;
-}
-
-body{
- display:flex;
- justify-content:center;
- align-items:center;
-}
-
-.app{
- width:min(100vw,calc(100vh * 9 / 16));
- height:min(100vh,calc(100vw * 16 / 9));
- aspect-ratio:9/16;
- overflow:hidden;
- background:#111;
- position:relative;
- color:#fff;
-}
-
-.topbar{
- height:6.2%;
- display:grid;
- grid-template-columns:1fr 1fr .8fr .8fr 1fr .9fr;
- gap:5px;
- padding:4px 8px 6px;
- background:linear-gradient(to bottom,#2a211c,#14110f);
-}
-
-.topitem,.status{
- border-radius:10px;
- display:flex;
- justify-content:center;
- align-items:center;
- font-size:11px;
- font-weight:900;
- background:#1b1715;
- border:1px solid rgba(255,255,255,.08);
-}
-
-.status.on{background:#45621e;}
-.status.off{background:#742d25;}
-
-.main{
- height:93.8%;
- padding:0 8px 8px;
- display:grid;
- grid-template-rows:21% 43% 36%;
- gap:8px;
-}
-
-/* 창문 */
-
-.window{
- position:relative;
- overflow:hidden;
- border-radius:20px;
- border:2px solid #674b39;
- background:#000;
-}
-
-.bg{
- position:absolute;
- inset:0;
- width:100%;
- height:100%;
- object-fit:cover;
-}
-
-.orders{
- position:absolute;
- top:8px;
- left:8px;
- right:8px;
- display:grid;
- grid-template-columns:1fr 1fr 1fr;
- gap:6px;
- z-index:5;
-}
-
-.order{
- opacity:0;
- transition:.45s;
-}
-
-.order.show{
- opacity:1;
-}
-
-.bubble{
- background:#f3eadb;
- color:#1b1510;
- border-radius:14px;
- padding:6px;
- min-height:42px;
- display:flex;
- justify-content:center;
- align-items:center;
- text-align:center;
- font-size:9px;
- line-height:1.2;
- font-weight:900;
-}
-
-.badge{
- margin-top:3px;
- border-radius:999px;
- padding:3px;
- text-align:center;
- font-size:8px;
- font-weight:900;
- color:#fff;
-}
-
-.wait{background:#9b692d;}
-.done{background:#4d9031;}
-
-.guests{
- position:absolute;
- inset:0;
-}
-
-.guest{
- position:absolute;
- bottom:-28%;
- width:31%;
- opacity:0;
- transform:translateY(10px);
- transition:opacity .45s,transform .45s;
-}
-
-.guest.show{
- opacity:1;
- transform:translateY(0);
-}
-
-.guest img{
- width:100%;
- display:block;
-}
-
-.g1{left:0;}
-.g2{left:34%;width:33%;}
-.g3{right:0;}
-
-/* 기계 */
-
-.machine{
- display:grid;
- grid-template-columns:.72fr 1.8fr .72fr;
-}
-
-.panel{
- background:linear-gradient(to bottom,var(--metal1),var(--metal2) 40%,var(--metal3));
- border:1px solid rgba(255,255,255,.08);
-}
-
-.left{
- border-radius:20px 0 0 20px;
- padding:12px 8px;
- display:grid;
- grid-template-rows:1fr 1fr;
- gap:8px;
- border-right:none;
-}
-
-.slot{
- position:relative;
- border-radius:16px;
- overflow:hidden;
- background:linear-gradient(to bottom,#69635f,#3b3733 45%,#191614);
-}
-
-.slot-hole{
- position:absolute;
- left:15%;
- right:15%;
- top:18%;
- bottom:18%;
- border-radius:14px;
- background:linear-gradient(to bottom,#1d1d1d,#050505);
-}
-
-.slot-title{
- position:absolute;
- top:5px;
- left:9px;
- font-size:9px;
- font-weight:900;
- color:#fff;
-}
-
-.center{
- border-right:none;
- padding:8px;
- display:flex;
- justify-content:center;
- align-items:center;
-}
-
-.grill-wrap{
- width:100%;
- height:100%;
- position:relative;
- overflow:hidden;
- border-radius:18px;
- background:#090807;
-}
-
-.grill{
- position:absolute;
- width:88%;
- height:68%;
- object-fit:contain;
- left:50%;
- top:38%;
- transform:translate(-50%,-50%);
-}
-
-.timer-box{
- position:absolute;
- top:8px;
- left:50%;
- transform:translateX(-50%);
- z-index:5;
- background:#0f0c0a;
- border-radius:10px;
- padding:4px 8px;
- display:flex;
- gap:4px;
- font-size:11px;
- font-weight:900;
- border:1px solid rgba(255,255,255,.08);
-}
-
-.timer-target{
- color:#ffd768;
-}
-
-.tray{
- position:absolute;
- left:50%;
- transform:translateX(-50%);
- bottom:66px;
- width:78%;
- min-height:48px;
- border-radius:12px;
- padding:6px;
- display:flex;
- justify-content:center;
- align-items:center;
- gap:4px;
- flex-wrap:wrap;
- background:rgba(0,0,0,.5);
- border:1px solid rgba(255,255,255,.08);
- z-index:5;
-}
-
-.tray img{
- width:24px;
- height:24px;
- object-fit:contain;
-}
-
-.tray.empty{
- opacity:.7;
- font-size:11px;
- font-weight:900;
-}
-
-.heatbox{
- position:absolute;
- left:5%;
- right:5%;
- bottom:8px;
- border-radius:12px;
- padding:6px;
- background:#0d0b09;
- border:1px solid rgba(255,255,255,.08);
-}
-
-.heatbar{
- height:16px;
- border-radius:999px;
- overflow:hidden;
- position:relative;
- background:linear-gradient(
- 90deg,
- #c53a22 0%,
- #ff9828 20%,
- #ffe56a 35%,
- #5fa642 50%,
- #ffe56a 65%,
- #ff9828 80%,
- #c53a22 100%
-);
-}
-
-.fill{
- position:absolute;
- left:0;
- top:0;
- bottom:0;
- width:0%;
- background:rgba(255,255,255,.13);
-}
-
-.cursor{
- position:absolute;
- top:-4px;
- width:4px;
- height:24px;
- background:#000;
- border-radius:999px;
- transform:translateX(-50%);
-}
-
-.labels{
- margin-top:4px;
- display:flex;
- justify-content:space-between;
- font-size:8px;
- font-weight:900;
-}
-
-.right{
- border-radius:0 20px 20px 0;
- padding:8px;
- display:flex;
- justify-content:center;
- align-items:center;
-}
-
-.actions{
- width:100%;
- height:100%;
- display:flex;
- flex-direction:column;
- gap:10px;
- justify-content:center;
- align-items:center;
-}
-
-.action{
- width:82%;
- height:31%;
- border:none;
- border-radius:18px;
- color:#fff;
- font-size:11px;
- font-weight:900;
-}
-
-.toggle{background:#668b2f;}
-.take{background:#87532b;}
-.insert{background:#406f98;}
-
-/* 하단 */
-
-.bottom{
- overflow:hidden;
- display:grid;
- grid-template-columns:1.45fr .95fr;
- gap:8px;
-}
-
-.stock,.menu{
- overflow:hidden;
- border-radius:20px;
- border:1px solid rgba(255,255,255,.08);
- background:linear-gradient(to bottom,#2d231e,#14110f);
-}
-
-.title{
- padding:7px 12px 5px;
- font-size:13px;
- font-weight:900;
-}
-
-.stock-scroll{
- height:calc(100% - 30px);
- overflow-y:auto;
- padding:0 8px 8px;
-}
-
-.stock-scroll::-webkit-scrollbar{
- display:none;
-}
-
-.stock-grid{
- display:grid;
- grid-template-columns:1fr 1fr 1fr;
- gap:8px;
-}
-
-.card{
- min-height:96px;
- border-radius:14px;
- border:2px solid rgba(255,255,255,.06);
- background:#1a1512;
- display:flex;
- flex-direction:column;
- align-items:center;
- padding:6px;
- position:relative;
- color:#fff;
-}
-
-.card.selected{
- border-color:#4df34b;
- box-shadow:0 0 14px rgba(77,243,75,.24);
-}
-
-.card img{
- width:100%;
- height:44px;
- object-fit:contain;
-}
-
-.name{
- margin-top:3px;
- font-size:8px;
- line-height:1.15;
- text-align:center;
- font-weight:900;
- color:#fff;
-}
-
-.qty{
- margin-top:auto;
- font-size:11px;
- font-weight:900;
- color:#fff;
-}
-
-.under{
- filter:brightness(1.5) saturate(.6);
-}
-
-.good{
- filter:brightness(1.42);
-}
-
-.dark{
- filter:brightness(.4) contrast(1.4);
-}
-
-.menu-grid{
- height:calc(100% - 30px);
- padding:0 8px 8px;
- display:grid;
- grid-template-columns:1fr 1fr;
- grid-template-rows:repeat(3,1fr);
- gap:8px;
-}
-
-.mbtn{
- border:none;
- border-radius:16px;
- color:#fff;
- font-size:10px;
- line-height:1.15;
- font-weight:900;
-}
-
-.m1{background:#668c2f;}
-.m2{background:#406f98;}
-.m3{background:#7d60a3;}
-.m4{background:#87532c;}
-.m5{background:#7b2d24;}
-.m6{background:#555;}
-
-/* 칼 */
-
-.peel-overlay{
- position:absolute;
- inset:0;
- background:rgba(0,0,0,.78);
- display:none;
- justify-content:center;
- align-items:center;
- z-index:200;
-}
-
-.peel-overlay.show{
- display:flex;
-}
-
-.peel-card{
- width:min(72vw,260px);
- border-radius:22px;
- background:#15110f;
- border:1px solid rgba(255,255,255,.08);
- padding:14px;
- position:relative;
- overflow:hidden;
- display:flex;
- flex-direction:column;
- align-items:center;
- gap:8px;
- touch-action:none;
-}
-
-.peel-card img{
- width:100%;
- height:160px;
- object-fit:contain;
- filter:brightness(.7);
-}
-
-.peel-name{
- font-size:13px;
- font-weight:900;
-}
-
-.peel-count{
- font-size:11px;
- font-weight:900;
- color:#7ef47b;
-}
-
-.peel-hint{
- font-size:11px;
- font-weight:900;
- color:#d9c8a7;
-}
-
-.peel-trails{
- position:absolute;
- inset:0;
- pointer-events:none;
-}
-
-.trail{
- position:absolute;
- height:6px;
- border-radius:999px;
- background:rgba(255,255,255,.95);
- box-shadow:0 0 16px rgba(255,255,255,.5);
- transform-origin:left center;
- animation:fadeTrail .34s ease-out forwards;
-}
-
-@keyframes fadeTrail{
- from{opacity:.95;}
- to{opacity:0;transform:scaleX(.8);}
-}
-
+:root{--bg:#0d0a08;--metal1:#5e5955;--metal2:#2a2623;--metal3:#120f0d;--text:#fff;--panel:#171310;--panel2:#241c18;--accent:#6f9c31;--warn:#a85b24}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif}
+body{display:flex;justify-content:center;align-items:center}
+button{cursor:pointer;border:none;background:none}
+img{-webkit-user-drag:none;user-drag:none;pointer-events:none}
+.app{width:min(100vw,calc(100vh*9/16));height:min(100vh,calc(100vw*16/9));aspect-ratio:9/16;overflow:hidden;background:#111;position:relative;color:#fff}
+.topbar{height:6%;display:grid;grid-template-columns:1fr 1fr .8fr .8fr 1fr .9fr;gap:5px;padding:4px 8px 6px;background:linear-gradient(to bottom,#2a211c,#14110f)}
+.topitem,.status{border-radius:10px;display:flex;justify-content:center;align-items:center;font-size:11px;font-weight:900;background:#1b1715;border:1px solid rgba(255,255,255,.08);overflow:hidden}
+.status.on{background:#45621e}.status.off{background:#742d25}
+.main{height:94%;padding:0 8px 8px;display:grid;grid-template-rows:25% 36% 39%;gap:8px}
+.window{position:relative;overflow:hidden;border-radius:20px;border:2px solid #674b39;background:#000}
+.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.orders{position:absolute;top:8px;left:8px;right:8px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;z-index:5}
+.order{opacity:0;transition:.35s}.order.show{opacity:1}
+.bubble{background:#f3eadb;color:#1b1510;border-radius:14px;padding:6px;min-height:42px;display:flex;justify-content:center;align-items:center;text-align:center;font-size:9px;line-height:1.2;font-weight:900}
+.badge{margin-top:3px;border-radius:999px;padding:3px;text-align:center;font-size:8px;font-weight:900;color:#fff}
+.wait{background:#9b692d}.done{background:#4d9031}.normal{background:#4d9031}.special{background:#7d60a3}.slush{background:#406f98}.combo{background:#8b4513}
+.guests{position:absolute;inset:0}
+.guest{position:absolute;bottom:-28%;width:31%;opacity:0;transform:translateY(10px);transition:opacity .35s,transform .35s;touch-action:none}
+.guest.show{opacity:1;transform:translateY(0)}
+.guest img{width:100%;display:block;pointer-events:none}
+.g1{left:0}.g2{left:34%;width:33%}.g3{right:0}
+.guest-dismiss-hint{position:absolute;top:-18px;left:50%;transform:translateX(-50%);background:rgba(180,50,50,.92);color:#fff;font-size:8px;font-weight:900;border-radius:999px;padding:2px 8px;white-space:nowrap;opacity:0;transition:opacity .2s;pointer-events:none}
+.guest.holding .guest-dismiss-hint{opacity:1}
+.machine{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.panel{background:linear-gradient(to bottom,var(--metal1),var(--metal2) 40%,var(--metal3));border:1px solid rgba(255,255,255,.08);overflow:hidden;border-radius:20px}
+.chestnut-panel{padding:8px;display:grid;grid-template-rows:1fr auto;gap:8px}
+.grill-zone{border-radius:18px;background:#0a0908;position:relative;overflow:hidden;display:flex;justify-content:center;align-items:center;touch-action:none;min-height:0}
+.grill{width:92%;object-fit:contain;pointer-events:none}
+.tray{position:absolute;inset:12px;display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:4px;justify-items:center;align-content:center;padding:6px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);touch-action:none}
+.tray.empty{background:transparent;border-color:transparent}
+.tray img{width:14px;height:14px;object-fit:contain}
+.heat-control{padding:6px;border-radius:14px;background:#0d0b09;border:1px solid rgba(255,255,255,.08);touch-action:none}
+.timer-box{background:#0f0c0a;border-radius:10px;padding:5px 8px;display:flex;justify-content:center;gap:4px;font-size:11px;font-weight:900;border:1px solid rgba(255,255,255,.08);margin-bottom:6px}
+.timer-target{color:#ffd768}
+.heatbar{height:16px;border-radius:999px;overflow:hidden;position:relative;background:linear-gradient(90deg,#c53a22 0%,#ff9828 20%,#ffe56a 35%,#5fa642 50%,#ffe56a 65%,#ff9828 80%,#c53a22 100%)}
+.fill{position:absolute;left:0;top:0;bottom:0;width:0%;background:rgba(255,255,255,.13)}
+.cursor{position:absolute;top:-4px;width:4px;height:24px;background:#000;border-radius:999px;transform:translateX(-50%)}
+.labels{margin-top:4px;display:flex;justify-content:space-between;font-size:8px;font-weight:900}
+.slush-panel-wrap{width:100%;padding:8px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;align-items:end;background:linear-gradient(to bottom,#5e5955,#2a2623 40%,#120f0d);border-radius:20px;height:100%;box-sizing:border-box}
+.slush-machine-new{border-radius:18px;background:linear-gradient(to bottom,#6d6d6d,#343434 40%,#121212);border:1px solid rgba(255,255,255,.08);position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:8px 4px 6px;min-height:0;flex:1;cursor:pointer;transition:border-color .2s}
+.slush-liquid-new{position:absolute;left:18%;right:18%;bottom:34%;border-radius:12px 12px 8px 8px;opacity:.75;transition:.2s;z-index:1}
+.slush-img-new{width:88%;object-fit:contain;margin-top:8px;position:relative;z-index:2;pointer-events:none}
+.slush-base-new{width:100%;height:14px;border-radius:10px;background:#1b1b1b;margin-top:6px;position:relative;z-index:2}
+.slush-text-new{margin-top:4px;font-size:9px;font-weight:900;text-align:center;line-height:1.2;color:#fff;position:relative;z-index:2}
+.bottom{overflow:hidden;display:grid;grid-template-columns:1.45fr .95fr;gap:8px}
+.stock,.menu{overflow:hidden;border-radius:20px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(to bottom,#2d231e,#14110f);display:flex;flex-direction:column}
+.title{padding:7px 12px 5px;font-size:13px;font-weight:900;flex-shrink:0}
+.stock-scroll{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 8px 8px;-webkit-overflow-scrolling:touch;touch-action:pan-y;overscroll-behavior:contain}
+.stock-scroll::-webkit-scrollbar{width:3px}
+.stock-scroll::-webkit-scrollbar-track{background:transparent}
+.stock-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:999px}
+.stock-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.card{min-height:96px;border-radius:14px;border:2px solid rgba(255,255,255,.06);background:#1a1512;display:flex;flex-direction:column;align-items:center;padding:6px;position:relative;color:#fff;touch-action:pan-y}
+.card.selected{border-color:#4df34b;box-shadow:0 0 14px rgba(77,243,75,.24)}
+.card img{width:100%;height:44px;object-fit:contain}
+.name{margin-top:3px;font-size:8px;line-height:1.15;text-align:center;font-weight:900;color:#fff}
+.qty{margin-top:auto;font-size:11px;font-weight:900;color:#fff}
+.under{filter:brightness(1.5) saturate(.6)}.good{filter:brightness(1.42)}.dark{filter:brightness(.4) contrast(1.4)}.soft{filter:brightness(.93)}.syrup{filter:brightness(.96) saturate(1.15)}.slushitem{filter:brightness(1.1) saturate(1.15)}.bagcard{filter:brightness(1.05)}
+.menu-grid{flex:1;padding:0 8px 8px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);gap:8px}
+.mbtn{border:none;border-radius:16px;color:#fff;font-size:10px;line-height:1.15;font-weight:900;touch-action:none;transition:transform .1s,box-shadow .1s}
+.mbtn:active{transform:scale(.97)}
+.m1{background:#668c2f}.m2{background:#406f98}.m3{background:#87532c}.m4{background:#7d60a3}.m5{background:#7b2d24}.m6{background:#555}
+.overlay{position:absolute;inset:0;background:rgba(0,0,0,.82);display:none;justify-content:center;align-items:center;z-index:300}
+.overlay.show{display:flex}
+.modal{width:88%;max-height:86%;overflow-y:auto;border-radius:22px;background:#171310;border:1px solid rgba(255,255,255,.08);padding:14px}
+.modal::-webkit-scrollbar{width:3px}.modal::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:999px}
+.modal-title{font-size:18px;font-weight:900;margin-bottom:10px;text-align:center}
+/* 칼질 카드 */
+.peel-card{width:min(72vw,260px);border-radius:22px;background:#15110f;border:1px solid rgba(255,255,255,.08);padding:14px;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:8px;touch-action:none;-webkit-user-select:none;user-select:none}
+.peel-card img{width:100%;height:160px;object-fit:contain;filter:brightness(.7);z-index:1;position:relative;pointer-events:none}
+.peel-name,.peel-count,.peel-hint{z-index:1}
+.peel-name{font-size:13px;font-weight:900}.peel-count{font-size:11px;font-weight:900;color:#7ef47b}.peel-hint{font-size:11px;font-weight:900;color:#d9c8a7}
+/* 스와이프 캔버스 (이어진 선) */
+.peel-canvas{position:absolute;inset:0;z-index:10;pointer-events:none;border-radius:22px}
 /* 상점 */
-
-.shop-overlay{
- position:absolute;
- inset:0;
- background:rgba(0,0,0,.8);
- display:none;
- justify-content:center;
- align-items:center;
- z-index:300;
-}
-
-.shop-overlay.show{
- display:flex;
-}
-
-.shop-box{
- width:82%;
- border-radius:22px;
- background:#171310;
- border:1px solid rgba(255,255,255,.08);
- padding:18px;
-}
-
-.shop-title{
- font-size:18px;
- font-weight:900;
- margin-bottom:14px;
- text-align:center;
-}
-
-.shop-item{
- border-radius:18px;
- background:#241c18;
- padding:12px;
- display:flex;
- align-items:center;
- justify-content:space-between;
- gap:10px;
-}
-
-.shop-item img{
- width:52px;
- height:52px;
- object-fit:contain;
-}
-
-.buy-btn{
- border:none;
- border-radius:12px;
- background:#688d31;
- color:#fff;
- font-weight:900;
- padding:10px 14px;
-}
-
+.shop-cart{background:#231b16;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:12px;margin-bottom:14px}
+.cart-head{font-size:14px;font-weight:900;margin-bottom:8px}.cart-note{font-size:10px;font-weight:900;color:#d6c9b6;margin-top:4px}
+.cart-list{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.cart-item{display:grid;grid-template-columns:34px 1fr auto;gap:8px;align-items:center;background:#1a1512;border-radius:14px;padding:8px;border:1px solid rgba(255,255,255,.06)}
+.cart-item.noimg{grid-template-columns:1fr auto}
+.cart-empty-text{font-size:11px;font-weight:900;color:#fff;line-height:1.3}
+.cart-item img{width:34px;height:34px;object-fit:contain}
+.cart-item-title{font-size:10px;font-weight:900;line-height:1.15}.cart-item-sub{font-size:9px;color:#c9b7a0;font-weight:900;margin-top:2px}
+.cart-step{display:flex;align-items:center;gap:5px}.cart-step button{width:24px;height:24px;border:none;border-radius:8px;background:#3b2d24;color:#fff;font-weight:900}.cart-step span{width:20px;text-align:center;font-size:11px;font-weight:900}
+.cart-sum{display:flex;flex-direction:column;gap:4px;padding-top:8px;border-top:1px solid rgba(255,255,255,.08);font-size:11px;font-weight:900}
+.cart-sum .total{font-size:13px;color:#7ef47b}
+.checkout-btn{width:100%;border:none;border-radius:16px;background:#688d31;color:#fff;font-weight:900;padding:12px;margin-top:10px;font-size:13px}
+.shop-section{margin-bottom:14px}.shop-section-title{font-size:14px;font-weight:900;margin-bottom:8px}
+.shop-item{border-radius:18px;background:#241c18;padding:12px;display:flex;flex-direction:column;gap:10px;margin-bottom:10px}
+.shop-top{display:flex;align-items:center;gap:10px}.shop-item img{width:52px;height:52px;object-fit:contain}
+.shop-text{font-size:11px;line-height:1.35;font-weight:900}
+.shop-add{border:none;border-radius:14px;background:#4f7f2a;color:#fff;font-weight:900;padding:10px;width:100%}.shop-add:active{transform:scale(.99)}
+.shop-up{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.shop-up button{border:none;border-radius:16px;padding:12px 8px;color:#fff;font-weight:900;font-size:11px}
+.up1{background:#668c2f}.up2{background:#406f98}
+/* 봉지 */
+.bag-list{display:flex;flex-direction:column;gap:10px}
+.bag-card{background:#231b16;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:10px}
+.bag-head{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;font-weight:900;margin-bottom:8px}
+.bag-sub{color:#fff;font-size:10px;font-weight:900;margin-top:2px}
+.bag-items{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.bag-item{background:#1a1512;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;min-height:72px;touch-action:none}
+.bag-item img{width:28px;height:28px;object-fit:contain}.bag-item span{font-size:9px;line-height:1.1;text-align:center;font-weight:900;color:#fff}
+.bag-actions{margin-top:10px;display:flex;gap:8px}.bag-actions button{flex:1;border:none;border-radius:14px;padding:11px 8px;font-weight:900;color:#fff}
+.bag-close{background:#555}.bag-remove{background:#7b2d24}
+/* 정보 */
+.info-text{display:flex;flex-direction:column;gap:10px;font-size:12px;line-height:1.45;font-weight:900}
+.info-box{background:#1f1814;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:12px}.info-box h3{font-size:13px;margin-bottom:6px}.info-box p{color:#e8dccb;font-size:11px;line-height:1.45}
+/* 슬러시 판매 모달 */
+.slush-sell-modal{background:#171310;border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:16px;width:80%;max-width:300px}
+.slush-sell-title{font-size:15px;font-weight:900;text-align:center;margin-bottom:12px}
+.slush-sell-info{font-size:11px;color:#c9b7a0;font-weight:900;text-align:center;margin-bottom:14px;line-height:1.5;white-space:pre-line}
+.slush-sell-btns{display:flex;flex-direction:column;gap:8px}
+.slush-sell-btns button{border:none;border-radius:14px;padding:11px;font-weight:900;color:#fff;font-size:12px}
+.sell-cup-btn{background:#406f98}.sell-cancel-btn{background:#555}
+/* 손님 쫓아내기 토스트 */
+.dismiss-toast{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(180,50,50,.95);color:#fff;font-size:13px;font-weight:900;border-radius:18px;padding:12px 22px;text-align:center;z-index:400;pointer-events:none;animation:toastPop .2s ease-out forwards}
+@keyframes toastPop{from{opacity:0;transform:translate(-50%,-50%) scale(.8)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+/* 튜토리얼 */
+#tutorialOverlay{position:absolute;inset:0;z-index:500;pointer-events:none}
+.tut-spotlight{position:absolute;inset:0;background:rgba(0,0,0,.68);pointer-events:none;display:none;transition:clip-path .35s cubic-bezier(.4,0,.2,1)}
+.tut-spotlight.active{display:block}
+.tut-highlight{position:absolute;border-radius:16px;box-shadow:0 0 0 3px #ffd768,0 0 20px rgba(255,215,104,.6);transition:all .35s cubic-bezier(.4,0,.2,1);pointer-events:none;z-index:502;display:none}
+.tut-bubble{position:absolute;background:linear-gradient(135deg,#2a2018,#1a150f);border:2px solid #ffd768;border-radius:18px;padding:12px 14px;max-width:200px;font-size:11px;font-weight:900;line-height:1.5;color:#fff;z-index:503;pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,.6);animation:tutPop .3s cubic-bezier(.34,1.56,.64,1) forwards;display:none}
+@keyframes tutPop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+.tut-bubble::before{content:'';position:absolute;width:12px;height:12px;background:#2a2018;border:2px solid #ffd768;border-right:none;border-bottom:none;transform:rotate(45deg);top:-8px;left:20px}
+.tut-bubble.arrow-bottom::before{top:auto;bottom:-8px;border:2px solid #ffd768;border-left:none;border-top:none;transform:rotate(45deg)}
+.tut-bubble.arrow-left::before{top:50%;left:-8px;transform:translateY(-50%) rotate(-45deg);border:2px solid #ffd768;border-right:none;border-top:none}
+.tut-step-badge{display:inline-block;background:#ffd768;color:#1a1200;border-radius:999px;padding:2px 8px;font-size:9px;font-weight:900;margin-bottom:6px}
+.tut-skip-btn{position:absolute;bottom:14px;right:14px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:10px;font-weight:900;border-radius:999px;padding:6px 14px;z-index:504;cursor:pointer;pointer-events:all;display:none}
+.tut-skip-btn:active{background:rgba(255,255,255,.2)}
+.hide{display:none!important}
 </style>
 </head>
-
 <body>
-
-<div class="app">
-
-<div class="topbar">
- <div class="topitem">💵 <span id="money">12000</span></div>
- <div class="topitem">🕒 18:45</div>
- <div class="topitem">🙂 4.6</div>
- <div class="topitem">👥 <span id="guestCount">0</span>/3</div>
- <div class="topitem">🛍 <span id="bagCount">3</span></div>
- <div class="status off" id="shopStatus">영업 종료</div>
-</div>
-
-<div class="main">
-
-<section class="window">
-
-<img class="bg" src="Background.png">
-
-<div class="orders">
- <div class="order" id="order0"><div class="bubble" id="bubble0"></div><div class="badge wait" id="badge0">주문 대기</div></div>
- <div class="order" id="order1"><div class="bubble" id="bubble1"></div><div class="badge wait" id="badge1">주문 대기</div></div>
- <div class="order" id="order2"><div class="bubble" id="bubble2"></div><div class="badge wait" id="badge2">주문 대기</div></div>
-</div>
-
-<div class="guests">
- <div class="guest g1" id="guest0"><img src="Guest.png"></div>
- <div class="guest g2" id="guest1"><img src="Guest.png"></div>
- <div class="guest g3" id="guest2"><img src="Guest.png"></div>
-</div>
-
-</section>
-
-<section class="machine">
-
-<div class="panel left">
-
- <div class="slot">
-  <div class="slot-title">투입구</div>
-  <div class="slot-hole"></div>
- </div>
-
- <div class="slot">
-  <div class="slot-title">배출구</div>
-  <div class="slot-hole"></div>
- </div>
-
-</div>
-
-<div class="panel center">
-
-<div class="grill-wrap">
-
- <div class="timer-box">
-  <div id="timerNow">0.00</div>
-  <div>/</div>
-  <div class="timer-target" id="timerTarget">0.00</div>
- </div>
-
- <div class="tray empty" id="tray">재료를 넣으세요</div>
-
- <img class="grill" src="Grill.png">
-
- <div class="heatbox">
-
-  <div class="heatbar">
-   <div class="fill" id="fill"></div>
-   <div class="cursor" id="cursor"></div>
+<div class="app" id="appRoot">
+  <div class="topbar">
+    <div class="topitem">💵 <span id="money">50000</span></div>
+    <div class="topitem">🕒 18:45</div>
+    <div class="topitem">🙂 4.6</div>
+    <div class="topitem">👥 <span id="guestCount">0</span>/3</div>
+    <div class="topitem">🛍 <span id="bagCount">0</span></div>
+    <div class="status off" id="shopStatus">영업 종료</div>
+  </div>
+  <div class="main">
+    <section class="window" id="windowSection">
+      <img class="bg" src="Background.png" alt="">
+      <div class="orders">
+        <div class="order" id="order0"><div class="bubble" id="bubble0"></div><div class="badge wait" id="badge0">주문 대기</div></div>
+        <div class="order" id="order1"><div class="bubble" id="bubble1"></div><div class="badge wait" id="badge1">주문 대기</div></div>
+        <div class="order" id="order2"><div class="bubble" id="bubble2"></div><div class="badge wait" id="badge2">주문 대기</div></div>
+      </div>
+      <div class="guests">
+        <div class="guest g1" id="guest0"><div class="guest-dismiss-hint">꾹 누르면 쫓아내기</div><img src="Guest.png" alt=""></div>
+        <div class="guest g2" id="guest1"><div class="guest-dismiss-hint">꾹 누르면 쫓아내기</div><img src="Guest.png" alt=""></div>
+        <div class="guest g3" id="guest2"><div class="guest-dismiss-hint">꾹 누르면 쫓아내기</div><img src="Guest.png" alt=""></div>
+      </div>
+    </section>
+    <section class="machine">
+      <div class="panel chestnut-panel">
+        <div class="grill-zone" id="grillZone">
+          <div class="tray" id="tray"></div>
+          <img class="grill" src="Grill.png" alt="">
+        </div>
+        <div class="heat-control" id="heatControl">
+          <div class="timer-box"><div id="timerNow">0.00</div><div>/</div><div class="timer-target" id="timerTarget">0.00</div></div>
+          <div class="heatbar"><div class="fill" id="fill"></div><div class="cursor" id="cursor"></div></div>
+          <div class="labels"><span>덜 익음</span><span>적정</span><span>많이 익음</span></div>
+        </div>
+      </div>
+      <div class="slush-panel-wrap" id="slushPanel"></div>
+    </section>
+    <section class="bottom">
+      <div class="stock">
+        <div class="title">재고</div>
+        <div class="stock-scroll"><div class="stock-grid" id="stockGrid"></div></div>
+      </div>
+      <div class="menu">
+        <div class="title">행동</div>
+        <div class="menu-grid">
+          <button class="mbtn m1" id="shopBtn">🏪 장사 시작</button>
+          <button class="mbtn m2" id="knifeBtn">🔪 칼 사용하기</button>
+          <button class="mbtn m3" id="storeBtn">🏬 상점</button>
+          <button class="mbtn m4" id="infoBtn">i 정보보기</button>
+          <button class="mbtn m5" id="discardBtn">🗑 폐기</button>
+          <button class="mbtn m6" id="clearBtn">❌ 선택 해제</button>
+        </div>
+      </div>
+    </section>
   </div>
 
-  <div class="labels">
-   <span>덜 익음</span>
-   <span>적정</span>
-   <span>많이 익음</span>
+  <!-- 칼질 오버레이 -->
+  <div class="overlay" id="peelOverlay">
+    <div class="peel-card" id="peelCard">
+      <canvas class="peel-canvas" id="peelCanvas"></canvas>
+      <img id="peelImg" alt="">
+      <div class="peel-name" id="peelName"></div>
+      <div class="peel-count" id="peelCount"></div>
+      <div class="peel-hint">스와이프해서 자르기</div>
+    </div>
   </div>
 
- </div>
-
-</div>
-
-</div>
-
-<div class="panel right">
-
-<div class="actions">
-
- <button class="action toggle" id="cookBtn">🔥<br>굽기 시작</button>
-
- <button class="action take" id="takeBtn">🌰<br>꺼내기</button>
-
- <button class="action insert" id="insertBtn">📥<br>투입구에 넣기</button>
-
-</div>
-
-</div>
-
-</section>
-
-<section class="bottom">
-
-<div class="stock">
-
- <div class="title">재고</div>
-
- <div class="stock-scroll">
-  <div class="stock-grid" id="stockGrid"></div>
- </div>
-
-</div>
-
-<div class="menu">
-
- <div class="title">행동</div>
-
- <div class="menu-grid">
-
-  <button class="mbtn m1" id="shopBtn">🏪 장사 시작</button>
-
-  <button class="mbtn m2" id="knifeBtn">🔪 칼 사용하기</button>
-
-  <button class="mbtn m3" id="bagBtn">🛍 봉지 꺼내기 (×3)</button>
-
-  <button class="mbtn m4" id="storeBtn">🏬 상점</button>
-
-  <button class="mbtn m5" id="discardBtn">🗑 폐기</button>
-
-  <button class="mbtn m6" id="clearBtn">❌ 선택 해제</button>
-
- </div>
-
-</div>
-
-</section>
-
-</div>
-
-<div class="peel-overlay" id="peelOverlay">
-
-<div class="peel-card" id="peelCard">
-
- <div class="peel-trails" id="peelTrails"></div>
-
- <img id="peelImg">
-
- <div class="peel-name" id="peelName"></div>
-
- <div class="peel-count" id="peelCount"></div>
-
- <div class="peel-hint">스와이프해서 자르기</div>
-
-</div>
-
-</div>
-
-<div class="shop-overlay" id="shopOverlay">
-
-<div class="shop-box">
-
- <div class="shop-title">상점</div>
-
- <div class="shop-item">
-
-  <img src="paperbag.png">
-
-  <div>
-   봉지 ×10<br>
-   1000원
+  <!-- 상점 오버레이 -->
+  <div class="overlay" id="shopOverlay">
+    <div class="modal shop-box">
+      <div class="modal-title">상점</div>
+      <div class="shop-cart">
+        <div class="cart-head">장바구니</div>
+        <div class="cart-list" id="cartList"></div>
+        <div class="cart-sum">
+          <div>상품 합계: <span id="cartSub">0</span>원</div>
+          <div>배송비: <span id="cartShip">0</span>원</div>
+          <div class="total">총 합계: <span id="cartTotal">0</span>원</div>
+          <div class="cart-note">배송비는 주문당 무조건 3000원입니다.</div>
+        </div>
+        <button class="checkout-btn" id="checkoutBtn">장바구니 배송하기</button>
+      </div>
+      <div class="shop-section"><div class="shop-section-title">재료</div><div id="shopMaterials"></div></div>
+      <div class="shop-section"><div class="shop-section-title">슬러시</div><div id="shopSyrups"></div></div>
+      <div class="shop-section"><div class="shop-section-title">소모품</div><div id="shopSupplies"></div></div>
+      <div class="shop-section">
+        <div class="shop-section-title">업그레이드</div>
+        <div class="shop-up">
+          <button class="up1" id="upgradeCapBtn">군밤 기계 한도 +5<br>50000원</button>
+          <button class="up2" id="upgradeRangeBtn">굽기 범위 감소<br>50000원</button>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <button class="buy-btn" id="buyBagBtn">구매</button>
+  <!-- 봉지 오버레이 -->
+  <div class="overlay" id="bagOverlay">
+    <div class="modal bag-box">
+      <div class="modal-title" id="bagTitle">봉지 내용</div>
+      <div class="bag-list" id="bagList"></div>
+      <div class="bag-actions">
+        <button class="bag-close" id="bagCloseBtn">닫기</button>
+        <button class="bag-remove" id="bagEmptyBtn">봉지 비우기</button>
+      </div>
+    </div>
+  </div>
 
- </div>
+  <!-- 정보 오버레이 -->
+  <div class="overlay" id="infoOverlay">
+    <div class="modal info-box">
+      <div class="modal-title">자세한 정보</div>
+      <div class="info-text" id="infoText"></div>
+      <div class="bag-actions"><button class="bag-close" id="infoCloseBtn">닫기</button></div>
+    </div>
+  </div>
 
-</div>
+  <!-- 슬러시 판매 오버레이 -->
+  <div class="overlay" id="slushSellOverlay">
+    <div class="slush-sell-modal">
+      <div class="slush-sell-title" id="slushSellTitle">슬러시 담기</div>
+      <div class="slush-sell-info" id="slushSellInfo"></div>
+      <div class="slush-sell-btns">
+        <button class="sell-cup-btn" id="slushToCupBtn">🥤 컵에 따르기</button>
+        <button class="sell-cancel-btn" id="slushSellCancelBtn">닫기</button>
+      </div>
+    </div>
+  </div>
 
+  <!-- 튜토리얼 레이어 -->
+  <div id="tutorialOverlay">
+    <div class="tut-spotlight" id="tutSpotlight"></div>
+    <div class="tut-highlight" id="tutHighlight"></div>
+    <div class="tut-bubble" id="tutBubble"></div>
+    <button class="tut-skip-btn" id="tutSkipBtn">튜토리얼 건너뛰기</button>
+  </div>
 </div>
 
 <script>
-const META={
- raw_shell:{name:'생 밤 (겉껍질)',img:'1.png',next:'raw_inner'},
- raw_inner:{name:'생 밤 (속껍질)',img:'2.png',next:'cut_raw'},
- cut_raw:{name:'칼집을 낸 생 밤 (속껍질)',img:'3.png'},
+/* ═══════════════════════════════
+   유틸
+═══════════════════════════════ */
+const $=id=>document.getElementById(id);
+const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 
- under_inner:{name:'덜 익은 군밤 (속껍질)',img:'3.png',next:'under'},
- under:{name:'덜 익은 군밤',img:'6.png',cls:'under'},
+/* ═══════════════════════════════
+   데이터 상수
+═══════════════════════════════ */
+const FRUITS={
+  papaya:{kr:'파파야',img:'Papaya.png',cup:'PapayaCup.png',color:'#46b7ff'},
+  cola:{kr:'콜라',img:'Cola.png',cup:'ColaCup.png',color:'#3f2418'},
+  grape:{kr:'포도',img:'Grape.png',cup:'GrapeCup.png',color:'#7c44ff'},
+  orange:{kr:'오렌지',img:'Orange.png',cup:'OrangeCup.png',color:'#ff972e'},
+  strawberry:{kr:'딸기',img:'Strawberry.png',cup:'StrawberryCup.png',color:'#ff4e8c'},
+  mango:{kr:'망고',img:'Mango.png',cup:'MangoCup.png',color:'#ffbf2f'},
+  peach:{kr:'복숭아',img:'Peach.png',cup:'PeachCup.png',color:'#ffb381'}
+};
+const FRUIT_KEYS=Object.keys(FRUITS);
+const CHN_KEYS=['raw_shell','raw_inner','cut_raw','under_inner','under','perfect_inner','perfect','burnt_inner','burnt'];
+const BAG_PRICE=7000;
+const SLUSH_PRICE=3000;
 
- perfect_inner:{name:'잘 익은 군밤 (속껍질)',img:'4.png',next:'perfect'},
- perfect:{name:'잘 익은 군밤',img:'6.png',cls:'good'},
+const STAGES={
+  raw_shell:{name:'생 밤 (겉껍질)',img:'1.png',next:'raw_inner'},
+  raw_inner:{name:'생 밤 (속껍질)',img:'2.png',next:'cut_raw'},
+  cut_raw:{name:'칼집을 낸 생 밤 (속껍질)',img:'3.png',next:null},
+  under_inner:{name:'덜 익은 군밤 (속껍질)',img:'3.png',next:'under'},
+  under:{name:'덜 익은 군밤',img:'6.png',cls:'under',next:null},
+  perfect_inner:{name:'잘 익은 군밤 (속껍질)',img:'4.png',next:'perfect'},
+  perfect:{name:'잘 익은 군밤',img:'6.png',cls:'good',next:null},
+  burnt_inner:{name:'탄 군밤 (속껍질)',img:'5.png',cls:'dark',next:'burnt'},
+  burnt:{name:'탄 군밤',img:'6.png',cls:'dark',next:null},
+  cup:{name:'컵',img:'Cup.png',cls:'soft'},
+  bag:{name:'종이봉지',img:'Paperbag.png',cls:'bagcard'}
+};
+const INVENTORY_META=Object.fromEntries(
+  FRUIT_KEYS.flatMap(k=>[
+    [`syrup_${k}`,{name:`${FRUITS[k].kr} 시럽 (1병)`,img:FRUITS[k].img,cls:'syrup'}],
+    [`slush_${k}`,{name:`${FRUITS[k].kr} 슬러시`,img:FRUITS[k].cup,cls:'slushitem'}]
+  ])
+);
+const metaOf=key=>STAGES[key]||INVENTORY_META[key]||{name:key,img:'Cup.png',cls:''};
 
- burnt_inner:{name:'탄 군밤 (속껍질)',img:'5.png',cls:'dark',next:'burnt'},
- burnt:{name:'탄 군밤',img:'6.png',cls:'dark'}
+/* ═══════════════════════════════
+   인벤토리 & 상태
+═══════════════════════════════ */
+const inventory={raw_shell:0,raw_inner:0,cut_raw:0,under_inner:0,under:0,perfect_inner:0,perfect:0,burnt_inner:0,burnt:0,cup:0,bag:0};
+FRUIT_KEYS.forEach(k=>{inventory[`syrup_${k}`]=0;inventory[`slush_${k}`]=0;});
+
+const SHOP_ITEMS=[
+  {id:'bagPack',group:'재료',name:'종이봉지',desc:'50개',price:2000,img:'Paperbag.png',onBuy:q=>inventory.bag+=50*q},
+  {id:'chestnutPack',group:'재료',name:'생 밤 (속껍질)',desc:'80개',price:14000,img:'2.png',onBuy:q=>inventory.raw_inner+=80*q},
+  {id:'cupPack',group:'소모품',name:'컵',desc:'100개',price:3000,img:'Cup.png',onBuy:q=>inventory.cup+=100*q}
+];
+FRUIT_KEYS.forEach(k=>SHOP_ITEMS.push({
+  id:`syrup_${k}`,group:'슬러시',name:`${FRUITS[k].kr} 시럽`,desc:'1병',price:3500,img:FRUITS[k].img,
+  onBuy:q=>inventory[`syrup_${k}`]+=q
+}));
+
+/* DOM refs */
+const el={
+  money:$('money'),guestCount:$('guestCount'),bagCount:$('bagCount'),shopStatus:$('shopStatus'),
+  tray:$('tray'),heatControl:$('heatControl'),slushPanel:$('slushPanel'),stockGrid:$('stockGrid'),
+  timerNow:$('timerNow'),timerTarget:$('timerTarget'),fill:$('fill'),cursor:$('cursor'),
+  peelOverlay:$('peelOverlay'),peelCard:$('peelCard'),peelCanvas:$('peelCanvas'),
+  peelImg:$('peelImg'),peelName:$('peelName'),peelCount:$('peelCount'),
+  shopOverlay:$('shopOverlay'),shopMaterials:$('shopMaterials'),shopSyrups:$('shopSyrups'),
+  shopSupplies:$('shopSupplies'),cartList:$('cartList'),cartSub:$('cartSub'),cartShip:$('cartShip'),
+  cartTotal:$('cartTotal'),checkoutBtn:$('checkoutBtn'),
+  bagOverlay:$('bagOverlay'),bagTitle:$('bagTitle'),bagList:$('bagList'),
+  bagCloseBtn:$('bagCloseBtn'),bagEmptyBtn:$('bagEmptyBtn'),
+  infoOverlay:$('infoOverlay'),infoText:$('infoText'),infoCloseBtn:$('infoCloseBtn'),
+  slushSellOverlay:$('slushSellOverlay'),slushSellTitle:$('slushSellTitle'),
+  slushSellInfo:$('slushSellInfo'),slushToCupBtn:$('slushToCupBtn'),
+  slushSellCancelBtn:$('slushSellCancelBtn')
 };
 
-const ORDER=[
-'raw_shell','raw_inner','cut_raw',
-'under_inner','under',
-'perfect_inner','perfect',
-'burnt_inner','burnt'
-];
+const guests=[{slot:0,active:false,order:null},{slot:1,active:false,order:null},{slot:2,active:false,order:null}];
+const slushMachines=[{flavor:null,serves:0},{flavor:null,serves:0},{flavor:null,serves:0}];
+const cart={};
+const stats={ordersCreated:0,normalOrders:0,specialOrders:0,slushOrders:0,comboOrders:0,served:0,failed:0,revenue:0,chestnutsSold:0,slushSold:0};
 
-const inventory={
- raw_shell:50,
- raw_inner:0,
- cut_raw:0,
- under_inner:0,
- under:0,
- perfect_inner:0,
- perfect:0,
- burnt_inner:0,
- burnt:0
-};
+let money=50000,selectedType=null,selectedBagIndex=-1,bagStacks=[],grill=[],current=0,target=0,cooking=false,timer=null,exploded=false,maxMachine=30,timingRange=2,shopOpen=false,guestLoop=null;
+let pendingSlushMachineIndex=-1;
 
-let bags=3;
-let bagInventory=[];
-let selected=null;
-let selectedBag=0;
+/* ═══════════════════════════════
+   기본 함수
+═══════════════════════════════ */
+const totalBagCount=()=>inventory.bag+bagStacks.length;
+function syncTop(){el.money.textContent=money.toLocaleString();el.guestCount.textContent=guests.filter(v=>v.active).length;el.bagCount.textContent=totalBagCount().toString();}
+function updateGauge(){el.timerNow.textContent=current.toFixed(2);el.timerTarget.textContent=target.toFixed(2);const pct=target>0?clamp((current/(target*2))*100,0,100):0;el.fill.style.width=pct+'%';el.cursor.style.left=pct+'%';}
+function randomChestnutTarget(){return 4+Math.random()*timingRange;}
+function resultType(type){
+  const inner=type.includes('inner')||type==='raw_inner'||type==='cut_raw';
+  if(current<target-.25)return inner?'under_inner':'under';
+  if(current<=target+.25)return inner?'perfect_inner':'perfect';
+  return inner?'burnt_inner':'burnt';
+}
+function openOverlay(node){node.classList.add('show');}
+function closeOverlay(node){node.classList.remove('show');}
+function countMap(items){const map={};items.forEach(k=>map[k]=(map[k]||0)+1);return map;}
 
-let grill=[];
+function summarizeChestnutCounts(counts){
+  const parts=[];
+  if(counts.perfect)parts.push(`잘 익은 군밤 ${counts.perfect}개`);
+  if(counts.under)parts.push(`덜 익은 군밤 ${counts.under}개`);
+  if(counts.burnt)parts.push(`탄 군밤 ${counts.burnt}개`);
+  return parts.length?parts.join(', '):'없음';
+}
+function summarizeBagItems(items){
+  const c=countMap(items);const parts=[];
+  if(c.perfect)parts.push(`잘익음 ${c.perfect}`);
+  if(c.under)parts.push(`덜익음 ${c.under}`);
+  if(c.burnt)parts.push(`탄것 ${c.burnt}`);
+  Object.keys(c).filter(k=>!['perfect','under','burnt'].includes(k)).forEach(k=>parts.push(`${metaOf(k).name} ${c[k]}개`));
+  return parts.length?parts.join(', '):'비어있음';
+}
 
-let current=0;
-let target=0;
+function normalizeSelection(){
+  if(selectedType!=='bag'){
+    if(selectedType&&(inventory[selectedType]||0)<=0)selectedType=null;
+    selectedBagIndex=-1;return;
+  }
+  if(selectedBagIndex>=bagStacks.length)selectedBagIndex=bagStacks.length-1;
+  if(selectedBagIndex<-1)selectedBagIndex=-1;
+}
 
-let cooking=false;
-let timer=null;
+/* ═══════════════════════════════
+   주문 생성 (복합 주문 포함)
+   - 슬러시만: 10%
+   - 군밤+슬러시 콤보: 40%
+   - 군밤만: 50%
+═══════════════════════════════ */
+function createChestnutOrder(special){
+  let counts;
+  if(!special){counts={perfect:15,under:0,burnt:0};}
+  else{
+    const imperfect=1+Math.floor(Math.random()*15);
+    const under=Math.floor(Math.random()*(imperfect+1));
+    const burnt=imperfect-under;
+    counts={perfect:15-imperfect,under,burnt};
+  }
+  return{kind:'chestnut',mode:special?'special':'normal',counts,total:15,text:summarizeChestnutCounts(counts)+' 주세요',payout:BAG_PRICE};
+}
 
-let money=12000;
+function createOrder(){
+  stats.ordersCreated++;
+  const r=Math.random();
+  if(r<0.10){
+    // 슬러시만
+    stats.slushOrders++;
+    const flavor=FRUIT_KEYS[Math.floor(Math.random()*FRUIT_KEYS.length)];
+    return{kind:'slush',flavor,total:1,text:`${FRUITS[flavor].kr} 슬러시 1개 주세요`,payout:SLUSH_PRICE};
+  }
+  if(r<0.50){
+    // 군밤 + 슬러시 콤보
+    stats.comboOrders++;
+    const special=Math.random()<0.2;
+    special?stats.specialOrders++:stats.normalOrders++;
+    const cOrder=createChestnutOrder(special);
+    const flavor=FRUIT_KEYS[Math.floor(Math.random()*FRUIT_KEYS.length)];
+    return{
+      kind:'combo',
+      chestnut:cOrder,
+      flavor,
+      text:`${cOrder.text} + ${FRUITS[flavor].kr} 슬러시`,
+      payout:BAG_PRICE+SLUSH_PRICE,
+      // 배달 상태 추적
+      chestnutDone:false,
+      slushDone:false
+    };
+  }
+  // 군밤만
+  const special=Math.random()<0.2;
+  special?stats.specialOrders++:stats.normalOrders++;
+  return createChestnutOrder(special);
+}
 
-let peelType=null;
-let peelPointer=null;
-let peelingCount=0;
-let peelingTotal=0;
+function matchChestnutOrder(bag,order){
+  if(!bag||!order)return false;
+  const count=countMap(bag.items);
+  return bag.items.length===15
+    &&bag.items.every(v=>['perfect','under','burnt'].includes(v))
+    &&(count.perfect||0)===order.counts.perfect
+    &&(count.under||0)===order.counts.under
+    &&(count.burnt||0)===order.counts.burnt;
+}
 
-let shopOpen=false;
-let guestLoop=null;
+/* ═══════════════════════════════
+   제스처 바인딩
+═══════════════════════════════ */
+function bindGesture3(node,{tap=null,hold1=null,hold2=null,tapMax=220,holdDelay=500,hold2Delay=900,repeatDelay=180,moveThreshold=12,preventDefault=false}={}){
+  let pointerId=null,startX=0,startY=0,startTime=0,moved=false;
+  let h1Timer=null,h2Timer=null,repeatTimer=null,h1Fired=false;
+  const clearAll=()=>{clearTimeout(h1Timer);clearTimeout(h2Timer);clearInterval(repeatTimer);h1Timer=null;h2Timer=null;repeatTimer=null;};
+  const cleanup=()=>{
+    clearAll();
+    window.removeEventListener('pointerup',onUp,{capture:true});
+    window.removeEventListener('pointercancel',onUp,{capture:true});
+    window.removeEventListener('pointermove',onMove,{capture:true});
+    if(pointerId!==null){try{node.releasePointerCapture(pointerId);}catch(e){}}
+    pointerId=null;
+  };
+  const onMove=e=>{if(e.pointerId!==pointerId)return;if(Math.hypot(e.clientX-startX,e.clientY-startY)>moveThreshold)moved=true;};
+  const onUp=e=>{
+    if(e.pointerId!==pointerId)return;
+    const duration=Date.now()-startTime;
+    const wasTap=!h1Fired&&!moved&&duration<=tapMax;
+    cleanup();
+    if(wasTap&&tap)tap();
+  };
+  node.addEventListener('pointerdown',e=>{
+    if(pointerId!==null)return;
+    if(preventDefault)e.preventDefault();
+    pointerId=e.pointerId;startX=e.clientX;startY=e.clientY;startTime=Date.now();
+    moved=false;h1Fired=false;
+    try{node.setPointerCapture(e.pointerId);}catch(err){}
+    window.addEventListener('pointerup',onUp,{capture:true});
+    window.addEventListener('pointercancel',onUp,{capture:true});
+    window.addEventListener('pointermove',onMove,{capture:true});
+    h1Timer=setTimeout(()=>{
+      if(pointerId===null||moved)return;
+      h1Fired=true;
+      if(hold1)hold1();
+      h2Timer=setTimeout(()=>{
+        if(pointerId===null||moved)return;
+        if(hold2){
+          hold2();
+          repeatTimer=setInterval(()=>{
+            if(pointerId===null){cleanup();return;}
+            const res=hold2?hold2():true;
+            if(res===false){clearInterval(repeatTimer);repeatTimer=null;}
+          },repeatDelay);
+        }
+      },hold2Delay-holdDelay);
+    },holdDelay);
+  });
+}
 
-const guests=[
- {slot:0,active:false},
- {slot:1,active:false},
- {slot:2,active:false}
-];
+/* ═══════════════════════════════
+   손님 쫓아내기
+═══════════════════════════════ */
+function bindGuestDismiss(guestEl,guestObj){
+  let ptId=null,hTimer=null,holding=false;
+  const cleanup=()=>{
+    clearTimeout(hTimer);hTimer=null;holding=false;
+    guestEl.classList.remove('holding');
+    window.removeEventListener('pointerup',onUp,{capture:true});
+    window.removeEventListener('pointercancel',onUp,{capture:true});
+    ptId=null;
+  };
+  const onUp=e=>{
+    if(e.pointerId!==ptId)return;
+    if(!holding){cleanup();deliverOrder(guestObj);tut.onAction('guestDeliver');}
+    else{cleanup();}
+  };
+  guestEl.addEventListener('pointerdown',e=>{
+    if(!guestObj.active)return;
+    if(ptId!==null)return;
+    ptId=e.pointerId;holding=false;
+    try{guestEl.setPointerCapture(e.pointerId);}catch(err){}
+    guestEl.classList.remove('holding');
+    window.addEventListener('pointerup',onUp,{capture:true});
+    window.addEventListener('pointercancel',onUp,{capture:true});
+    hTimer=setTimeout(()=>{
+      holding=true;guestEl.classList.add('holding');
+      hTimer=setTimeout(()=>{
+        if(ptId===null)return;
+        cleanup();dismissGuest(guestObj);tut.onAction('guestDismiss');
+      },500);
+    },500);
+  });
+}
+function dismissGuest(guest){
+  if(!guest.active)return;
+  const slot=guest.slot;
+  guest.active=false;guest.order=null;
+  $(`guest${slot}`).classList.remove('show','holding');
+  $(`order${slot}`).classList.remove('show');
+  const toast=document.createElement('div');
+  toast.className='dismiss-toast';toast.textContent='손님을 쫓아냈습니다!';
+  $('appRoot').appendChild(toast);
+  setTimeout(()=>{toast.style.opacity='0';toast.style.transition='opacity .3s';setTimeout(()=>toast.remove(),300);},1200);
+  syncTop();
+}
 
-const stockGrid=document.getElementById('stockGrid');
-const tray=document.getElementById('tray');
-const peelOverlay=document.getElementById('peelOverlay');
-const peelCard=document.getElementById('peelCard');
+/* ═══════════════════════════════
+   칼질 캔버스 (이어진 선)
+═══════════════════════════════ */
+let peelCtx=null,peelDrawing=false,peelLastX=0,peelLastY=0,peelFadeTimer=null;
+
+function initPeelCanvas(){
+  const canvas=el.peelCanvas;
+  const card=el.peelCard;
+  canvas.width=card.offsetWidth;
+  canvas.height=card.offsetHeight;
+  peelCtx=canvas.getContext('2d');
+  peelCtx.lineCap='round';
+  peelCtx.lineJoin='round';
+}
+
+function clearPeelCanvas(){
+  if(!peelCtx)return;
+  peelCtx.clearRect(0,0,el.peelCanvas.width,el.peelCanvas.height);
+}
+
+function fadePeelCanvas(){
+  if(!peelCtx)return;
+  if(peelFadeTimer)clearTimeout(peelFadeTimer);
+  peelFadeTimer=setTimeout(()=>{
+    let alpha=1;
+    const step=()=>{
+      if(!peelCtx)return;
+      alpha-=0.08;
+      if(alpha<=0){clearPeelCanvas();return;}
+      const imgData=peelCtx.getImageData(0,0,el.peelCanvas.width,el.peelCanvas.height);
+      // 알파 채널만 줄이기
+      for(let i=3;i<imgData.data.length;i+=4){imgData.data[i]=Math.max(0,imgData.data[i]-20);}
+      peelCtx.putImageData(imgData,0,0);
+      requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  },300);
+}
+
+/* ═══════════════════════════════
+   렌더 함수
+═══════════════════════════════ */
+function renderTray(){
+  if(grill.length===0){el.tray.classList.add('empty');el.tray.innerHTML='';return;}
+  el.tray.classList.remove('empty');el.tray.innerHTML='';
+  grill.forEach(type=>{const meta=metaOf(type);const img=document.createElement('img');img.src=meta.img;if(meta.cls)img.className=meta.cls;el.tray.appendChild(img);});
+}
+
+function renderSlush(){
+  el.slushPanel.innerHTML='';
+  slushMachines.forEach((m,idx)=>{
+    const box=document.createElement('div');
+    box.className='slush-machine-new';
+    box.style.borderColor=m.flavor?FRUITS[m.flavor].color:'rgba(255,255,255,.08)';
+    const liquidFrac=m.serves<=0?0:Math.min(m.serves/30,1);
+    const liquidHeight=Math.round(liquidFrac*60); // 0~60%
+    const liquidColor=m.flavor?FRUITS[m.flavor].color:'#fff';
+    const txt=m.serves<=0?'비어있음':`${FRUITS[m.flavor].kr}<br>${m.serves}잔`;
+    box.innerHTML=`<div class="slush-liquid-new" style="height:${liquidHeight}%;background:${liquidColor};"></div><img class="slush-img-new" src="Slushmachine.png" alt=""><div class="slush-base-new"></div><div class="slush-text-new">${txt}</div>`;
+    box.addEventListener('click',()=>slushTouch(idx));
+    el.slushPanel.appendChild(box);
+  });
+}
+
+function makeCard({key,name,img,qty,cls,selected=false,tap=null,hold1=null,hold2=null}){
+  const card=document.createElement('button');
+  card.className=`card${selected?' selected':''}`;
+  card.style.touchAction='pan-y';
+  if(key)card.dataset.type=key;
+  const displayImg=(key==='bag'||String(key).startsWith('bag_'))?'Paperbag.png':img;
+  card.innerHTML=`<img src="${displayImg}" class="${cls||''}" alt=""><div class="name">${name}</div><div class="qty">×${qty}</div>`;
+  if(tap||hold1||hold2){bindGesture3(card,{tap,hold1,hold2,preventDefault:false});}
+  return card;
+}
 
 function renderInventory(){
+  normalizeSelection();
+  el.stockGrid.innerHTML='';
+  CHN_KEYS.forEach(key=>{
+    const count=inventory[key]||0;if(count<=0)return;
+    const meta=metaOf(key);
+    el.stockGrid.appendChild(makeCard({
+      key,name:meta.name,img:meta.img,qty:count,cls:meta.cls||'',selected:selectedType===key,
+      tap:()=>{selectedType=key;selectedBagIndex=-1;renderInventory();if(tut.active&&key==='raw_inner'&&tut.stepIndex===3)tut.onAction('selectRawInner');if(tut.active&&key==='cut_raw'&&tut.stepIndex===6)tut.onAction('selectCutRaw');if(tut.active&&key==='perfect_inner'&&tut.stepIndex===10)tut.onAction('selectPerfectInner');},
+      hold1:()=>{if(selectedType==='bag')return addItemToSelectedBag(key);},
+      hold2:()=>{if(selectedType==='bag')return addItemToSelectedBag(key);return false;}
+    }));
+  });
+  if(inventory.bag>0||(selectedType==='bag'&&selectedBagIndex===-1)){
+    el.stockGrid.appendChild(makeCard({
+      key:'bag',name:'종이봉지',img:'Paperbag.png',qty:inventory.bag,cls:'bagcard',
+      selected:selectedType==='bag'&&selectedBagIndex===-1,
+      tap:()=>{selectedType='bag';selectedBagIndex=-1;renderInventory();if(tut.active&&(tut.stepIndex===10||tut.stepIndex===13))tut.onAction('selectBag');}
+    }));
+  }
+  bagStacks.forEach((bag,index)=>{
+    el.stockGrid.appendChild(makeCard({
+      key:`bag_${index}`,
+      name:`봉지 ${index+1}<br>(${bag.items.length}/15)`,
+      img:'Paperbag.png',qty:1,cls:'bagcard',
+      selected:selectedType==='bag'&&selectedBagIndex===index,
+      tap:()=>{selectedType='bag';selectedBagIndex=index;renderInventory();if(tut.active&&(tut.stepIndex===10||tut.stepIndex===13))tut.onAction('selectBag');},
+      hold1:()=>{openBagView(index);}
+    }));
+  });
+  if(inventory.cup>0){
+    el.stockGrid.appendChild(makeCard({
+      key:'cup',name:'컵',img:'Cup.png',qty:inventory.cup,cls:'soft',
+      selected:selectedType==='cup',
+      tap:()=>{selectedType='cup';selectedBagIndex=-1;renderInventory();}
+    }));
+  }
+  FRUIT_KEYS.forEach(k=>{
+    const key=`syrup_${k}`;if((inventory[key]||0)<=0)return;
+    const meta=metaOf(key);
+    el.stockGrid.appendChild(makeCard({
+      key,name:meta.name.replace(' (1병)','<br>(1병)'),img:meta.img,qty:inventory[key],cls:meta.cls||'',
+      selected:selectedType===key,
+      tap:()=>{selectedType=key;selectedBagIndex=-1;renderInventory();}
+    }));
+  });
+  FRUIT_KEYS.forEach(k=>{
+    const key=`slush_${k}`;if((inventory[key]||0)<=0)return;
+    const meta=metaOf(key);
+    el.stockGrid.appendChild(makeCard({
+      key,name:meta.name,img:meta.img,qty:inventory[key],cls:meta.cls||'',
+      selected:selectedType===key,
+      tap:()=>{selectedType=key;selectedBagIndex=-1;renderInventory();},
+      hold1:()=>{if(selectedType==='bag')return addItemToSelectedBag(key);},
+      hold2:()=>{if(selectedType==='bag')return addItemToSelectedBag(key);return false;}
+    }));
+  });
+  renderTray();renderSlush();updateGauge();syncTop();
+}
 
- stockGrid.innerHTML='';
+/* ═══════════════════════════════
+   봉지 관리
+═══════════════════════════════ */
+function addItemToSelectedBag(itemType){
+  if(!selectedType||selectedType!=='bag')return false;
+  if(String(itemType).startsWith('slush_'))return false;
+  if((inventory[itemType]||0)<=0)return false;
+  let bagIndex=selectedBagIndex;
+  if(bagIndex<0){
+    if(inventory.bag<=0)return false;
+    bagStacks.push({items:[]});
+    bagIndex=bagStacks.length-1;
+    selectedBagIndex=bagIndex;
+    inventory.bag--;
+  }
+  const bag=bagStacks[bagIndex];
+  if(!bag)return false;
+  if(bag.items.length>=15)return false;
+  inventory[itemType]--;
+  bag.items.push(itemType);
+  renderInventory();
+  if(el.bagOverlay.classList.contains('show')&&bagStacks[bagIndex])renderBagView(bagIndex);
+  return true;
+}
+function openBagView(index){
+  const bag=bagStacks[index];if(!bag)return;
+  selectedType='bag';selectedBagIndex=index;
+  renderInventory();renderBagView(index);openOverlay(el.bagOverlay);
+}
+function handleBagRemoval(removedIndex){
+  if(selectedType!=='bag')return;
+  if(selectedBagIndex===removedIndex){
+    if(bagStacks.length===0)selectedBagIndex=-1;
+    else if(removedIndex>=bagStacks.length)selectedBagIndex=bagStacks.length-1;
+  }else if(selectedBagIndex>removedIndex){selectedBagIndex--;}
+}
+function removeItemFromBag(bagIndex,itemIndex){
+  const bag=bagStacks[bagIndex];if(!bag)return;
+  const removed=bag.items.splice(itemIndex,1)[0];
+  if(removed)inventory[removed]=(inventory[removed]||0)+1;
+  if(bag.items.length===0){bagStacks.splice(bagIndex,1);inventory.bag++;handleBagRemoval(bagIndex);}
+  renderInventory();
+  if(bagStacks.length===0){selectedBagIndex=-1;if(selectedType==='bag'&&inventory.bag===0)selectedType=null;closeOverlay(el.bagOverlay);return;}
+  const nextIndex=Math.max(0,Math.min(bagIndex,bagStacks.length-1));
+  if(el.bagOverlay.classList.contains('show'))renderBagView(nextIndex);
+}
+function renderBagView(index){
+  const bag=bagStacks[index];if(!bag)return;
+  el.bagList.dataset.index=String(index);
+  el.bagTitle.textContent=`봉지 내용 (${bag.items.length}/15)`;
+  el.bagList.innerHTML='';
+  const head=document.createElement('div');head.className='bag-card';
+  head.innerHTML=`<div class="bag-head"><div>${bag.items.length?'봉지 내용물':'비어있음'}</div><div>${bag.items.length}/15</div></div><div class="bag-sub">${summarizeBagItems(bag.items)}</div>`;
+  el.bagList.appendChild(head);
+  if(bag.items.length===0){const empty=document.createElement('div');empty.className='bag-sub';empty.style.padding='10px 2px 0';empty.textContent='봉지가 비었습니다.';el.bagList.appendChild(empty);return;}
+  const items=document.createElement('div');items.className='bag-items';
+  bag.items.forEach((key,itemIndex)=>{
+    const meta=metaOf(key);const btn=document.createElement('button');btn.className='bag-item';btn.dataset.index=String(itemIndex);
+    btn.innerHTML=`<img src="${meta.img}" class="${meta.cls||''}" alt=""><span>${meta.name}</span>`;
+    btn.onclick=()=>removeItemFromBag(index,itemIndex);
+    items.appendChild(btn);
+  });
+  el.bagList.appendChild(items);
+}
+function emptyCurrentBag(){
+  if(selectedType!=='bag'||selectedBagIndex<0)return;
+  const bag=bagStacks[selectedBagIndex];if(!bag)return;
+  bag.items.forEach(key=>inventory[key]=(inventory[key]||0)+1);
+  const removedIndex=selectedBagIndex;
+  bagStacks.splice(removedIndex,1);inventory.bag++;
+  handleBagRemoval(removedIndex);
+  renderInventory();
+  if(bagStacks.length===0){selectedBagIndex=-1;closeOverlay(el.bagOverlay);}
+  else{const nextIndex=Math.max(0,Math.min(removedIndex,bagStacks.length-1));renderBagView(nextIndex);}
+}
 
- ORDER.forEach(type=>{
+/* ═══════════════════════════════
+   정보 렌더
+═══════════════════════════════ */
+function renderInfo(){
+  const activeOrders=guests.filter(v=>v.active).map(g=>{
+    if(g.order.kind==='combo')return`#${g.slot+1} 콤보: ${g.order.text} [군밤:${g.order.chestnutDone?'완료':'대기'} / 슬러시:${g.order.slushDone?'완료':'대기'}]`;
+    const extra=g.order.kind==='slush'?g.order.text:`${g.order.mode==='special'?'특수':'일반'} / ${g.order.text}`;
+    return`#${g.slot+1} ${extra}`;
+  }).join('<br>')||'없음';
+  const slushStatus=slushMachines.map((m,i)=>{
+    const flavor=m.flavor?FRUITS[m.flavor].kr:'없음';
+    const fill=m.serves<=0?'비어있음':`${m.serves}잔`;
+    return`#${i+1} : ${flavor} / ${fill}`;
+  }).join('<br>');
+  const inventoryChestnuts=CHN_KEYS.map(k=>`${metaOf(k).name} ${inventory[k]}개`).join('<br>');
+  const bagSummary=bagStacks.length?bagStacks.map((b,i)=>`#${i+1} 봉지 (${b.items.length}/15) : ${summarizeBagItems(b.items)}`).join('<br>'):'없음';
+  const selectedLabel=selectedType?(selectedType==='bag'?(selectedBagIndex>=0&&bagStacks[selectedBagIndex]?`봉지 (${bagStacks[selectedBagIndex].items.length}/15)`:'종이봉지'):metaOf(selectedType).name):'없음';
+  const state=cooking?'굽는 중':(grill.length>0?'대기 중':'비어있음');
+  const successRate=(stats.served+stats.failed)>0?((stats.served/(stats.served+stats.failed))*100).toFixed(1)+'%':'0%';
+  el.infoText.innerHTML=`<div class="info-box"><h3>현재 주문 정보</h3><p>${activeOrders}</p></div><div class="info-box"><h3>슬러시 상태</h3><p>${slushStatus}</p></div><div class="info-box"><h3>재고</h3><p>돈: ${money.toLocaleString()}원<br>컵: ${inventory.cup}개<br>종이봉지: ${inventory.bag}개<br>선택 중인 것: ${selectedLabel}<br>그릴: ${grill.length}개 / 최대 ${maxMachine}개</p></div><div class="info-box"><h3>봉투 내부 상태</h3><p>${bagSummary}</p></div><div class="info-box"><h3>군밤 종류별 개수</h3><p>${inventoryChestnuts}</p></div><div class="info-box"><h3>굽기 상태</h3><p>상태: ${state}<br>현재: ${current.toFixed(2)} / 목표: ${target.toFixed(2)}<br>성공 판정 범위: ±0.25</p></div><div class="info-box"><h3>판매 통계</h3><p>총 주문: ${stats.ordersCreated}회<br>군밤: ${stats.normalOrders+stats.specialOrders}회 / 슬러시: ${stats.slushOrders}회 / 콤보: ${stats.comboOrders}회<br>성공: ${stats.served}회 / 실패: ${stats.failed}회<br>총 매출: ${stats.revenue.toLocaleString()}원<br>성공률: ${successRate}<br><br>군밤 봉지: ${BAG_PRICE.toLocaleString()}원 / 슬러시: ${SLUSH_PRICE.toLocaleString()}원</p></div>`;
+}
 
-  if(inventory[type]<=0)return;
+/* ═══════════════════════════════
+   상점 UI
+═══════════════════════════════ */
+function buildCartUI(){
+  el.cartList.innerHTML='';
+  const entries=Object.entries(cart).filter(([,q])=>q>0);
+  if(entries.length===0){
+    const empty=document.createElement('div');empty.className='cart-item noimg';
+    empty.innerHTML='<div class="cart-empty-text">장바구니가 비어있습니다<br>아래 목록에서 담으세요</div><div></div>';
+    el.cartList.appendChild(empty);
+  }else{
+    entries.forEach(([id,qty])=>{
+      const item=SHOP_ITEMS.find(v=>v.id===id);if(!item)return;
+      const row=document.createElement('div');row.className='cart-item';
+      row.innerHTML=`<img src="${item.img}" alt=""><div><div class="cart-item-title">${item.name}</div><div class="cart-item-sub">${item.desc} · ${item.price.toLocaleString()}원</div></div><div class="cart-step"><button data-act="minus">-</button><span>${qty}</span><button data-act="plus">+</button></div>`;
+      row.querySelector('[data-act="minus"]').onclick=()=>{cart[id]--;if(cart[id]<=0)delete cart[id];renderShop();};
+      row.querySelector('[data-act="plus"]').onclick=()=>{cart[id]++;renderShop();};
+      el.cartList.appendChild(row);
+    });
+  }
+  const sub=entries.reduce((sum,[id,qty])=>{const item=SHOP_ITEMS.find(v=>v.id===id);return sum+(item?item.price*qty:0);},0);
+  const shipping=entries.length?3000:0;const total=sub+shipping;
+  if(tut.active&&tut.stepIndex===1){
+    const hasChn=(cart['chestnutPack']||0)>0;
+    const hasBag=(cart['bagPack']||0)>0;
+    if(hasChn&&hasBag&&!tut._cartHasBoth)tut.onAction('shopCartAdd');
+  }
+  el.cartSub.textContent=sub.toLocaleString();el.cartShip.textContent=shipping.toLocaleString();el.cartTotal.textContent=total.toLocaleString();
+  el.checkoutBtn.textContent=entries.length?`장바구니 배송하기 (${total.toLocaleString()}원)`:'장바구니 배송하기';
+}
+function renderShop(){
+  el.shopMaterials.innerHTML='';el.shopSyrups.innerHTML='';el.shopSupplies.innerHTML='';
+  SHOP_ITEMS.forEach(item=>{
+    const row=document.createElement('div');row.className='shop-item';
+    row.innerHTML=`<div class="shop-top"><img src="${item.img}" alt=""><div class="shop-text">${item.name}<br>${item.desc} · ${item.price.toLocaleString()}원<br>배송비 3000원</div></div><button class="shop-add">장바구니에 담기</button>`;
+    row.querySelector('.shop-add').onclick=()=>{cart[item.id]=(cart[item.id]||0)+1;renderShop();};
+    if(item.group==='재료')el.shopMaterials.appendChild(row);
+    else if(item.group==='슬러시')el.shopSyrups.appendChild(row);
+    else el.shopSupplies.appendChild(row);
+  });
+  buildCartUI();
+}
+function checkoutCart(){
+  const entries=Object.entries(cart).filter(([,q])=>q>0);
+  if(entries.length===0)return;
+  let sub=0;entries.forEach(([id,qty])=>{const item=SHOP_ITEMS.find(v=>v.id===id);if(item)sub+=item.price*qty;});
+  const total=sub+3000;
+  if(money<total){alert('돈이 부족합니다.');return;}
+  money-=total;
+  entries.forEach(([id,qty])=>{const item=SHOP_ITEMS.find(v=>v.id===id);if(item)item.onBuy(qty);});
+  Object.keys(cart).forEach(k=>delete cart[k]);
+  syncTop();renderInventory();renderShop();
+}
 
-  const meta=META[type];
+/* ═══════════════════════════════
+   손님 & 주문
+═══════════════════════════════ */
+function spawnGuest(guest){
+  if(guest.active)return;
+  guest.active=true;guest.order=createOrder();
+  const guestEl=$(`guest${guest.slot}`),orderEl=$(`order${guest.slot}`),bubble=$(`bubble${guest.slot}`),badge=$(`badge${guest.slot}`);
+  const ord=guest.order;
+  if(ord.kind==='slush'){
+    bubble.innerHTML=ord.text;
+    badge.textContent='슬러시';badge.className='badge wait slush';
+  }else if(ord.kind==='combo'){
+    bubble.innerHTML=ord.text;
+    badge.textContent='콤보';badge.className='badge wait combo';
+  }else if(ord.mode==='special'){
+    bubble.innerHTML=ord.text;
+    badge.textContent='특수';badge.className='badge wait special';
+  }else{
+    bubble.innerHTML=ord.text;
+    badge.textContent='일반';badge.className='badge wait normal';
+  }
+  guestEl.classList.add('show');orderEl.classList.add('show');
+  syncTop();
+}
+function spawnGuestBatch(){
+  const free=guests.filter(v=>!v.active);if(free.length===0)return;
+  const count=Math.min(free.length,1+(Math.random()<0.2?1:0));
+  for(let i=0;i<count;i++)spawnGuest(free[i]);
+}
 
-  const card=document.createElement('button');
+/* 배달 처리 - 콤보 주문 지원 */
+function deliverOrder(guest){
+  if(!guest.active||!guest.order)return;
+  const ord=guest.order;
+  const slot=guest.slot;
+  const guestEl=$(`guest${slot}`),orderEl=$(`order${slot}`),badge=$(`badge${slot}`);
 
-  card.className='card'+(selected===type?' selected':'');
-
-  card.innerHTML=`
-   <img src="${meta.img}" class="${meta.cls||''}">
-   <div class="name">${meta.name}</div>
-   <div class="qty">×${inventory[type]}</div>
-  `;
-
-  card.onclick=()=>{
-   selected=type;
-   renderInventory();
-  };
-
-  if(selected==='bag'){
-
-   let hold;
-
-   card.addEventListener('pointerdown',()=>{
-
-    hold=setTimeout(()=>{
-
-     const bag=bagInventory[selectedBag];
-
-     if(!bag)return;
-
-     if(bag.items.length>=15)return;
-
-     inventory[type]--;
-
-     bag.items.push(type);
-
-     bag.name=`봉지 (${bag.items.length}/15)`;
-
-     renderInventory();
-
-    },350);
-
-   });
-
-   card.addEventListener('pointerup',()=>clearTimeout(hold));
-   card.addEventListener('pointerleave',()=>clearTimeout(hold));
-
+  // ── 슬러시 단일 ──
+  if(ord.kind==='slush'){
+    const slushKey=`slush_${ord.flavor}`;
+    if(selectedType!==slushKey||(inventory[slushKey]||0)<=0)return;
+    inventory[slushKey]--;
+    money+=ord.payout;stats.revenue+=ord.payout;stats.served++;stats.slushSold++;
+    badge.textContent='완료';badge.className='badge done';
+    if((inventory[slushKey]||0)<=0&&selectedType===slushKey)selectedType=null;
+    renderInventory();syncTop();
+    setTimeout(()=>{guest.active=false;guest.order=null;guestEl.classList.remove('show');orderEl.classList.remove('show');syncTop();},700);
+    return;
   }
 
-  stockGrid.appendChild(card);
+  // ── 군밤 단일 ──
+  if(ord.kind==='chestnut'){
+    if(selectedType!=='bag'||selectedBagIndex<0)return;
+    const bag=bagStacks[selectedBagIndex];
+    if(!bag||!matchChestnutOrder(bag,ord))return;
+    money+=ord.payout;stats.revenue+=ord.payout;stats.served++;stats.chestnutsSold+=15;
+    const removedIndex=selectedBagIndex;
+    bagStacks.splice(removedIndex,1);handleBagRemoval(removedIndex);
+    badge.textContent='완료';badge.className='badge done';
+    if(bagStacks.length===0){selectedType=null;selectedBagIndex=-1;}
+    renderInventory();syncTop();
+    setTimeout(()=>{guest.active=false;guest.order=null;guestEl.classList.remove('show');orderEl.classList.remove('show');syncTop();},700);
+    return;
+  }
 
- });
-
- bagInventory.forEach((bag,index)=>{
-
-  const card=document.createElement('button');
-
-  card.className='card'+(selected==='bag' && selectedBag===index?' selected':'');
-
-  card.innerHTML=`
-   <img src="paperbag.png">
-   <div class="name">${bag.name}</div>
-   <div class="qty">×1</div>
-  `;
-
-  card.onclick=()=>{
-   selected='bag';
-   selectedBag=index;
-   renderInventory();
-  };
-
-  stockGrid.appendChild(card);
-
- });
-
- document.getElementById('bagBtn').textContent=`🛍 봉지 꺼내기 (×${bags})`;
- document.getElementById('bagCount').textContent=bags;
+  // ── 콤보 ──
+  if(ord.kind==='combo'){
+    // 슬러시 배달 시도
+    if(!ord.slushDone){
+      const slushKey=`slush_${ord.flavor}`;
+      if(selectedType===slushKey&&(inventory[slushKey]||0)>0){
+        inventory[slushKey]--;
+        ord.slushDone=true;
+        stats.slushSold++;
+        renderInventory();
+        updateComboBubble(guest);
+        if(ord.chestnutDone){finalizeOrder(guest);return;}
+        return;
+      }
+    }
+    // 군밤 배달 시도
+    if(!ord.chestnutDone){
+      if(selectedType==='bag'&&selectedBagIndex>=0){
+        const bag=bagStacks[selectedBagIndex];
+        if(bag&&matchChestnutOrder(bag,ord.chestnut)){
+          stats.chestnutsSold+=15;
+          const removedIndex=selectedBagIndex;
+          bagStacks.splice(removedIndex,1);handleBagRemoval(removedIndex);
+          ord.chestnutDone=true;
+          if(bagStacks.length===0){selectedType=null;selectedBagIndex=-1;}
+          renderInventory();
+          updateComboBubble(guest);
+          if(ord.slushDone){finalizeOrder(guest);return;}
+          return;
+        }
+      }
+    }
+  }
 }
 
-function updateTray(){
-
- tray.innerHTML='';
-
- if(grill.length===0){
-  tray.classList.add('empty');
-  tray.textContent='재료를 넣으세요';
-  return;
- }
-
- tray.classList.remove('empty');
-
- grill.forEach(type=>{
-
-  const img=document.createElement('img');
-
-  img.src=META[type].img;
-  img.className=META[type].cls||'';
-
-  tray.appendChild(img);
-
- });
-
+function updateComboBubble(guest){
+  const ord=guest.order;const slot=guest.slot;
+  const bubble=$(`bubble${slot}`),badge=$(`badge${slot}`);
+  const cTxt=ord.chestnutDone?'✅군밤':'⏳군밤';
+  const sTxt=ord.slushDone?`✅슬러시`:`⏳슬러시`;
+  bubble.innerHTML=`콤보: ${cTxt} / ${sTxt}`;
+  badge.textContent='콤보 진행중';badge.className='badge wait combo';
 }
 
-function updateGauge(){
-
- document.getElementById('timerNow').textContent=current.toFixed(2);
- document.getElementById('timerTarget').textContent=target.toFixed(2);
-
- const pct=Math.min((current/(target*2))*100,100);
-
- document.getElementById('fill').style.width=pct+'%';
- document.getElementById('cursor').style.left=pct+'%';
+function finalizeOrder(guest){
+  const slot=guest.slot;
+  const guestEl=$(`guest${slot}`),orderEl=$(`order${slot}`),badge=$(`badge${slot}`);
+  const payout=guest.order.payout;
+  money+=payout;stats.revenue+=payout;stats.served++;
+  badge.textContent='완료';badge.className='badge done';
+  syncTop();
+  setTimeout(()=>{guest.active=false;guest.order=null;guestEl.classList.remove('show');orderEl.classList.remove('show');syncTop();},700);
 }
 
-function insertItem(){
+guests.forEach(g=>bindGuestDismiss($(`guest${g.slot}`),g));
 
- if(!selected)return;
- if(!META[selected])return;
- if(inventory[selected]<=0)return;
- if(grill.length>=10)return;
+/* ═══════════════════════════════
+   슬러시 머신 - 병 추가 로직 개선
+   1병 = 15잔, 최대 30잔
+   현재 잔 수에 15 더하기 (최대 30 초과 불가)
+═══════════════════════════════ */
+function slushTouch(index){
+  const m=slushMachines[index];
+  const syrupKeys=FRUIT_KEYS.map(k=>`syrup_${k}`);
 
- inventory[selected]--;
+  // 시럽 넣기
+  if(selectedType&&syrupKeys.includes(selectedType)){
+    if((inventory[selectedType]||0)<=0)return;
+    const flavor=selectedType.replace('syrup_','');
+    // 이미 꽉 찼으면 안 됨
+    if(m.serves>=30)return;
+    // 맛이 다르면 안 됨 (이미 있을 때)
+    if(m.serves>0&&m.flavor!==flavor)return;
+    inventory[selectedType]--;
+    m.flavor=flavor;
+    m.serves=Math.min(30,m.serves+15); // 현재 잔 수에 15 더하기
+    renderInventory();renderSlush();return;
+  }
 
- grill.push(selected);
+  // 컵으로 따르기 (재고에 추가)
+  if(selectedType==='cup'){
+    if(inventory.cup<=0||m.serves<=0)return;
+    inventory.cup--;inventory[`slush_${m.flavor}`]=(inventory[`slush_${m.flavor}`]||0)+1;
+    m.serves--;
+    if(m.serves<=0){m.flavor=null;}
+    renderInventory();renderSlush();return;
+  }
 
- if(grill.length===1){
-  target=Math.random()*2+4;
- }
+  // 클릭 → 판매 모달
+  if(m.serves>0){
+    pendingSlushMachineIndex=index;
+    el.slushSellTitle.textContent=`${FRUITS[m.flavor].kr} 슬러시 담기`;
+    el.slushSellInfo.textContent=`남은 잔 수: ${m.serves}잔\n컵: ${inventory.cup}개 보유\n선택된 봉지: ${selectedType==='bag'&&selectedBagIndex>=0?`봉지 ${selectedBagIndex+1} (${bagStacks[selectedBagIndex]?.items.length||0}/15)`:'없음'}`;
+    openOverlay(el.slushSellOverlay);
+  }
+}
+el.slushToCupBtn.onclick=()=>{
+  const idx=pendingSlushMachineIndex;if(idx<0)return;
+  const m=slushMachines[idx];
+  if(inventory.cup<=0){alert('컵이 없습니다.');return;}
+  if(m.serves<=0)return;
+  inventory.cup--;inventory[`slush_${m.flavor}`]=(inventory[`slush_${m.flavor}`]||0)+1;
+  m.serves--;
+  if(m.serves<=0){m.flavor=null;}
+  closeOverlay(el.slushSellOverlay);renderInventory();renderSlush();
+};
+el.slushSellCancelBtn.onclick=()=>{closeOverlay(el.slushSellOverlay);pendingSlushMachineIndex=-1;};
+el.slushSellOverlay.addEventListener('click',e=>{if(e.target===el.slushSellOverlay){closeOverlay(el.slushSellOverlay);pendingSlushMachineIndex=-1;}});
 
- target+=0.35;
-
- renderInventory();
- updateTray();
- updateGauge();
+/* ═══════════════════════════════
+   그릴 로직
+═══════════════════════════════ */
+function explodeChestnut(){
+  exploded=true;if(timer)clearInterval(timer);timer=null;cooking=false;
+  grill.forEach(()=>{inventory.burnt_inner++;});
+  grill=[];current=0;target=0;
+  renderTray();updateGauge();renderInventory();
+  alert('생 밤 (속껍질)이 터졌습니다!');
+}
+function startCooking(){
+  if(grill.length===0||cooking)return;
+  exploded=false;cooking=true;
+  timer=setInterval(()=>{
+    current=Number((current+0.01).toFixed(2));
+    if(!exploded){
+      const hasRawInner=grill.some(v=>v==='raw_inner');
+      if(hasRawInner&&current>=target*0.2){explodeChestnut();return;}
+    }
+    updateGauge();
+  },10);
+}
+function takeOutAll(){
+  if(grill.length===0)return;
+  if(timer)clearInterval(timer);timer=null;cooking=false;exploded=false;
+  grill.forEach(type=>{inventory[resultType(type)]++;});
+  grill=[];current=0;target=0;
+  renderInventory();renderTray();updateGauge();
+}
+function chestnutTouch(){if(grill.length===0)return;if(cooking)takeOutAll();else startCooking();}
+function insertSelectedToGrill(){
+  if(!selectedType)return false;
+  if(!CHN_KEYS.includes(selectedType))return false;
+  if((inventory[selectedType]||0)<=0)return false;
+  if(grill.length>=maxMachine)return false;
+  inventory[selectedType]--;grill.push(selectedType);
+  if(grill.length===1)target=randomChestnutTarget();
+  target+=0.35;
+  renderInventory();renderTray();updateGauge();
+  return true;
+}
+function removeLastFromGrill(){
+  if(grill.length===0)return false;
+  const removed=grill.pop();inventory[removed]++;
+  if(grill.length===0){if(timer)clearInterval(timer);timer=null;cooking=false;current=0;target=0;}
+  else target=Math.max(0.5,target-.35);
+  renderInventory();renderTray();updateGauge();
+  return true;
 }
 
-function toggleCooking(){
+bindGesture3(el.tray,{tap:()=>{const r=insertSelectedToGrill();if(r)tut.onAction('grillInsert');},hold1:removeLastFromGrill,hold2:removeLastFromGrill});
+el.heatControl.addEventListener('pointerdown',e=>{e.preventDefault();chestnutTouch();tut.onAction('heatTouch');});
 
- if(grill.length===0)return;
-
- if(cooking){
-
-  clearInterval(timer);
-
-  cooking=false;
-
-  document.getElementById('cookBtn').innerHTML='🔥<br>굽기 시작';
-
-  return;
- }
-
- cooking=true;
-
- document.getElementById('cookBtn').innerHTML='⏸<br>굽기 멈춤';
-
- timer=setInterval(()=>{
-
-  current+=0.01;
-  current=Number(current.toFixed(2));
-
-  updateGauge();
-
- },10);
-}
-
-function resultType(type){
-
- const shell=type.includes('inner') || type.includes('raw');
-
- if(current < target-0.25){
-  return shell?'under_inner':'under';
- }
-
- if(current <= target+0.25){
-  return shell?'perfect_inner':'perfect';
- }
-
- return shell?'burnt_inner':'burnt';
-}
-
-function takeOut(){
-
- if(grill.length===0)return;
-
- clearInterval(timer);
-
- cooking=false;
-
- document.getElementById('cookBtn').innerHTML='🔥<br>굽기 시작';
-
- grill.forEach(type=>{
-  inventory[resultType(type)]++;
- });
-
- grill=[];
-
- current=0;
- target=0;
-
- updateTray();
- updateGauge();
- renderInventory();
-}
+/* ═══════════════════════════════
+   버튼 이벤트
+═══════════════════════════════ */
+$('clearBtn').onclick=()=>{selectedType=null;selectedBagIndex=-1;renderInventory();};
+$('discardBtn').onclick=()=>{
+  if(!selectedType)return;
+  if(selectedType==='bag'){
+    if(selectedBagIndex>=0){
+      bagStacks.splice(selectedBagIndex,1);handleBagRemoval(selectedBagIndex);
+      if(bagStacks.length===0){selectedType=null;selectedBagIndex=-1;}
+      renderInventory();
+      if(bagStacks.length>0){const nextIndex=Math.max(0,Math.min(selectedBagIndex,bagStacks.length-1));if(el.bagOverlay.classList.contains('show'))renderBagView(nextIndex);}
+      else closeOverlay(el.bagOverlay);return;
+    }
+    if(inventory.bag<=0)return;inventory.bag--;renderInventory();return;
+  }
+  if(selectedType==='under_inner'||selectedType==='burnt_inner'){
+    if((inventory[selectedType]||0)<=0)return;
+    inventory[selectedType]--;
+    inventory.raw_inner=(inventory.raw_inner||0)+1;
+    selectedType='raw_inner';
+    selectedBagIndex=-1;
+    renderInventory();
+    return;
+  }
+  if((inventory[selectedType]||0)<=0)return;inventory[selectedType]--;renderInventory();
+};
 
 function toggleShop(){
-
- shopOpen=!shopOpen;
-
- const btn=document.getElementById('shopBtn');
- const status=document.getElementById('shopStatus');
-
- if(shopOpen){
-
-  btn.textContent='🏪 장사 종료';
-
-  status.textContent='영업중';
-  status.className='status on';
-
-  guestLoop=setInterval(spawnGuest,2500);
-
- }else{
-
-  btn.textContent='🏪 장사 시작';
-
-  status.textContent='영업 종료';
-  status.className='status off';
-
-  clearInterval(guestLoop);
-
-  guests.forEach(g=>{
-
-   g.active=false;
-
-   document.getElementById('guest'+g.slot).classList.remove('show');
-   document.getElementById('order'+g.slot).classList.remove('show');
-
+  shopOpen=!shopOpen;
+  if(shopOpen){
+    el.shopStatus.textContent='영업중';el.shopStatus.className='status on';
+    $('shopBtn').textContent='🏪 장사 종료';
+    if(guestLoop)clearInterval(guestLoop);
+    spawnGuestBatchActive();
+    guestLoop=setInterval(spawnGuestBatchActive,2500);
+  }else{
+    el.shopStatus.textContent='영업 종료';el.shopStatus.className='status off';
+    $('shopBtn').textContent='🏪 장사 시작';
+    if(guestLoop)clearInterval(guestLoop);guestLoop=null;
+    guests.forEach(g=>{
+      g.active=false;g.order=null;
+      $(`guest${g.slot}`).classList.remove('show','holding');
+      $(`order${g.slot}`).classList.remove('show');
+    });
+    syncTop();
+  }
+}
+function spawnGuestBatchActive(){
+  const free=guests.filter(v=>!v.active);if(free.length===0)return;
+  const count=Math.min(free.length,tut.active?1:(1+(Math.random()<0.2?1:0)));
+  free.slice(0,count).forEach(g=>{
+    if(tut.active&&tut.stepIndex>=15){
+      g.active=true;
+      g.order={kind:'chestnut',mode:'normal',counts:{perfect:15,under:0,burnt:0},total:15,text:'잘 익은 군밤 15개 주세요',payout:BAG_PRICE};
+      const guestEl=$(`guest${g.slot}`),orderEl=$(`order${g.slot}`),bubble=$(`bubble${g.slot}`),badge=$(`badge${g.slot}`);
+      bubble.innerHTML=g.order.text;badge.textContent='일반';badge.className='badge wait normal';
+      guestEl.classList.add('show');orderEl.classList.add('show');
+      syncTop();tut.onAction('guestSpawned');
+    }else{spawnGuest(g);}
   });
-
-  updateGuestCount();
- }
 }
 
-function randomOrder(){
-
- const r=Math.random();
-
- if(r<0.75)return 'perfect';
- if(r<0.9)return 'under';
-
- return 'burnt';
-}
-
-function spawnGuest(){
-
- const empty=guests.find(v=>!v.active);
-
- if(!empty)return;
-
- empty.active=true;
- empty.want=randomOrder();
-
- const guest=document.getElementById('guest'+empty.slot);
- const order=document.getElementById('order'+empty.slot);
- const bubble=document.getElementById('bubble'+empty.slot);
-
- if(empty.want==='perfect'){
-  bubble.innerHTML='잘 익은 군밤<br>1봉지요!';
- }
-
- if(empty.want==='under'){
-  bubble.innerHTML='덜 익은 군밤<br>주세요!';
- }
-
- if(empty.want==='burnt'){
-  bubble.innerHTML='탄 군밤<br>주세요!';
- }
-
- guest.classList.add('show');
- order.classList.add('show');
-
- guest.onclick=()=>deliverBag(empty);
-
- updateGuestCount();
-}
-
-function deliverBag(data){
-
- if(selected!=='bag')return;
-
- const bag=bagInventory[selectedBag];
-
- if(!bag)return;
-
- if(bag.items.length===0)return;
-
- const ok=bag.items.every(v=>v===data.want);
-
- if(!ok)return;
-
- money+=5000;
-
- document.getElementById('money').textContent=money;
-
- bagInventory.splice(selectedBag,1);
-
- selected=null;
-
- document.getElementById('badge'+data.slot).textContent='완료';
- document.getElementById('badge'+data.slot).className='badge done';
-
- setTimeout(()=>{
-
-  document.getElementById('guest'+data.slot).classList.remove('show');
-  document.getElementById('order'+data.slot).classList.remove('show');
-
-  data.active=false;
-
-  updateGuestCount();
-
- },700);
-
- renderInventory();
-}
-
-function updateGuestCount(){
-
- document.getElementById('guestCount').textContent=
- guests.filter(v=>v.active).length;
-}
-
-document.getElementById('insertBtn').onclick=insertItem;
-document.getElementById('cookBtn').onclick=toggleCooking;
-document.getElementById('takeBtn').onclick=takeOut;
-document.getElementById('shopBtn').onclick=toggleShop;
-
-document.getElementById('clearBtn').onclick=()=>{
-
- selected=null;
- renderInventory();
-};
-
-document.getElementById('discardBtn').onclick=()=>{
-
- if(!selected)return;
- if(!inventory[selected])return;
-
- inventory[selected]--;
-
- renderInventory();
-};
-
-document.getElementById('bagBtn').onclick=()=>{
-
- if(bags<=0)return;
-
- bags--;
-
- bagInventory.push({
-  name:'봉지 (0/15)',
-  items:[]
- });
-
- renderInventory();
-};
-
-document.getElementById('knifeBtn').onclick=()=>{
-
- if(!selected)return;
- if(!META[selected].next)return;
- if(inventory[selected]<=0)return;
-
- peelType=selected;
- peelingCount=0;
- peelingTotal=inventory[selected];
-
- document.getElementById('peelImg').src=META[selected].img;
- document.getElementById('peelName').textContent=META[selected].name;
- document.getElementById('peelCount').textContent=`0 / ${peelingTotal}`;
-
- peelOverlay.classList.add('show');
-};
-
-function addTrail(x1,y1,x2,y2){
-
- const dx=x2-x1;
- const dy=y2-y1;
-
- const len=Math.hypot(dx,dy);
-
- if(len<10)return;
-
- const line=document.createElement('div');
-
- line.className='trail';
-
- line.style.width=len+'px';
- line.style.left=x1+'px';
- line.style.top=y1+'px';
- line.style.transform=`rotate(${Math.atan2(dy,dx)}rad)`;
-
- document.getElementById('peelTrails').appendChild(line);
-
- setTimeout(()=>line.remove(),340);
-}
-
-peelCard.addEventListener('pointerdown',(e)=>{
-
- peelPointer={
-  startX:e.clientX,
-  startY:e.clientY,
-  lastX:e.clientX,
-  lastY:e.clientY,
-  sliced:false
- };
+$('shopBtn').onclick=()=>{toggleShop();tut.onAction('shopBtn');};
+$('storeBtn').onclick=()=>{openOverlay(el.shopOverlay);renderShop();tut.onAction('storeBtn');};
+$('checkoutBtn').onclick=()=>{checkoutCart();tut.onAction('checkoutBtn');};
+$('infoBtn').onclick=()=>{renderInfo();openOverlay(el.infoOverlay);};
+$('bagCloseBtn').onclick=()=>closeOverlay(el.bagOverlay);
+$('bagEmptyBtn').onclick=()=>emptyCurrentBag();
+$('infoCloseBtn').onclick=()=>closeOverlay(el.infoOverlay);
+$('upgradeCapBtn').onclick=()=>{if(money<50000)return;money-=50000;maxMachine+=5;syncTop();};
+$('upgradeRangeBtn').onclick=()=>{if(money<50000)return;if(timingRange<=0.5)return;money-=50000;timingRange=Math.max(0.5,timingRange-.35);syncTop();};
+el.shopOverlay.addEventListener('click',e=>{if(e.target===el.shopOverlay){closeOverlay(el.shopOverlay);tut.onAction('shopOverlayClosed');}});
+el.peelOverlay.addEventListener('click',e=>{
+  if(e.target===el.peelOverlay){
+    closeOverlay(el.peelOverlay);
+    clearPeelCanvas();
+    el.peelOverlay.dataset.peelType='';
+    el.peelOverlay.dataset.peelDone='0';
+    el.peelOverlay.dataset.peelTotal='0';
+  }
 });
+el.bagOverlay.addEventListener('click',e=>{if(e.target===el.bagOverlay)closeOverlay(el.bagOverlay);});
+el.infoOverlay.addEventListener('click',e=>{if(e.target===el.infoOverlay)closeOverlay(el.infoOverlay);});
 
-peelCard.addEventListener('pointermove',(e)=>{
+/* 칼 버튼 */
+$('knifeBtn').onclick=()=>{
+  if(!selectedType)return;
+  if(!STAGES[selectedType]||!STAGES[selectedType].next)return;
+  if((inventory[selectedType]||0)<=0)return;
+  el.peelImg.src=STAGES[selectedType].img;
+  el.peelName.textContent=STAGES[selectedType].name;
+  el.peelOverlay.dataset.peelType=selectedType;
+  el.peelOverlay.dataset.peelDone='0';
+  el.peelOverlay.dataset.peelTotal=String(inventory[selectedType]);
+  el.peelCount.textContent=`0 / ${inventory[selectedType]}`;
+  openOverlay(el.peelOverlay);
+  // 오버레이가 표시된 후 캔버스 초기화
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      initPeelCanvas();
+      clearPeelCanvas();
+    });
+  });
+  tut.onAction('knifeBtn');
+};
 
- if(!peelPointer)return;
+/* ═══════════════════════════════
+   칼질 스와이프 - 개선된 이어진 선 버전
+   핵심 수정:
+   1. peelCard의 z-index를 tut보다 낮게 유지하되,
+      스와이프 이벤트는 peelCard에서 직접 받음
+   2. 이어진 선: canvas path로 drawLine
+   3. 튜토리얼 중에도 pointer-events 정상 동작
+═══════════════════════════════ */
+(()=>{
+  let ptId=null,drawing=false,lastX=0,lastY=0,traveled=0,triggered=false;
+  const SWIPE_DIST=20; // 더 민감하게 (30→20)
 
- const box=peelCard.getBoundingClientRect();
-
- addTrail(
-  peelPointer.lastX-box.left,
-  peelPointer.lastY-box.top,
-  e.clientX-box.left,
-  e.clientY-box.top
- );
-
- const dx=e.clientX-peelPointer.startX;
- const dy=e.clientY-peelPointer.startY;
-
- peelPointer.lastX=e.clientX;
- peelPointer.lastY=e.clientY;
-
- if(!peelPointer.sliced && Math.hypot(dx,dy)>40){
-
-  peelPointer.sliced=true;
-
-  if(inventory[peelType]>0){
-
-   inventory[peelType]--;
-   inventory[META[peelType].next]++;
-
-   peelingCount++;
-
-   document.getElementById('peelCount').textContent=
-   `${peelingCount} / ${peelingTotal}`;
-
-   renderInventory();
+  function drawLine(x1,y1,x2,y2){
+    if(!peelCtx)return;
+    peelCtx.beginPath();
+    peelCtx.moveTo(x1,y1);
+    peelCtx.lineTo(x2,y2);
+    peelCtx.strokeStyle='rgba(255,255,255,0.92)';
+    peelCtx.lineWidth=5;
+    peelCtx.shadowColor='rgba(255,255,255,0.6)';
+    peelCtx.shadowBlur=10;
+    peelCtx.stroke();
+    peelCtx.shadowBlur=0;
+    // 페이드 타이머 갱신
+    fadePeelCanvas();
   }
 
-  if(inventory[peelType]<=0){
-   peelOverlay.classList.remove('show');
+  function doSlice(){
+    const type=el.peelOverlay.dataset.peelType;if(!type)return;
+    if((inventory[type]||0)<=0)return;
+    inventory[type]--;inventory[STAGES[type].next]++;
+    const done=Number(el.peelOverlay.dataset.peelDone||0)+1,total=Number(el.peelOverlay.dataset.peelTotal||0);
+    el.peelOverlay.dataset.peelDone=String(done);
+    el.peelCount.textContent=`${done} / ${total}`;
+    renderInventory();
+    tut.onAction('peelSwipe');
+    if(inventory[type]<=0){
+      setTimeout(()=>{
+        closeOverlay(el.peelOverlay);
+        clearPeelCanvas();
+        el.peelOverlay.dataset.peelType='';
+        el.peelOverlay.dataset.peelDone='0';
+        el.peelOverlay.dataset.peelTotal='0';
+      },100);
+    }
   }
 
+  // peelCard에 직접 이벤트 - capture:true 로 튜토리얼 오버레이보다 먼저 받음
+  el.peelCard.addEventListener('pointerdown',e=>{
+    // 오버레이가 열려 있지 않으면 무시
+    if(!el.peelOverlay.classList.contains('show'))return;
+    if(ptId!==null)return;
+    ptId=e.pointerId;
+    drawing=true;triggered=false;traveled=0;
+    const box=el.peelCard.getBoundingClientRect();
+    lastX=e.clientX-box.left;
+    lastY=e.clientY-box.top;
+    // 캔버스가 없으면 초기화
+    if(!peelCtx)initPeelCanvas();
+    try{el.peelCard.setPointerCapture(e.pointerId);}catch(err){}
+    e.stopPropagation();
+  },{capture:true});
+
+  el.peelCard.addEventListener('pointermove',e=>{
+    if(!drawing||e.pointerId!==ptId)return;
+    const box=el.peelCard.getBoundingClientRect();
+    const cx=e.clientX-box.left;
+    const cy=e.clientY-box.top;
+    const dx=cx-lastX,dy=cy-lastY;
+    const step=Math.hypot(dx,dy);
+
+    // 선 그리기
+    drawLine(lastX,lastY,cx,cy);
+    traveled+=step;
+
+    if(!triggered&&traveled>=SWIPE_DIST){
+      triggered=true;traveled=0;
+      doSlice();
+      // 80ms 뒤 다음 슬라이스 허용 (연속 스와이프)
+      setTimeout(()=>{triggered=false;},80);
+    }
+
+    lastX=cx;lastY=cy;
+    e.stopPropagation();
+  },{capture:true});
+
+  const endSlice=e=>{
+    if(e.pointerId!==ptId)return;
+    drawing=false;ptId=null;triggered=false;traveled=0;
+  };
+  el.peelCard.addEventListener('pointerup',endSlice,{capture:true});
+  el.peelCard.addEventListener('pointercancel',endSlice,{capture:true});
+  el.peelCard.addEventListener('pointerleave',endSlice,{capture:true});
+})();
+
+/* stockGrid 클릭 → 튜토리얼 감지 */
+$('stockGrid').addEventListener('click',()=>{
+  if(!tut.active)return;
   setTimeout(()=>{
-   peelPointer=null;
-  },60);
- }
+    if(tut.stepIndex===3&&selectedType==='raw_inner')tut.onAction('selectRawInner');
+    if(tut.stepIndex===6&&selectedType==='cut_raw')tut.onAction('selectCutRaw');
+    if(tut.stepIndex===10&&selectedType==='perfect_inner')tut.onAction('selectPerfectInner');
+    if(tut.stepIndex===13&&selectedType==='bag')tut.onAction('selectBag');
+  },50);
+},true);
+
+/* ═══════════════════════════════
+   튜토리얼 시스템
+═══════════════════════════════ */
+const tut={
+  active:false,stepIndex:0,waitingFor:null,
+  tutEl:{spotlight:$('tutSpotlight'),highlight:$('tutHighlight'),bubble:$('tutBubble'),skip:$('tutSkipBtn')},
+  _activeTarget:null,_heatTouches:0,
+
+  _updateSpotlight(rect){
+    const appRect=$('appRoot').getBoundingClientRect();
+    if(!rect){this.tutEl.spotlight.style.clipPath='none';return;}
+    const pad=8;
+    const x1=rect.left-appRect.left-pad;
+    const y1=rect.top-appRect.top-pad;
+    const x2=x1+(rect.width+pad*2);
+    const y2=y1+(rect.height+pad*2);
+    const W=appRect.width,H=appRect.height;
+    this.tutEl.spotlight.style.clipPath=
+      `polygon(0 0,${W}px 0,${W}px ${H}px,0 ${H}px,0 0,`+
+      `${x1}px ${y1}px,${x1}px ${y2}px,${x2}px ${y2}px,${x2}px ${y1}px,${x1}px ${y1}px)`;
+  },
+
+  highlight(selector,bubbleText,arrowDir='top',bubbleOffsetY=0){
+    const el2=typeof selector==='string'?document.querySelector(selector):selector;
+    const appRect=$('appRoot').getBoundingClientRect();
+    this.tutEl.spotlight.classList.add('active');
+    this.tutEl.skip.style.display='block';
+    if(this._activeTarget){
+      this._activeTarget.style.pointerEvents='';
+      this._activeTarget.style.touchAction='';
+      this._activeTarget.style.position='';
+      this._activeTarget.style.zIndex='';
+      this._activeTarget=null;
+    }
+    if(!el2){
+      this._updateSpotlight(null);
+      this.tutEl.highlight.style.display='none';
+      const bubble=this.tutEl.bubble;
+      bubble.style.display='block';bubble.style.left='50%';bubble.style.transform='translateX(-50%)';
+      bubble.style.top='40%';bubble.className='tut-bubble';bubble.innerHTML=bubbleText;return;
+    }
+    // peelCard는 pointer-events를 all로 설정해서 스와이프 받게 함
+    if(selector==='#peelCard'||el2===el.peelCard){
+      el2.style.pointerEvents='all';
+      el2.style.position='relative';
+      el2.style.zIndex='10000';
+    }else{
+      el2.style.pointerEvents='auto';
+      el2.style.touchAction=(selector==='#tray'||selector==='#grillZone'||selector==='#heatControl')?'none':'auto';
+      el2.style.position='relative';
+      el2.style.zIndex='10000';
+    }
+    this._activeTarget=el2;
+    const rect=el2.getBoundingClientRect();
+    const pad=8;
+    const hl=this.tutEl.highlight;
+    hl.style.display='block';
+    hl.style.left=(rect.left-appRect.left-pad)+'px';
+    hl.style.top=(rect.top-appRect.top-pad)+'px';
+    hl.style.width=(rect.width+pad*2)+'px';
+    hl.style.height=(rect.height+pad*2)+'px';
+    this._updateSpotlight(rect);
+    const bubble=this.tutEl.bubble;
+    bubble.style.display='none';
+    void bubble.offsetWidth;
+    bubble.style.display='block';
+    bubble.className='tut-bubble'+(arrowDir?' arrow-'+arrowDir:'');
+    bubble.style.transform='';bubble.style.left='';bubble.style.top='';bubble.style.bottom='';bubble.style.right='';
+    const bw=200,bh=90;
+    if(arrowDir==='top'){
+      let bLeft=rect.left-appRect.left;
+      let bTop=rect.bottom-appRect.top+18;
+      if(bLeft+bw>appRect.width-8)bLeft=appRect.width-8-bw;
+      if(bLeft<8)bLeft=8;
+      bubble.style.left=bLeft+'px';bubble.style.top=bTop+bubbleOffsetY+'px';
+    }else if(arrowDir==='bottom'){
+      let bLeft=rect.left-appRect.left;
+      let bTop=rect.top-appRect.top-bh-18;
+      if(bLeft+bw>appRect.width-8)bLeft=appRect.width-8-bw;
+      if(bLeft<8)bLeft=8;if(bTop<8)bTop=8;
+      bubble.style.left=bLeft+'px';bubble.style.top=bTop+bubbleOffsetY+'px';
+    }else if(arrowDir==='left'){
+      bubble.style.left=(rect.right-appRect.left+18)+'px';bubble.style.top=(rect.top-appRect.top)+'px';
+    }else{
+      bubble.style.left='50%';bubble.style.transform='translateX(-50%)';bubble.style.top='45%';
+    }
+    bubble.innerHTML=bubbleText;
+  },
+
+  hide(){
+    if(this._activeTarget){
+      this._activeTarget.style.pointerEvents='';
+      this._activeTarget.style.touchAction='';
+      this._activeTarget.style.position='';
+      this._activeTarget.style.zIndex='';
+      this._activeTarget=null;
+    }
+    this.tutEl.spotlight.classList.remove('active');
+    this.tutEl.spotlight.style.clipPath='none';
+    this.tutEl.highlight.style.display='none';
+    this.tutEl.bubble.style.display='none';
+    this.tutEl.skip.style.display='none';
+  },
+
+  end(){this.active=false;this.waitingFor=null;this.hide();},
+
+  steps:[
+    {waitFor:'storeBtn',show(){tut.highlight('#storeBtn',`<div class="tut-step-badge">1 / 17</div>상점 버튼을 눌러<br>재료를 구입해보세요!`,'bottom');}},
+    {waitFor:'shopCartAdd',show(){tut.highlight('#shopMaterials',`<div class="tut-step-badge">2 / 17</div>생 밤(속껍질)과<br>종이봉지를 장바구니에<br>담아보세요!`,'top');},onOpen(){tut._watchCart();}},
+    {waitFor:'checkoutBtn',show(){tut.highlight('#checkoutBtn',`<div class="tut-step-badge">3 / 17</div>장바구니 배송하기를<br>눌러 주문하세요!`,'top');}},
+    {waitFor:'selectRawInner',show(){tut.hide();closeOverlay(el.shopOverlay);setTimeout(()=>{tut.highlight('#stockGrid',`<div class="tut-step-badge">4 / 17</div>재고에서 생 밤(속껍질)을<br>탭해서 선택하세요!`,'bottom');},400);}},
+    {waitFor:'knifeBtn',show(){tut.highlight('#knifeBtn',`<div class="tut-step-badge">5 / 17</div>칼 사용하기를<br>눌러 칼집을 내세요!`,'bottom');}},
+    {waitFor:'peelSwipe',show(){tut.highlight('#peelCard',`<div class="tut-step-badge">6 / 17</div>카드 위를 스와이프해서<br>칼집을 내세요!`,'bottom');}},
+    {waitFor:'selectCutRaw',show(){closeOverlay(el.peelOverlay);tut.highlight('#stockGrid',`<div class="tut-step-badge">7 / 17</div>이번엔 칼집을 낸 생 밤을<br>탭해서 선택하세요!`,'bottom');}},
+    {waitFor:'grillInsert',show(){tut.highlight('.grill-zone',`<div class="tut-step-badge">8 / 17</div>그릴 트레이를 눌러<br>밤을 넣어보세요!`,'bottom');}},
+    {waitFor:'heatTouch',show(){tut.highlight('#heatControl',`<div class="tut-step-badge">9 / 17</div>온도 게이지를 눌러<br>굽기 시작하세요.<br>초록 구간이 목표입니다`,'top');}},
+    {waitFor:'heatTouchOut',show(){tut.highlight('#heatControl',`<div class="tut-step-badge">10 / 17</div>바늘이 적정 구간에<br>올 때 다시 눌러서<br>꺼내세요!`,'top');}},
+    {waitFor:'selectPerfectInner',show(){tut.highlight('#stockGrid',`<div class="tut-step-badge">11 / 17</div>잘 익은 밤(속껍질)을<br>탭해서 선택하세요!`,'bottom');}},
+    {waitFor:'knifeBtn',show(){tut.highlight('#knifeBtn',`<div class="tut-step-badge">12 / 17</div>칼 사용하기를<br>눌러 껍질을 벗기세요!`,'bottom');}},
+    {waitFor:'peelSwipe',show(){tut.highlight('#peelCard',`<div class="tut-step-badge">13 / 17</div>카드 위를 스와이프해서<br>껍질을 벗기세요!`,'bottom');}},
+    {waitFor:'selectBag',show(){tut.highlight('#stockGrid',`<div class="tut-step-badge">14 / 17</div>종이봉지를 선택하고<br>군밤을 길게 눌러<br>봉지에 15개 담으세요!`,'bottom');}},
+    {waitFor:'shopBtn',show(){tut.highlight('#shopBtn',`<div class="tut-step-badge">15 / 17</div>장사 시작을 눌러<br>손님을 받아보세요!`,'bottom');}},
+    {waitFor:'guestSpawned',show(){tut.highlight('.window',`<div class="tut-step-badge">16 / 17</div>봉지를 선택한 뒤<br>손님을 탭해서<br>판매해보세요!`,'top');}},
+    {waitFor:'guestDeliver',show(){tut.highlight('.window',`<div class="tut-step-badge">17 / 17</div>주문에 맞는 봉지를<br>선택하고 손님을 탭하세요!`,'top');}},
+  ],
+
+  _cartWatcher:null,_cartHasBoth:false,
+  _watchCart(){
+    this._cartHasBoth=false;
+    this._cartWatcher=setInterval(()=>{
+      const hasChn=(cart['chestnutPack']||0)>0;
+      const hasBag=(cart['bagPack']||0)>0;
+      if(hasChn&&hasBag&&!this._cartHasBoth){this._cartHasBoth=true;clearInterval(this._cartWatcher);this.advance();}
+    },300);
+  },
+  _invWatcher:null,
+  _watchForSelect(type,action){
+    if(this._invWatcher)clearInterval(this._invWatcher);
+    this._invWatcher=setInterval(()=>{
+      if(selectedType===type){clearInterval(this._invWatcher);this._invWatcher=null;this.onAction(action);}
+    },200);
+  },
+  _bagWatcher:null,
+  _watchBagFull(){
+    if(this._bagWatcher)clearInterval(this._bagWatcher);
+    this._bagWatcher=setInterval(()=>{
+      const bag=bagStacks[selectedBagIndex];
+      if(bag&&bag.items.length>=15){clearInterval(this._bagWatcher);this._bagWatcher=null;this.onAction('bagFull');}
+    },300);
+  },
+
+  goStep(index){
+    this.stepIndex=index;this.waitingFor=this.steps[index]?.waitFor||null;this._heatTouches=0;
+    this.steps[index]?.show?.call(this);
+  },
+  advance(){
+    const next=this.stepIndex+1;
+    if(next>=this.steps.length){this.end();return;}
+    this.goStep(next);
+  },
+
+  onAction(action){
+    if(!this.active)return;
+    const step=this.steps[this.stepIndex];if(!step)return;
+    if(this.stepIndex===0&&action==='storeBtn'){
+      this.advance();
+      setTimeout(()=>step.onOpen?.call(this),400);
+      setTimeout(()=>{if(this.stepIndex===1)this.steps[1].show?.call(this);},500);return;
+    }
+    if(this.stepIndex===1){if(action==='shopCartAdd'){this._cartHasBoth=true;this.advance();}return;}
+    if(this.stepIndex===2&&action==='checkoutBtn'){this.advance();setTimeout(()=>{this._watchForSelect('raw_inner','selectRawInner');},800);return;}
+    if(this.stepIndex===3&&action==='selectRawInner'){this.advance();return;}
+    if(this.stepIndex===4&&action==='knifeBtn'){this.advance();return;}
+    if(this.stepIndex===5&&action==='peelSwipe'){
+      if(inventory.raw_inner > 0){
+        this.steps[5].show?.call(this);
+        return;
+      }
+      this.advance();
+      return;
+    }
+    if(this.stepIndex===6&&action==='selectCutRaw'){this.advance();return;}
+    if(this.stepIndex===7&&action==='grillInsert'){
+      if(grill.length < 30){
+        this.steps[7].show?.call(this);
+        return;
+      }
+      this.advance();
+      return;
+    }
+    if(this.stepIndex===8&&action==='heatTouch'){cooking=true;this.advance();return;}
+    if(this.stepIndex===9&&action==='heatTouch'){
+      this.advance();
+      setTimeout(()=>{
+        this._watchForSelect('perfect_inner','selectPerfectInner');
+      },300);return;
+    }
+    if(this.stepIndex===10&&action==='selectPerfectInner'){this.advance();return;}
+    if(this.stepIndex===11&&action==='knifeBtn'){this.advance();return;}
+   if(this.stepIndex===12&&action==='peelSwipe'){
+
+  // 아직 안 깐 잘 익은 군밤 남아있음
+  if(inventory.perfect_inner > 0){
+    this.steps[12].show?.call(this);
+    return;
+  }
+
+  // 30개 전부 깠을 때만 진행
+  this.advance();
+  return;
+}
+    if(this.stepIndex===13&&action==='selectBag'){
+      this._watchBagFull();
+      return;
+    }
+    if(this.stepIndex===13&&action==='bagFull'){this.advance();return;}
+    if(this.stepIndex===14&&action==='shopBtn'){this.advance();return;}
+    if(this.stepIndex===15&&action==='guestSpawned'){this.advance();return;}
+    if(this.stepIndex===16&&action==='guestDeliver'){
+      this.end();
+      setTimeout(()=>{
+        tut.tutEl.spotlight.classList.add('active');
+        tut.tutEl.spotlight.style.clipPath='none';
+        tut.tutEl.highlight.style.display='none';
+        const bubble=tut.tutEl.bubble;
+        bubble.style.display='block';bubble.className='tut-bubble';
+        bubble.style.left='50%';bubble.style.transform='translateX(-50%)';bubble.style.top='35%';
+        bubble.innerHTML='<b>튜토리얼 완료!</b><br>이제 군밤 타이쿤을<br>마음껏 즐겨보세요!';
+        tut.tutEl.skip.textContent='시작하기!';tut.tutEl.skip.style.display='block';
+      },800);return;
+    }
+  },
+
+  start(){this.active=true;this.stepIndex=0;this.waitingFor=null;this._heatTouches=0;this.goStep(0);}
+};
+
+$('tutSkipBtn').addEventListener('click',()=>{
+  if(tut.tutEl.skip.textContent==='시작하기!'){
+    tut.tutEl.spotlight.classList.remove('active');
+    tut.tutEl.spotlight.style.clipPath='none';
+    tut.tutEl.bubble.style.display='none';
+    tut.tutEl.skip.style.display='none';
+  }else{tut.end();}
 });
 
-peelOverlay.addEventListener('click',(e)=>{
-
- if(e.target===peelOverlay){
-  peelOverlay.classList.remove('show');
- }
-});
-
-const shopOverlay=document.getElementById('shopOverlay');
-
-document.getElementById('storeBtn').onclick=()=>{
- shopOverlay.classList.add('show');
-};
-
-shopOverlay.onclick=(e)=>{
-
- if(e.target===shopOverlay){
-  shopOverlay.classList.remove('show');
- }
-};
-
-document.getElementById('buyBagBtn').onclick=()=>{
-
- if(money<1000)return;
-
- money-=1000;
-
- bags+=10;
-
- document.getElementById('money').textContent=money;
-
- renderInventory();
-};
-
-renderInventory();
-updateTray();
-updateGauge();
-
+/* ═══════════════════════════════
+   초기화
+═══════════════════════════════ */
+function initialRender(){
+  renderInventory();renderTray();renderSlush();renderShop();updateGauge();syncTop();
+}
+initialRender();
+setTimeout(()=>tut.start(),600);
 </script>
-
 </body>
 </html>
