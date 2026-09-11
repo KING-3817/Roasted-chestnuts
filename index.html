@@ -10,145 +10,219 @@
 html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif}
 body{display:flex;justify-content:center;align-items:center}
 button{cursor:pointer;border:none;background:none}
-img{-webkit-user-drag:none;user-drag:none;pointer-events:none}
-.app{width:min(100vw,calc(100vh*9/16));height:min(100vh,calc(100vw*16/9));aspect-ratio:9/16;overflow:hidden;background:#111;position:relative;color:#fff}
-.topbar{height:6%;display:grid;grid-template-columns:1fr 1fr .8fr .8fr 1fr .9fr;gap:5px;padding:4px 8px 6px;background:linear-gradient(to bottom,#2a211c,#14110f)}
-.topitem,.status{border-radius:10px;display:flex;justify-content:center;align-items:center;font-size:11px;font-weight:900;background:#1b1715;border:1px solid rgba(255,255,255,.08);overflow:hidden}
-.status.on{background:#45621e}.status.off{background:#742d25}
-.main{height:94%;padding:0 8px 8px;display:grid;grid-template-rows:25% 36% 39%;gap:8px}
-.window{position:relative;overflow:hidden;border-radius:20px;border:2px solid #674b39;background:#000}
+img{-webkit-user-drag:none;pointer-events:none}
+
+/* ── 핵심: 모든 기기 비율 최적화 ── */
+.app{
+  /* 9:16 세로형. 화면 가득 채우되 비율 유지 */
+  width:min(100dvw, calc(100dvh * 9 / 16));
+  height:min(100dvh, calc(100dvw * 16 / 9));
+  /* 폰트 크기를 앱 높이에 비례 */
+  font-size:clamp(10px, 1.7dvh, 16px);
+  aspect-ratio:9/16;
+  overflow:hidden;
+  background:#111;
+  position:relative;
+  color:#fff;
+}
+
+/* 상단바 */
+.topbar{
+  height:6%;
+  display:grid;
+  grid-template-columns:1fr 1fr .8fr .8fr 1fr .9fr;
+  gap:clamp(2px,0.5vw,6px);
+  padding:clamp(2px,0.5vh,5px) clamp(4px,1vw,10px) clamp(3px,0.6vh,7px);
+  background:linear-gradient(to bottom,#2a211c,#14110f);
+}
+.topitem,.status{
+  border-radius:clamp(6px,1.5vw,12px);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:clamp(8px,1.4dvh,13px);
+  font-weight:900;
+  background:#1b1715;
+  border:1px solid rgba(255,255,255,.08);
+  overflow:hidden;
+}
+.status.on{background:#45621e}
+.status.off{background:#742d25}
+
+/* 메인 레이아웃 */
+.main{
+  height:94%;
+  padding:0 clamp(4px,1vw,10px) clamp(4px,1vw,10px);
+  display:grid;
+  grid-template-rows:25% 36% 39%;
+  gap:clamp(4px,1vw,10px);
+}
+
+/* 창문(손님) 영역 */
+.window{position:relative;overflow:hidden;border-radius:clamp(12px,2.5vw,22px);border:2px solid #674b39;background:#000}
 .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.orders{position:absolute;top:8px;left:8px;right:8px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;z-index:5}
+.orders{position:absolute;top:clamp(4px,1vw,10px);left:clamp(4px,1vw,10px);right:clamp(4px,1vw,10px);display:grid;grid-template-columns:1fr 1fr 1fr;gap:clamp(3px,0.8vw,8px);z-index:5}
 .order{opacity:0;transition:.35s}.order.show{opacity:1}
-.bubble{background:#f3eadb;color:#1b1510;border-radius:14px;padding:6px;min-height:42px;display:flex;justify-content:center;align-items:center;text-align:center;font-size:9px;line-height:1.2;font-weight:900}
-.badge{margin-top:3px;border-radius:999px;padding:3px;text-align:center;font-size:8px;font-weight:900;color:#fff}
+.bubble{background:#f3eadb;color:#1b1510;border-radius:clamp(8px,2vw,16px);padding:clamp(3px,0.8vw,8px);min-height:clamp(30px,5vh,50px);display:flex;justify-content:center;align-items:center;text-align:center;font-size:clamp(7px,1.2dvh,11px);line-height:1.2;font-weight:900}
+.badge{margin-top:clamp(2px,0.4vh,4px);border-radius:999px;padding:clamp(2px,0.4vh,4px);text-align:center;font-size:clamp(6px,1dvh,9px);font-weight:900;color:#fff}
 .wait{background:#9b692d}.done{background:#4d9031}.normal{background:#4d9031}.special{background:#7d60a3}.slush{background:#406f98}.combo{background:#8b4513}
+
+/* 손님 */
 .guests{position:absolute;inset:0}
 .guest{position:absolute;bottom:-28%;width:31%;opacity:0;transform:translateY(10px);transition:opacity .35s,transform .35s;touch-action:none}
 .guest.show{opacity:1;transform:translateY(0)}
 .guest img{width:100%;display:block;pointer-events:none}
 .g1{left:0}.g2{left:34%;width:33%}.g3{right:0}
-.guest-dismiss-hint{position:absolute;top:-18px;left:50%;transform:translateX(-50%);background:rgba(180,50,50,.92);color:#fff;font-size:8px;font-weight:900;border-radius:999px;padding:2px 8px;white-space:nowrap;opacity:0;transition:opacity .2s;pointer-events:none}
+.guest-dismiss-hint{position:absolute;top:-18px;left:50%;transform:translateX(-50%);background:rgba(180,50,50,.92);color:#fff;font-size:clamp(6px,1dvh,9px);font-weight:900;border-radius:999px;padding:2px 8px;white-space:nowrap;opacity:0;transition:opacity .2s;pointer-events:none}
 .guest.holding .guest-dismiss-hint{opacity:1}
-.machine{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.panel{background:linear-gradient(to bottom,var(--metal1),var(--metal2) 40%,var(--metal3));border:1px solid rgba(255,255,255,.08);overflow:hidden;border-radius:20px}
-.chestnut-panel{padding:8px;display:grid;grid-template-rows:1fr auto;gap:8px}
-.grill-zone{border-radius:18px;background:#0a0908;position:relative;overflow:hidden;display:flex;justify-content:center;align-items:center;touch-action:none;min-height:0}
+
+/* 기계 영역 */
+.machine{display:grid;grid-template-columns:1fr 1fr;gap:clamp(4px,1vw,10px)}
+.panel{background:linear-gradient(to bottom,var(--metal1),var(--metal2) 40%,var(--metal3));border:1px solid rgba(255,255,255,.08);overflow:hidden;border-radius:clamp(12px,2.5vw,22px)}
+.chestnut-panel{padding:clamp(4px,1vw,10px);display:grid;grid-template-rows:1fr auto;gap:clamp(4px,1vw,10px)}
+.grill-zone{border-radius:clamp(10px,2vw,20px);background:#0a0908;position:relative;overflow:hidden;display:flex;justify-content:center;align-items:center;touch-action:none;min-height:0}
 .grill{width:92%;object-fit:contain;pointer-events:none}
-.tray{position:absolute;inset:12px;display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:4px;justify-items:center;align-content:center;padding:6px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);touch-action:none}
+.tray{position:absolute;inset:clamp(6px,1.5vw,14px);display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:clamp(2px,0.5vw,5px);justify-items:center;align-content:center;padding:clamp(3px,0.7vw,7px);border-radius:clamp(8px,2vw,18px);background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);touch-action:none}
 .tray.empty{background:transparent;border-color:transparent}
-.tray img{width:14px;height:14px;object-fit:contain}
-.heat-control{padding:6px;border-radius:14px;background:#0d0b09;border:1px solid rgba(255,255,255,.08);touch-action:none}
-.timer-box{background:#0f0c0a;border-radius:10px;padding:5px 8px;display:flex;justify-content:center;gap:4px;font-size:11px;font-weight:900;border:1px solid rgba(255,255,255,.08);margin-bottom:6px}
+.tray img{width:clamp(8px,1.8vw,16px);height:clamp(8px,1.8vw,16px);object-fit:contain}
+.heat-control{padding:clamp(4px,0.8vw,8px);border-radius:clamp(8px,1.8vw,16px);background:#0d0b09;border:1px solid rgba(255,255,255,.08);touch-action:none}
+.timer-box{background:#0f0c0a;border-radius:clamp(6px,1.2vw,12px);padding:clamp(3px,0.6vw,6px) clamp(5px,1vw,10px);display:flex;justify-content:center;gap:4px;font-size:clamp(8px,1.4dvh,13px);font-weight:900;border:1px solid rgba(255,255,255,.08);margin-bottom:clamp(3px,0.7vw,7px)}
 .timer-target{color:#ffd768}
-.heatbar{height:16px;border-radius:999px;overflow:hidden;position:relative;background:linear-gradient(90deg,#c53a22 0%,#ff9828 20%,#ffe56a 35%,#5fa642 50%,#ffe56a 65%,#ff9828 80%,#c53a22 100%)}
-.fill{position:absolute;left:0;top:0;bottom:0;width:0%;background:rgba(255,255,255,.13)}
-.cursor{position:absolute;top:-4px;width:4px;height:24px;background:#000;border-radius:999px;transform:translateX(-50%)}
-.labels{margin-top:4px;display:flex;justify-content:space-between;font-size:8px;font-weight:900}
-.slush-panel-wrap{width:100%;padding:8px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;align-items:end;background:linear-gradient(to bottom,#5e5955,#2a2623 40%,#120f0d);border-radius:20px;height:100%;box-sizing:border-box}
-.slush-machine-new{border-radius:18px;background:linear-gradient(to bottom,#6d6d6d,#343434 40%,#121212);border:1px solid rgba(255,255,255,.08);position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:8px 4px 6px;min-height:0;flex:1;cursor:pointer;transition:border-color .2s}
+.heatbar{height:clamp(10px,2dvh,18px);border-radius:999px;overflow:hidden;position:relative;background:#241b17;display:flex}
+.gauge-zones{position:absolute;inset:0;display:flex;overflow:hidden;border-radius:999px}
+.gauge-zone{height:100%;flex:0 0 auto}.gauge-under{background:#c53a22}.gauge-perfect{background:#5fa642}.gauge-over{background:#c53a22}
+.fill{position:absolute;left:0;top:0;bottom:0;width:0%;background:rgba(255,255,255,.16);z-index:2;pointer-events:none}
+.cursor{position:absolute;top:-4px;width:4px;height:clamp(16px,3dvh,26px);background:#000;border-radius:999px;transform:translateX(-50%)}
+.labels{margin-top:clamp(2px,0.4vh,5px);position:relative;height:clamp(10px,1.4dvh,14px);font-size:clamp(6px,1dvh,9px);font-weight:900}.labels span{position:absolute;white-space:nowrap}.label-under{left:0}.label-perfect{left:50%;transform:translateX(-50%)}.label-over{right:0}
+
+/* 슬러시 패널 */
+.slush-panel-wrap{width:100%;padding:clamp(4px,1vw,10px);display:grid;grid-template-columns:1fr 1fr 1fr;gap:clamp(4px,1vw,8px);align-items:end;background:linear-gradient(to bottom,#5e5955,#2a2623 40%,#120f0d);border-radius:clamp(12px,2.5vw,22px);height:100%;box-sizing:border-box}
+.slush-machine-new{border-radius:clamp(10px,2vw,20px);background:linear-gradient(to bottom,#6d6d6d,#343434 40%,#121212);border:1px solid rgba(255,255,255,.08);position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:clamp(4px,1vw,10px) clamp(2px,0.5vw,6px) clamp(3px,0.8vw,8px);min-height:0;flex:1;cursor:pointer;transition:border-color .2s}
 .slush-liquid-new{position:absolute;left:18%;right:18%;bottom:34%;border-radius:12px 12px 8px 8px;opacity:.75;transition:.2s;z-index:1}
 .slush-img-new{width:88%;object-fit:contain;margin-top:8px;position:relative;z-index:2;pointer-events:none}
-.slush-base-new{width:100%;height:14px;border-radius:10px;background:#1b1b1b;margin-top:6px;position:relative;z-index:2}
-.slush-text-new{margin-top:4px;font-size:9px;font-weight:900;text-align:center;line-height:1.2;color:#fff;position:relative;z-index:2}
-.bottom{overflow:hidden;display:grid;grid-template-columns:1.45fr .95fr;gap:8px}
-.stock,.menu{overflow:hidden;border-radius:20px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(to bottom,#2d231e,#14110f);display:flex;flex-direction:column}
-.title{padding:7px 12px 5px;font-size:13px;font-weight:900;flex-shrink:0}
-.stock-scroll{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 8px 8px;-webkit-overflow-scrolling:touch;touch-action:pan-y;overscroll-behavior:contain}
+.slush-base-new{width:100%;height:clamp(8px,1.5vw,16px);border-radius:10px;background:#1b1b1b;margin-top:4px;position:relative;z-index:2}
+.slush-text-new{margin-top:3px;font-size:clamp(6px,1dvh,10px);font-weight:900;text-align:center;line-height:1.2;color:#fff;position:relative;z-index:2}
+
+/* 하단 */
+.bottom{overflow:hidden;display:grid;grid-template-columns:1.45fr .95fr;gap:clamp(4px,1vw,10px)}
+.stock,.menu{overflow:hidden;border-radius:clamp(12px,2.5vw,22px);border:1px solid rgba(255,255,255,.08);background:linear-gradient(to bottom,#2d231e,#14110f);display:flex;flex-direction:column}
+.title{padding:clamp(4px,0.8vw,8px) clamp(8px,1.5vw,14px) clamp(3px,0.6vw,7px);font-size:clamp(10px,1.8dvh,15px);font-weight:900;flex-shrink:0}
+.stock-scroll{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 clamp(4px,0.8vw,10px) clamp(4px,0.8vw,10px);-webkit-overflow-scrolling:touch;touch-action:pan-y;overscroll-behavior:contain}
 .stock-scroll::-webkit-scrollbar{width:3px}
 .stock-scroll::-webkit-scrollbar-track{background:transparent}
 .stock-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:999px}
-.stock-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.card{min-height:96px;border-radius:14px;border:2px solid rgba(255,255,255,.06);background:#1a1512;display:flex;flex-direction:column;align-items:center;padding:6px;position:relative;color:#fff;touch-action:pan-y}
+.stock-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:clamp(4px,1vw,10px)}
+.card{min-height:clamp(70px,12dvh,100px);border-radius:clamp(10px,2vw,16px);border:2px solid rgba(255,255,255,.06);background:#1a1512;display:flex;flex-direction:column;align-items:center;padding:clamp(4px,0.8vw,8px);position:relative;color:#fff;touch-action:pan-y}
 .card.selected{border-color:#4df34b;box-shadow:0 0 14px rgba(77,243,75,.24)}
-.card img{width:100%;height:44px;object-fit:contain}
-.name{margin-top:3px;font-size:8px;line-height:1.15;text-align:center;font-weight:900;color:#fff}
-.qty{margin-top:auto;font-size:11px;font-weight:900;color:#fff}
+.card img{width:100%;height:clamp(30px,5.5dvh,48px);object-fit:contain}
+.name{margin-top:clamp(2px,0.3vh,4px);font-size:clamp(6px,1dvh,9px);line-height:1.15;text-align:center;font-weight:900;color:#fff}
+.qty{margin-top:auto;font-size:clamp(9px,1.6dvh,13px);font-weight:900;color:#fff}
 .under{filter:brightness(1.5) saturate(.6)}.good{filter:brightness(1.42)}.dark{filter:brightness(.4) contrast(1.4)}.soft{filter:brightness(.93)}.syrup{filter:brightness(.96) saturate(1.15)}.slushitem{filter:brightness(1.1) saturate(1.15)}.bagcard{filter:brightness(1.05)}
-.menu-grid{flex:1;padding:0 8px 8px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);gap:8px}
-.mbtn{border:none;border-radius:16px;color:#fff;font-size:10px;line-height:1.15;font-weight:900;touch-action:none;transition:transform .1s,box-shadow .1s}
+
+/* 메뉴 버튼 */
+.menu-grid{flex:1;padding:0 clamp(4px,0.8vw,10px) clamp(4px,0.8vw,10px);display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);gap:clamp(4px,0.8vw,10px)}
+.mbtn{border:none;border-radius:clamp(10px,2vw,18px);color:#fff;font-size:clamp(8px,1.4dvh,12px);line-height:1.2;font-weight:900;touch-action:none;transition:transform .1s,box-shadow .1s}
 .mbtn:active{transform:scale(.97)}
 .m1{background:#668c2f}.m2{background:#406f98}.m3{background:#87532c}.m4{background:#7d60a3}.m5{background:#7b2d24}.m6{background:#555}
+
+/* 오버레이/모달 */
 .overlay{position:absolute;inset:0;background:rgba(0,0,0,.82);display:none;justify-content:center;align-items:center;z-index:300}
 .overlay.show{display:flex}
-.modal{width:88%;max-height:86%;overflow-y:auto;border-radius:22px;background:#171310;border:1px solid rgba(255,255,255,.08);padding:14px}
+.modal{width:88%;max-height:86%;overflow-y:auto;border-radius:clamp(14px,3vw,24px);background:#171310;border:1px solid rgba(255,255,255,.08);padding:clamp(10px,2vw,16px);position:relative}
 .modal::-webkit-scrollbar{width:3px}.modal::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:999px}
-.modal-title{font-size:18px;font-weight:900;margin-bottom:10px;text-align:center}
+.modal-title{font-size:clamp(14px,2.5dvh,20px);font-weight:900;margin-bottom:clamp(6px,1.2vw,12px);text-align:center}
+.modal-close-btn{position:absolute;top:clamp(6px,1.2vw,12px);right:clamp(8px,1.5vw,14px);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:clamp(9px,1.4dvh,13px);font-weight:900;border-radius:999px;padding:clamp(3px,0.5vw,5px) clamp(8px,1.5vw,12px);cursor:pointer;z-index:1}
+
 /* 칼질 카드 */
 .peel-card{width:min(72vw,260px);border-radius:22px;background:#15110f;border:1px solid rgba(255,255,255,.08);padding:14px;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:8px;touch-action:none;-webkit-user-select:none;user-select:none}
-.peel-card img{width:100%;height:160px;object-fit:contain;filter:brightness(.7);z-index:1;position:relative;pointer-events:none}
+.peel-card-imgs{position:relative;width:100%;height:clamp(100px,18dvh,170px)}
+.peel-card.knife-slice-flash{animation:knifeSliceFlash .22s ease-out}
+@keyframes knifeSliceFlash{0%{filter:brightness(1);transform:translateX(0)}25%{filter:brightness(1.9);transform:translateX(-2px) rotate(-1deg)}55%{filter:brightness(1.25);transform:translateX(2px) rotate(1deg)}100%{filter:brightness(1);transform:translateX(0) rotate(0)}}
+.peel-card.knife-slice-flash::after{content:'✦';position:absolute;left:50%;top:38%;z-index:20;color:#fff;font-size:clamp(22px,7dvh,48px);text-shadow:0 0 8px #ffd768,0 0 18px #fff;pointer-events:none;animation:knifeSpark .22s ease-out forwards}
+@keyframes knifeSpark{0%{opacity:0;transform:translate(-50%,-50%) scale(.4) rotate(-30deg)}35%{opacity:1;transform:translate(-50%,-50%) scale(1.1) rotate(10deg)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.5) rotate(35deg)}}
+.peel-img-base{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:1}
+.peel-img-reveal{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:2;clip-path:inset(100% 0 0 0);transition:clip-path .15s ease-out}
 .peel-name,.peel-count,.peel-hint{z-index:1}
-.peel-name{font-size:13px;font-weight:900}.peel-count{font-size:11px;font-weight:900;color:#7ef47b}.peel-hint{font-size:11px;font-weight:900;color:#d9c8a7}
-/* 스와이프 캔버스 (이어진 선) */
+.peel-name{font-size:clamp(11px,2dvh,15px);font-weight:900}
+.peel-count{font-size:clamp(10px,1.8dvh,13px);font-weight:900;color:#7ef47b}
+.peel-hint{font-size:clamp(10px,1.8dvh,13px);font-weight:900;color:#d9c8a7}
 .peel-canvas{position:absolute;inset:0;z-index:10;pointer-events:none;border-radius:22px}
+
 /* 상점 */
-.shop-cart{background:#231b16;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:12px;margin-bottom:14px}
-.cart-head{font-size:14px;font-weight:900;margin-bottom:8px}.cart-note{font-size:10px;font-weight:900;color:#d6c9b6;margin-top:4px}
-.cart-list{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
-.cart-item{display:grid;grid-template-columns:34px 1fr auto;gap:8px;align-items:center;background:#1a1512;border-radius:14px;padding:8px;border:1px solid rgba(255,255,255,.06)}
+.shop-cart{background:#231b16;border:1px solid rgba(255,255,255,.08);border-radius:clamp(12px,2.5vw,20px);padding:clamp(8px,1.5vw,14px);margin-bottom:clamp(8px,1.5vw,16px)}
+.cart-head{font-size:clamp(11px,2dvh,16px);font-weight:900;margin-bottom:clamp(5px,1vw,10px)}.cart-note{font-size:clamp(8px,1.3dvh,11px);font-weight:900;color:#d6c9b6;margin-top:4px}
+.cart-list{display:flex;flex-direction:column;gap:clamp(5px,1vw,10px);margin-bottom:clamp(7px,1.3vw,12px)}
+.cart-item{display:grid;grid-template-columns:34px 1fr auto;gap:8px;align-items:center;background:#1a1512;border-radius:clamp(10px,2vw,16px);padding:clamp(6px,1.2vw,10px);border:1px solid rgba(255,255,255,.06)}
 .cart-item.noimg{grid-template-columns:1fr auto}
-.cart-empty-text{font-size:11px;font-weight:900;color:#fff;line-height:1.3}
+.cart-empty-text{font-size:clamp(9px,1.5dvh,12px);font-weight:900;color:#fff;line-height:1.3}
 .cart-item img{width:34px;height:34px;object-fit:contain}
-.cart-item-title{font-size:10px;font-weight:900;line-height:1.15}.cart-item-sub{font-size:9px;color:#c9b7a0;font-weight:900;margin-top:2px}
-.cart-step{display:flex;align-items:center;gap:5px}.cart-step button{width:24px;height:24px;border:none;border-radius:8px;background:#3b2d24;color:#fff;font-weight:900}.cart-step span{width:20px;text-align:center;font-size:11px;font-weight:900}
-.cart-sum{display:flex;flex-direction:column;gap:4px;padding-top:8px;border-top:1px solid rgba(255,255,255,.08);font-size:11px;font-weight:900}
-.cart-sum .total{font-size:13px;color:#7ef47b}
-.checkout-btn{width:100%;border:none;border-radius:16px;background:#688d31;color:#fff;font-weight:900;padding:12px;margin-top:10px;font-size:13px}
-.shop-section{margin-bottom:14px}.shop-section-title{font-size:14px;font-weight:900;margin-bottom:8px}
-.shop-item{border-radius:18px;background:#241c18;padding:12px;display:flex;flex-direction:column;gap:10px;margin-bottom:10px}
-.shop-top{display:flex;align-items:center;gap:10px}.shop-item img{width:52px;height:52px;object-fit:contain}
-.shop-text{font-size:11px;line-height:1.35;font-weight:900}
-.shop-add{border:none;border-radius:14px;background:#4f7f2a;color:#fff;font-weight:900;padding:10px;width:100%}.shop-add:active{transform:scale(.99)}
-.shop-up{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.shop-up button{border:none;border-radius:16px;padding:12px 8px;color:#fff;font-weight:900;font-size:11px}
-.up1{background:#668c2f}.up2{background:#406f98}
+.cart-item-title{font-size:clamp(9px,1.6dvh,12px);font-weight:900;line-height:1.15}.cart-item-sub{font-size:clamp(8px,1.3dvh,10px);color:#c9b7a0;font-weight:900;margin-top:2px}
+.cart-step{display:flex;align-items:center;gap:5px}.cart-step button{width:clamp(20px,3.5vw,26px);height:clamp(20px,3.5vw,26px);border:none;border-radius:8px;background:#3b2d24;color:#fff;font-weight:900}.cart-step span{width:20px;text-align:center;font-size:clamp(9px,1.6dvh,13px);font-weight:900}
+.cart-sum{display:flex;flex-direction:column;gap:4px;padding-top:8px;border-top:1px solid rgba(255,255,255,.08);font-size:clamp(9px,1.5dvh,12px);font-weight:900}
+.cart-sum .total{font-size:clamp(10px,1.8dvh,15px);color:#7ef47b}
+.checkout-btn{width:100%;border:none;border-radius:clamp(10px,2vw,18px);background:#688d31;color:#fff;font-weight:900;padding:clamp(9px,1.8vw,14px);margin-top:clamp(7px,1.3vw,12px);font-size:clamp(10px,1.8dvh,15px)}
+.shop-section{margin-bottom:clamp(8px,1.5vw,16px)}.shop-section-title{font-size:clamp(11px,2dvh,16px);font-weight:900;margin-bottom:clamp(5px,1vw,10px)}
+.shop-item{border-radius:clamp(12px,2.5vw,20px);background:#241c18;padding:clamp(8px,1.5vw,14px);display:flex;flex-direction:column;gap:clamp(7px,1.3vw,12px);margin-bottom:clamp(7px,1.3vw,12px)}
+.shop-top{display:flex;align-items:center;gap:clamp(6px,1.2vw,12px)}.shop-item img{width:clamp(38px,7vw,56px);height:clamp(38px,7vw,56px);object-fit:contain}
+.shop-text{font-size:clamp(9px,1.6dvh,13px);line-height:1.35;font-weight:900}
+.shop-add{border:none;border-radius:clamp(10px,2vw,16px);background:#4f7f2a;color:#fff;font-weight:900;padding:clamp(8px,1.5vw,12px);width:100%}.shop-add:active{transform:scale(.99)}
+.shop-up{display:grid;grid-template-columns:1fr 1fr;gap:clamp(5px,1vw,10px)}
+.shop-up button{border:none;border-radius:clamp(12px,2.5vw,20px);padding:clamp(9px,1.8vw,14px) clamp(5px,1vw,10px);color:#fff;font-weight:900;font-size:clamp(9px,1.5dvh,13px)}
+.up1{background:#668c2f}.up2{background:#406f98}.up3{background:#87532c}
+
 /* 봉지 */
-.bag-list{display:flex;flex-direction:column;gap:10px}
-.bag-card{background:#231b16;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:10px}
-.bag-head{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;font-weight:900;margin-bottom:8px}
-.bag-sub{color:#fff;font-size:10px;font-weight:900;margin-top:2px}
-.bag-items{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.bag-item{background:#1a1512;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;min-height:72px;touch-action:none}
-.bag-item img{width:28px;height:28px;object-fit:contain}.bag-item span{font-size:9px;line-height:1.1;text-align:center;font-weight:900;color:#fff}
-.bag-actions{margin-top:10px;display:flex;gap:8px}.bag-actions button{flex:1;border:none;border-radius:14px;padding:11px 8px;font-weight:900;color:#fff}
+.bag-list{display:flex;flex-direction:column;gap:clamp(7px,1.3vw,12px)}
+.bag-card{background:#231b16;border:1px solid rgba(255,255,255,.08);border-radius:clamp(12px,2.5vw,20px);padding:clamp(8px,1.5vw,12px)}
+.bag-head{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:clamp(10px,1.8dvh,14px);font-weight:900;margin-bottom:clamp(5px,1vw,10px)}
+.bag-sub{color:#fff;font-size:clamp(8px,1.4dvh,11px);font-weight:900;margin-top:2px}
+.bag-items{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(5px,1vw,10px)}
+.bag-item{background:#1a1512;border:1px solid rgba(255,255,255,.06);border-radius:clamp(8px,1.8vw,14px);padding:clamp(4px,0.8vw,8px) clamp(3px,0.6vw,6px);display:flex;flex-direction:column;align-items:center;gap:4px;min-height:clamp(60px,10dvh,78px);touch-action:none}
+.bag-item img{width:clamp(22px,4vw,32px);height:clamp(22px,4vw,32px);object-fit:contain}.bag-item span{font-size:clamp(7px,1.2dvh,10px);line-height:1.1;text-align:center;font-weight:900;color:#fff}
+.bag-actions{margin-top:clamp(7px,1.3vw,12px);display:flex;gap:clamp(5px,1vw,10px)}.bag-actions button{flex:1;border:none;border-radius:clamp(10px,2vw,16px);padding:clamp(9px,1.8vw,14px) clamp(5px,1vw,10px);font-weight:900;color:#fff;font-size:clamp(10px,1.8dvh,14px)}
 .bag-close{background:#555}.bag-remove{background:#7b2d24}
+
 /* 정보 */
-.info-text{display:flex;flex-direction:column;gap:10px;font-size:12px;line-height:1.45;font-weight:900}
-.info-box{background:#1f1814;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:12px}.info-box h3{font-size:13px;margin-bottom:6px}.info-box p{color:#e8dccb;font-size:11px;line-height:1.45}
+.info-text{display:flex;flex-direction:column;gap:clamp(7px,1.3vw,12px);font-size:clamp(10px,1.8dvh,14px);line-height:1.45;font-weight:900}
+.info-box{background:#1f1814;border:1px solid rgba(255,255,255,.08);border-radius:clamp(12px,2.5vw,20px);padding:clamp(8px,1.5vw,14px)}.info-box h3{font-size:clamp(11px,2dvh,15px);margin-bottom:6px}.info-box p{color:#e8dccb;font-size:clamp(9px,1.5dvh,12px);line-height:1.45}
+
 /* 슬러시 판매 모달 */
-.slush-sell-modal{background:#171310;border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:16px;width:80%;max-width:300px}
-.slush-sell-title{font-size:15px;font-weight:900;text-align:center;margin-bottom:12px}
-.slush-sell-info{font-size:11px;color:#c9b7a0;font-weight:900;text-align:center;margin-bottom:14px;line-height:1.5;white-space:pre-line}
-.slush-sell-btns{display:flex;flex-direction:column;gap:8px}
-.slush-sell-btns button{border:none;border-radius:14px;padding:11px;font-weight:900;color:#fff;font-size:12px}
+.slush-sell-modal{background:#171310;border:1px solid rgba(255,255,255,.08);border-radius:clamp(14px,3vw,24px);padding:clamp(12px,2.5vw,18px);width:80%;max-width:300px}
+.slush-sell-title{font-size:clamp(12px,2.2dvh,17px);font-weight:900;text-align:center;margin-bottom:clamp(8px,1.5vw,14px)}
+.slush-sell-info{font-size:clamp(9px,1.6dvh,13px);color:#c9b7a0;font-weight:900;text-align:center;margin-bottom:clamp(10px,2vw,16px);line-height:1.5;white-space:pre-line}
+.slush-sell-btns{display:flex;flex-direction:column;gap:clamp(5px,1vw,10px)}
+.slush-sell-btns button{border:none;border-radius:clamp(10px,2vw,16px);padding:clamp(9px,1.8vw,13px);font-weight:900;color:#fff;font-size:clamp(10px,1.8dvh,14px)}
 .sell-cup-btn{background:#406f98}.sell-cancel-btn{background:#555}
+
 /* 손님 쫓아내기 토스트 */
-.dismiss-toast{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(180,50,50,.95);color:#fff;font-size:13px;font-weight:900;border-radius:18px;padding:12px 22px;text-align:center;z-index:400;pointer-events:none;animation:toastPop .2s ease-out forwards}
+.dismiss-toast{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(180,50,50,.95);color:#fff;font-size:clamp(11px,2dvh,15px);font-weight:900;border-radius:clamp(12px,2.5vw,20px);padding:clamp(9px,1.8vw,14px) clamp(18px,3.5vw,26px);text-align:center;z-index:400;pointer-events:none;animation:toastPop .2s ease-out forwards}
 @keyframes toastPop{from{opacity:0;transform:translate(-50%,-50%) scale(.8)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+
 /* 튜토리얼 */
 #tutorialOverlay{position:absolute;inset:0;z-index:500;pointer-events:none}
-.tut-spotlight{position:absolute;inset:0;background:rgba(0,0,0,.68);pointer-events:none;display:none;transition:clip-path .35s cubic-bezier(.4,0,.2,1)}
+.tut-spotlight{position:absolute;inset:0;background:rgba(0,0,0,.7);pointer-events:none;display:none;transition:clip-path .3s cubic-bezier(.4,0,.2,1)}
 .tut-spotlight.active{display:block}
-.tut-highlight{position:absolute;border-radius:16px;box-shadow:0 0 0 3px #ffd768,0 0 20px rgba(255,215,104,.6);transition:all .35s cubic-bezier(.4,0,.2,1);pointer-events:none;z-index:502;display:none}
-.tut-bubble{position:absolute;background:linear-gradient(135deg,#2a2018,#1a150f);border:2px solid #ffd768;border-radius:18px;padding:12px 14px;max-width:200px;font-size:11px;font-weight:900;line-height:1.5;color:#fff;z-index:503;pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,.6);animation:tutPop .3s cubic-bezier(.34,1.56,.64,1) forwards;display:none}
+.tut-highlight{position:absolute;border-radius:16px;box-shadow:0 0 0 3px #ffd768,0 0 20px rgba(255,215,104,.6);transition:all .3s cubic-bezier(.4,0,.2,1);pointer-events:none;z-index:502;display:none}
+.tut-bubble{position:absolute;background:linear-gradient(135deg,#2a2018,#1a150f);border:2px solid #ffd768;border-radius:18px;padding:clamp(9px,1.8vw,14px) clamp(10px,2vw,16px);max-width:clamp(160px,38vw,210px);font-size:clamp(10px,1.8dvh,13px);font-weight:900;line-height:1.5;color:#fff;z-index:503;pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,.6);animation:tutPop .3s cubic-bezier(.34,1.56,.64,1) forwards;display:none}
 @keyframes tutPop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
 .tut-bubble::before{content:'';position:absolute;width:12px;height:12px;background:#2a2018;border:2px solid #ffd768;border-right:none;border-bottom:none;transform:rotate(45deg);top:-8px;left:20px}
 .tut-bubble.arrow-bottom::before{top:auto;bottom:-8px;border:2px solid #ffd768;border-left:none;border-top:none;transform:rotate(45deg)}
 .tut-bubble.arrow-left::before{top:50%;left:-8px;transform:translateY(-50%) rotate(-45deg);border:2px solid #ffd768;border-right:none;border-top:none}
-.tut-step-badge{display:inline-block;background:#ffd768;color:#1a1200;border-radius:999px;padding:2px 8px;font-size:9px;font-weight:900;margin-bottom:6px}
-.tut-skip-btn{position:absolute;bottom:14px;right:14px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:10px;font-weight:900;border-radius:999px;padding:6px 14px;z-index:504;cursor:pointer;pointer-events:all;display:none}
+.tut-step-badge{display:inline-block;background:#ffd768;color:#1a1200;border-radius:999px;padding:2px 8px;font-size:clamp(8px,1.3dvh,10px);font-weight:900;margin-bottom:6px}
+.tut-skip-btn{position:absolute;bottom:clamp(10px,2vw,16px);right:clamp(10px,2vw,16px);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:clamp(9px,1.5dvh,12px);font-weight:900;border-radius:999px;padding:clamp(5px,1vw,8px) clamp(12px,2.5vw,18px);z-index:504;cursor:pointer;pointer-events:all;display:none}
 .tut-skip-btn:active{background:rgba(255,255,255,.2)}
+.tut-start-btn{position:absolute;left:50%;top:calc(35% + 130px);transform:translateX(-50%);background:#ffd768;border:none;color:#1a1200;font-size:clamp(11px,2dvh,15px);font-weight:900;border-radius:999px;padding:clamp(9px,1.8vw,13px) clamp(18px,3.5vw,26px);z-index:504;cursor:pointer;pointer-events:all;display:none;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.tut-start-btn:active{transform:translateX(-50%) scale(.97)}
 .hide{display:none!important}
 </style>
 </head>
 <body>
 <div class="app" id="appRoot">
   <div class="topbar">
-    <div class="topitem">💵 <span id="money">50000</span></div>
-    <div class="topitem">🕒 18:45</div>
-    <div class="topitem">🙂 4.6</div>
+    <div class="topitem">💵 <span id="money">60000</span></div>
+    <div class="topitem">🕒 <span id="clockText">오전 8:00</span></div>
+    <div class="topitem">🙂 <span id="satisfactionText">3.0</span></div>
     <div class="topitem">👥 <span id="guestCount">0</span>/3</div>
-    <div class="topitem">🛍 <span id="bagCount">0</span></div>
+    <div class="topitem">👤 <span id="servedCount">0</span></div>
     <div class="status off" id="shopStatus">영업 종료</div>
   </div>
   <div class="main">
@@ -173,8 +247,8 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:none}
         </div>
         <div class="heat-control" id="heatControl">
           <div class="timer-box"><div id="timerNow">0.00</div><div>/</div><div class="timer-target" id="timerTarget">0.00</div></div>
-          <div class="heatbar"><div class="fill" id="fill"></div><div class="cursor" id="cursor"></div></div>
-          <div class="labels"><span>덜 익음</span><span>적정</span><span>많이 익음</span></div>
+          <div class="heatbar"><div class="gauge-zones" id="gaugeZones"></div><div class="fill" id="fill"></div><div class="cursor" id="cursor"></div></div>
+          <div class="labels"><span class="label-under">덜 익음</span><span class="label-perfect" id="labelPerfect">적정</span><span class="label-over">많이 익음</span></div>
         </div>
       </div>
       <div class="slush-panel-wrap" id="slushPanel"></div>
@@ -202,10 +276,14 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:none}
   <div class="overlay" id="peelOverlay">
     <div class="peel-card" id="peelCard">
       <canvas class="peel-canvas" id="peelCanvas"></canvas>
-      <img id="peelImg" alt="">
+      <div class="peel-card-imgs">
+        <img class="peel-img-base" id="peelImgBase" alt="">
+        <img class="peel-img-reveal" id="peelImgReveal" alt="">
+      </div>
       <div class="peel-name" id="peelName"></div>
       <div class="peel-count" id="peelCount"></div>
       <div class="peel-hint">스와이프해서 자르기</div>
+      <button class="modal-close-btn" id="peelCloseBtn">✕ 닫기</button>
     </div>
   </div>
 
@@ -213,6 +291,7 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:none}
   <div class="overlay" id="shopOverlay">
     <div class="modal shop-box">
       <div class="modal-title">상점</div>
+      <button class="modal-close-btn" id="shopCloseBtn">✕ 닫기</button>
       <div class="shop-cart">
         <div class="cart-head">장바구니</div>
         <div class="cart-list" id="cartList"></div>
@@ -226,12 +305,14 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:none}
       </div>
       <div class="shop-section"><div class="shop-section-title">재료</div><div id="shopMaterials"></div></div>
       <div class="shop-section"><div class="shop-section-title">슬러시</div><div id="shopSyrups"></div></div>
-      <div class="shop-section"><div class="shop-section-title">소모품</div><div id="shopSupplies"></div></div>
+      <!-- "소모품" → "용기" 로 이름 변경 -->
+      <div class="shop-section"><div class="shop-section-title">용기</div><div id="shopSupplies"></div></div>
       <div class="shop-section">
         <div class="shop-section-title">업그레이드</div>
         <div class="shop-up">
-          <button class="up1" id="upgradeCapBtn">군밤 기계 한도 +5<br>50000원</button>
-          <button class="up2" id="upgradeRangeBtn">굽기 범위 감소<br>50000원</button>
+          <button class="up1" id="upgradeCapBtn">군밤 기계 한도 +5<br>30000원</button>
+          <button class="up2" id="upgradeRangeBtn">적정 범위 축소<br>40000원</button>
+          <button class="up3" id="upgradeSliceBtn">한 번 썰 때 썰리는 개수 +1<br>8000원</button><button class="up4" id="upgradeRoastBtn">굽기 속도 감속<br>35000원</button>
         </div>
       </div>
     </div>
@@ -241,6 +322,7 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:none}
   <div class="overlay" id="bagOverlay">
     <div class="modal bag-box">
       <div class="modal-title" id="bagTitle">봉지 내용</div>
+      <button class="modal-close-btn" id="bagCloseModalBtn">✕ 닫기</button>
       <div class="bag-list" id="bagList"></div>
       <div class="bag-actions">
         <button class="bag-close" id="bagCloseBtn">닫기</button>
@@ -253,6 +335,7 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:none}
   <div class="overlay" id="infoOverlay">
     <div class="modal info-box">
       <div class="modal-title">자세한 정보</div>
+      <button class="modal-close-btn" id="infoCloseModalBtn">✕ 닫기</button>
       <div class="info-text" id="infoText"></div>
       <div class="bag-actions"><button class="bag-close" id="infoCloseBtn">닫기</button></div>
     </div>
@@ -275,33 +358,29 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:none}
     <div class="tut-spotlight" id="tutSpotlight"></div>
     <div class="tut-highlight" id="tutHighlight"></div>
     <div class="tut-bubble" id="tutBubble"></div>
-    <button class="tut-skip-btn" id="tutSkipBtn">튜토리얼 건너뛰기</button>
+    <!-- 건너뛰기: 처음부터 보임 -->
+    <button class="tut-skip-btn" id="tutSkipBtn" style="display:block">튜토리얼 건너뛰기</button>
+    <button class="tut-start-btn" id="tutStartBtn">시작하기 🎉</button>
   </div>
 </div>
 
 <script>
-/* ═══════════════════════════════
-   유틸
-═══════════════════════════════ */
+/* ─── 유틸 ─── */
 const $=id=>document.getElementById(id);
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 
-/* ═══════════════════════════════
-   데이터 상수
-═══════════════════════════════ */
+/* ─── 상수 ─── */
 const FRUITS={
   papaya:{kr:'파파야',img:'Papaya.png',cup:'PapayaCup.png',color:'#46b7ff'},
   cola:{kr:'콜라',img:'Cola.png',cup:'ColaCup.png',color:'#3f2418'},
   grape:{kr:'포도',img:'Grape.png',cup:'GrapeCup.png',color:'#7c44ff'},
   orange:{kr:'오렌지',img:'Orange.png',cup:'OrangeCup.png',color:'#ff972e'},
-  strawberry:{kr:'딸기',img:'Strawberry.png',cup:'StrawberryCup.png',color:'#ff4e8c'},
-  mango:{kr:'망고',img:'Mango.png',cup:'MangoCup.png',color:'#ffbf2f'},
   peach:{kr:'복숭아',img:'Peach.png',cup:'PeachCup.png',color:'#ffb381'}
 };
 const FRUIT_KEYS=Object.keys(FRUITS);
 const CHN_KEYS=['raw_shell','raw_inner','cut_raw','under_inner','under','perfect_inner','perfect','burnt_inner','burnt'];
-const BAG_PRICE=7000;
-const SLUSH_PRICE=3000;
+const BAG_PRICE=7000, SLUSH_PRICE=3000;
+const PERFECT_ROAST_MIN=6, PERFECT_ROAST_MAX=8, MAX_ROAST_TIME=12;
 
 const STAGES={
   raw_shell:{name:'생 밤 (겉껍질)',img:'1.png',next:'raw_inner'},
@@ -309,7 +388,7 @@ const STAGES={
   cut_raw:{name:'칼집을 낸 생 밤 (속껍질)',img:'3.png',next:null},
   under_inner:{name:'덜 익은 군밤 (속껍질)',img:'3.png',next:'under'},
   under:{name:'덜 익은 군밤',img:'6.png',cls:'under',next:null},
-  perfect_inner:{name:'잘 익은 군밤 (속껍질)',img:'4.png',next:'perfect'},
+  perfect_inner:{name:'잘 익은 군밤 (속껍질)',img:'4.png',revealImg:'6.png',next:'perfect'},
   perfect:{name:'잘 익은 군밤',img:'6.png',cls:'good',next:null},
   burnt_inner:{name:'탄 군밤 (속껍질)',img:'5.png',cls:'dark',next:'burnt'},
   burnt:{name:'탄 군밤',img:'6.png',cls:'dark',next:null},
@@ -324,38 +403,41 @@ const INVENTORY_META=Object.fromEntries(
 );
 const metaOf=key=>STAGES[key]||INVENTORY_META[key]||{name:key,img:'Cup.png',cls:''};
 
-/* ═══════════════════════════════
-   인벤토리 & 상태
-═══════════════════════════════ */
+/* ─── 시그니처 ─── */
+let _topSig='',_gaugeSig='',_traySig='',_slushSig='',_invSig='',_bagViewSig='';
+const sigTop=()=>`${money}|${guests.reduce((n,g)=>n+(g.active?1:0),0)}|${inventory.bag+bagStacks.length}|${gameMinutes}|${satisfaction.toFixed(1)}`;
+const sigGauge=()=>`${current}|${target}|${timingRange}`;
+const sigTray=()=>`${cooking?1:0}|${current}|${target}|${grill.map(v=>getGrillDisplayKey(v)).join(',')}`;
+const sigSlush=()=>slushMachines.map(m=>`${m.flavor||'-'}:${m.serves}`).join('|');
+const sigInv=()=>[...CHN_KEYS.map(k=>inventory[k]||0),inventory.cup||0,inventory.bag||0,...FRUIT_KEYS.flatMap(k=>[inventory[`syrup_${k}`]||0,inventory[`slush_${k}`]||0]),selectedType||'',selectedBagIndex,...bagStacks.map(b=>b.items.join('.'))].join('|');
+const sigBag=i=>{const b=bagStacks[i];return b?`${i}|${b.items.join('.')}`:'';};
+
+/* ─── 인벤토리 & 상태 ─── */
 const inventory={raw_shell:0,raw_inner:0,cut_raw:0,under_inner:0,under:0,perfect_inner:0,perfect:0,burnt_inner:0,burnt:0,cup:0,bag:0};
 FRUIT_KEYS.forEach(k=>{inventory[`syrup_${k}`]=0;inventory[`slush_${k}`]=0;});
 
+/* "용기" 그룹으로 변경 */
 const SHOP_ITEMS=[
-  {id:'bagPack',group:'재료',name:'종이봉지',desc:'50개',price:2000,img:'Paperbag.png',onBuy:q=>inventory.bag+=50*q},
+  {id:'bagPack',group:'용기',name:'종이봉지',desc:'50개',price:2000,img:'Paperbag.png',onBuy:q=>inventory.bag+=50*q},
   {id:'chestnutPack',group:'재료',name:'생 밤 (속껍질)',desc:'80개',price:14000,img:'2.png',onBuy:q=>inventory.raw_inner+=80*q},
-  {id:'cupPack',group:'소모품',name:'컵',desc:'100개',price:3000,img:'Cup.png',onBuy:q=>inventory.cup+=100*q}
+  {id:'cupPack',group:'용기',name:'컵',desc:'100개',price:3000,img:'Cup.png',onBuy:q=>inventory.cup+=100*q}
 ];
-FRUIT_KEYS.forEach(k=>SHOP_ITEMS.push({
-  id:`syrup_${k}`,group:'슬러시',name:`${FRUITS[k].kr} 시럽`,desc:'1병',price:3500,img:FRUITS[k].img,
-  onBuy:q=>inventory[`syrup_${k}`]+=q
-}));
+FRUIT_KEYS.forEach(k=>SHOP_ITEMS.push({id:`syrup_${k}`,group:'슬러시',name:`${FRUITS[k].kr} 시럽`,desc:'1병',price:3500,img:FRUITS[k].img,onBuy:q=>inventory[`syrup_${k}`]+=q}));
 
-/* DOM refs */
 const el={
-  money:$('money'),guestCount:$('guestCount'),bagCount:$('bagCount'),shopStatus:$('shopStatus'),
-  tray:$('tray'),heatControl:$('heatControl'),slushPanel:$('slushPanel'),stockGrid:$('stockGrid'),
-  timerNow:$('timerNow'),timerTarget:$('timerTarget'),fill:$('fill'),cursor:$('cursor'),
+  money:$('money'),guestCount:$('guestCount'),servedCount:$('servedCount'),shopStatus:$('shopStatus'),clockText:$('clockText'),satisfactionText:$('satisfactionText'),
+  tray:$('tray'),heatControl:$('heatControl'),slushPanel:$('slushPanel'),stockGrid:$('stockGrid'),stockScroll:$('stockGrid').parentElement,
+  timerNow:$('timerNow'),timerTarget:$('timerTarget'),gaugeZones:$('gaugeZones'),fill:$('fill'),cursor:$('cursor'),labelPerfect:$('labelPerfect'),
   peelOverlay:$('peelOverlay'),peelCard:$('peelCard'),peelCanvas:$('peelCanvas'),
-  peelImg:$('peelImg'),peelName:$('peelName'),peelCount:$('peelCount'),
+  peelImgBase:$('peelImgBase'),peelImgReveal:$('peelImgReveal'),peelName:$('peelName'),peelCount:$('peelCount'),
   shopOverlay:$('shopOverlay'),shopMaterials:$('shopMaterials'),shopSyrups:$('shopSyrups'),
   shopSupplies:$('shopSupplies'),cartList:$('cartList'),cartSub:$('cartSub'),cartShip:$('cartShip'),
   cartTotal:$('cartTotal'),checkoutBtn:$('checkoutBtn'),
   bagOverlay:$('bagOverlay'),bagTitle:$('bagTitle'),bagList:$('bagList'),
-  bagCloseBtn:$('bagCloseBtn'),bagEmptyBtn:$('bagEmptyBtn'),
+  bagCloseBtn:$('bagCloseBtn'),bagEmptyBtn:$('bagEmptyBtn'),upgradeSliceBtn:$('upgradeSliceBtn'),
   infoOverlay:$('infoOverlay'),infoText:$('infoText'),infoCloseBtn:$('infoCloseBtn'),
   slushSellOverlay:$('slushSellOverlay'),slushSellTitle:$('slushSellTitle'),
-  slushSellInfo:$('slushSellInfo'),slushToCupBtn:$('slushToCupBtn'),
-  slushSellCancelBtn:$('slushSellCancelBtn')
+  slushSellInfo:$('slushSellInfo'),slushToCupBtn:$('slushToCupBtn'),slushSellCancelBtn:$('slushSellCancelBtn')
 };
 
 const guests=[{slot:0,active:false,order:null},{slot:1,active:false,order:null},{slot:2,active:false,order:null}];
@@ -363,651 +445,357 @@ const slushMachines=[{flavor:null,serves:0},{flavor:null,serves:0},{flavor:null,
 const cart={};
 const stats={ordersCreated:0,normalOrders:0,specialOrders:0,slushOrders:0,comboOrders:0,served:0,failed:0,revenue:0,chestnutsSold:0,slushSold:0};
 
-let money=50000,selectedType=null,selectedBagIndex=-1,bagStacks=[],grill=[],current=0,target=0,cooking=false,timer=null,exploded=false,maxMachine=30,timingRange=2,shopOpen=false,guestLoop=null;
+let money=60000,selectedType=null,selectedBagIndex=-1,bagStacks=[],grill=[],current=0,target=0,cooking=false,timer=null,exploded=false,maxMachine=30,timingRange=1.2,shopOpen=false,guestLoop=null;
 let pendingSlushMachineIndex=-1;
+let gameMinutes=8*60;
+let satisfaction=3.0;
+let clockTimer=null;
+let sliceLevel=0,slicePerSwipe=1;
+let chestnutServeStage=0;
+let tutorialPurchased={bagPack:0,chestnutPack:0};
+let roastTimeUpgrades=0;
 
-/* ═══════════════════════════════
-   기본 함수
-═══════════════════════════════ */
-const totalBagCount=()=>inventory.bag+bagStacks.length;
-function syncTop(){el.money.textContent=money.toLocaleString();el.guestCount.textContent=guests.filter(v=>v.active).length;el.bagCount.textContent=totalBagCount().toString();}
-function updateGauge(){el.timerNow.textContent=current.toFixed(2);el.timerTarget.textContent=target.toFixed(2);const pct=target>0?clamp((current/(target*2))*100,0,100):0;el.fill.style.width=pct+'%';el.cursor.style.left=pct+'%';}
-function randomChestnutTarget(){return 4+Math.random()*timingRange;}
+/* ─── 시간 함수 ─── */
+function formatClock(totalMinutes){
+  const mins=((totalMinutes%1440)+1440)%1440;
+  const hh=Math.floor(mins/60);
+  const mm=mins%60;
+  const ampm=hh<12?'오전':'오후';
+  const h12=hh%12||12;
+  return `${ampm} ${h12}:${String(mm).padStart(2,'0')}`;
+}
+function getTimePhase(totalMinutes){
+  const m=((totalMinutes%1440)+1440)%1440;
+  if(m<360)return '새벽';if(m<600)return '아침';if(m<840)return '점심';if(m<1080)return '오후';if(m<1320)return '저녁';return '밤';
+}
+
+/* ─── 굽기 시간 계산 ─── */
+function getRoastTarget(){
+  const base=PERFECT_ROAST_MIN+Math.random()*(PERFECT_ROAST_MAX-PERFECT_ROAST_MIN);
+  return Math.max(1.5,base-roastTimeUpgrades*0.2);
+}
+
+/* ─── 기본 함수 ─── */
+function syncTop(){const s=sigTop();if(s===_topSig)return;_topSig=s;el.money.textContent=money.toLocaleString();el.guestCount.textContent=guests.reduce((n,g)=>n+(g.active?1:0),0);if(el.servedCount)el.servedCount.textContent=stats.served;el.clockText.textContent=formatClock(gameMinutes);el.satisfactionText.textContent=satisfaction.toFixed(1);}
+function updateGauge(){
+  const s=sigGauge();if(s===_gaugeSig)return;_gaugeSig=s;
+  el.timerNow.textContent=current.toFixed(2);el.timerTarget.textContent=target.toFixed(2);
+  const max=MAX_ROAST_TIME, w=clamp(timingRange/8,0.12,0.28);
+  const under=clamp(target-w,0,max), perfect=clamp(target+w,0,max), pct=v=>max?v/max*100:0;
+  if(el.gaugeZones){el.gaugeZones.innerHTML='';if(target<=0){const z=document.createElement('div');z.className='gauge-zone gauge-under';z.style.width='100%';el.gaugeZones.appendChild(z);}else{[['gauge-under',pct(under)],['gauge-perfect',Math.max(0,pct(perfect)-pct(under))],['gauge-over',Math.max(0,100-pct(perfect))]].forEach(([c,x])=>{const z=document.createElement('div');z.className='gauge-zone '+c;z.style.width=x+'%';el.gaugeZones.appendChild(z);});}}
+  const now=clamp(pct(current),0,100);el.fill.style.width=now+'%';el.cursor.style.left=now+'%';
+  if(el.labelPerfect)el.labelPerfect.style.left=(target>0?clamp(pct(target),0,100):50)+'%';
+}
 function resultType(type){
   const inner=type.includes('inner')||type==='raw_inner'||type==='cut_raw';
-  if(current<target-.25)return inner?'under_inner':'under';
-  if(current<=target+.25)return inner?'perfect_inner':'perfect';
+  const perfectWindow=clamp(timingRange/8,0.12,0.28);
+  if(current<target-perfectWindow)return inner?'under_inner':'under';
+  if(current<=target+perfectWindow)return inner?'perfect_inner':'perfect';
   return inner?'burnt_inner':'burnt';
 }
-function openOverlay(node){node.classList.add('show');}
-function closeOverlay(node){node.classList.remove('show');}
-function countMap(items){const map={};items.forEach(k=>map[k]=(map[k]||0)+1);return map;}
+const openOverlay=node=>node.classList.add('show');
+const closeOverlay=node=>node.classList.remove('show');
+function showToast(message){const t=document.createElement('div');t.className='dismiss-toast';t.textContent=message;$('appRoot').appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(()=>t.remove(),300);},1200);}
+const countMap=items=>{const m={};items.forEach(k=>m[k]=(m[k]||0)+1);return m;};
+function summarizeChestnutCounts(c){const p=[];if(c.perfect)p.push(`잘 익은 군밤 ${c.perfect}개`);if(c.under)p.push(`덜 익은 군밤 ${c.under}개`);if(c.burnt)p.push(`탄 군밤 ${c.burnt}개`);return p.length?p.join(', '):'없음';}
+function summarizeBagItems(items){const c=countMap(items);const p=[];if(c.perfect)p.push(`잘익음 ${c.perfect}`);if(c.under)p.push(`덜익음 ${c.under}`);if(c.burnt)p.push(`탄것 ${c.burnt}`);Object.keys(c).filter(k=>!['perfect','under','burnt'].includes(k)).forEach(k=>p.push(`${metaOf(k).name} ${c[k]}개`));return p.length?p.join(', '):'비어있음';}
+function normalizeSelection(){if(selectedType!=='bag'){if(selectedType&&(inventory[selectedType]||0)<=0)selectedType=null;selectedBagIndex=-1;return;}if(selectedBagIndex>=bagStacks.length)selectedBagIndex=bagStacks.length-1;if(selectedBagIndex<-1)selectedBagIndex=-1;}
+const SERVE_CHESTNUT_KEYS=new Set(['perfect','under','burnt']);
+function isServeChestnutKey(key){return SERVE_CHESTNUT_KEYS.has(key);}
+function getGuestSpawnChance(){const base={새벽:0.05,아침:0.08,점심:0.28,오후:0.42,저녁:0.82,밤:0.72}[getTimePhase(gameMinutes)]||0.3;return clamp(base+clamp((satisfaction-3)/5,-0.2,0.25),0.03,0.95);}
+function getGuestSpawnDelay(){const base={새벽:12000,아침:10000,점심:6500,오후:5200,저녁:2600,밤:3200}[getTimePhase(gameMinutes)]||6000;const satFactor=clamp(3.4/Math.max(0.8,satisfaction),0.55,1.5);return Math.max(1200,Math.round(base*satFactor*(tut.active?0.7:1)));}
+function adjustSatisfaction(delta){satisfaction=clamp(Number((satisfaction+delta).toFixed(1)),0,5);syncTop();}
+function startClockReal(){if(clockTimer)clearInterval(clockTimer);clockTimer=setInterval(()=>{gameMinutes=(gameMinutes+1)%1440;syncTop();},100);}
+function scheduleGuestLoop(){if(!shopOpen)return;if(guestLoop)clearTimeout(guestLoop);guestLoop=setTimeout(()=>{spawnGuestBatchActive();scheduleGuestLoop();},getGuestSpawnDelay());}
+function stopGuestLoop(){if(guestLoop)clearTimeout(guestLoop);guestLoop=null;}
+function scrollBagArea(){if(!el.stockScroll)return;requestAnimationFrame(()=>{el.stockScroll.scrollTop=el.stockScroll.scrollHeight;});}
+function selectBagCard(index=-1){chestnutServeStage=2;selectedType='bag';selectedBagIndex=bagStacks.length?clamp(index,0,bagStacks.length-1):-1;renderInventory();scrollBagArea();}
+function focusBagSelection(index=-1){if(!(inventory.bag>0||bagStacks.length>0))return false;selectBagCard(index);return true;}
+function handleChestnutSelection(key){selectedType=key;selectedBagIndex=-1;chestnutServeStage=isServeChestnutKey(key)?1:0;renderInventory();if(isServeChestnutKey(key))setTimeout(()=>focusBagSelection(),0);return true;}
 
-function summarizeChestnutCounts(counts){
-  const parts=[];
-  if(counts.perfect)parts.push(`잘 익은 군밤 ${counts.perfect}개`);
-  if(counts.under)parts.push(`덜 익은 군밤 ${counts.under}개`);
-  if(counts.burnt)parts.push(`탄 군밤 ${counts.burnt}개`);
-  return parts.length?parts.join(', '):'없음';
-}
-function summarizeBagItems(items){
-  const c=countMap(items);const parts=[];
-  if(c.perfect)parts.push(`잘익음 ${c.perfect}`);
-  if(c.under)parts.push(`덜익음 ${c.under}`);
-  if(c.burnt)parts.push(`탄것 ${c.burnt}`);
-  Object.keys(c).filter(k=>!['perfect','under','burnt'].includes(k)).forEach(k=>parts.push(`${metaOf(k).name} ${c[k]}개`));
-  return parts.length?parts.join(', '):'비어있음';
-}
-
-function normalizeSelection(){
-  if(selectedType!=='bag'){
-    if(selectedType&&(inventory[selectedType]||0)<=0)selectedType=null;
-    selectedBagIndex=-1;return;
-  }
-  if(selectedBagIndex>=bagStacks.length)selectedBagIndex=bagStacks.length-1;
-  if(selectedBagIndex<-1)selectedBagIndex=-1;
-}
-
-/* ═══════════════════════════════
-   주문 생성 (복합 주문 포함)
-   - 슬러시만: 10%
-   - 군밤+슬러시 콤보: 40%
-   - 군밤만: 50%
-═══════════════════════════════ */
+/* ─── 주문 생성 ─── */
 function createChestnutOrder(special){
   let counts;
   if(!special){counts={perfect:15,under:0,burnt:0};}
-  else{
-    const imperfect=1+Math.floor(Math.random()*15);
-    const under=Math.floor(Math.random()*(imperfect+1));
-    const burnt=imperfect-under;
-    counts={perfect:15-imperfect,under,burnt};
-  }
-  return{kind:'chestnut',mode:special?'special':'normal',counts,total:15,text:summarizeChestnutCounts(counts)+' 주세요',payout:BAG_PRICE};
+  else{const imp=1+Math.floor(Math.random()*15);const u=Math.floor(Math.random()*(imp+1));counts={perfect:15-imp,under:u,burnt:imp-u};}
+  return{kind:'chestnut',mode:special?'special':'normal',counts,total:15,text:summarizeChestnutCounts(counts)+' 주세요',payout:special?8000:7000};
 }
-
 function createOrder(){
   stats.ordersCreated++;
   const r=Math.random();
-  if(r<0.10){
-    // 슬러시만
-    stats.slushOrders++;
-    const flavor=FRUIT_KEYS[Math.floor(Math.random()*FRUIT_KEYS.length)];
-    return{kind:'slush',flavor,total:1,text:`${FRUITS[flavor].kr} 슬러시 1개 주세요`,payout:SLUSH_PRICE};
-  }
-  if(r<0.50){
-    // 군밤 + 슬러시 콤보
-    stats.comboOrders++;
-    const special=Math.random()<0.2;
-    special?stats.specialOrders++:stats.normalOrders++;
-    const cOrder=createChestnutOrder(special);
-    const flavor=FRUIT_KEYS[Math.floor(Math.random()*FRUIT_KEYS.length)];
-    return{
-      kind:'combo',
-      chestnut:cOrder,
-      flavor,
-      text:`${cOrder.text} + ${FRUITS[flavor].kr} 슬러시`,
-      payout:BAG_PRICE+SLUSH_PRICE,
-      // 배달 상태 추적
-      chestnutDone:false,
-      slushDone:false
-    };
-  }
-  // 군밤만
-  const special=Math.random()<0.2;
-  special?stats.specialOrders++:stats.normalOrders++;
-  return createChestnutOrder(special);
+  if(r<0.10){stats.slushOrders++;const flavor=FRUIT_KEYS[Math.floor(Math.random()*FRUIT_KEYS.length)];return{kind:'slush',flavor,total:1,text:`${FRUITS[flavor].kr} 슬러시 1개 주세요`,payout:SLUSH_PRICE};}
+  if(r<0.50){stats.comboOrders++;const special=Math.random()<0.08;special?stats.specialOrders++:stats.normalOrders++;const cOrder=createChestnutOrder(special);const flavor=FRUIT_KEYS[Math.floor(Math.random()*FRUIT_KEYS.length)];return{kind:'combo',chestnut:cOrder,flavor,text:`${cOrder.text} + ${FRUITS[flavor].kr} 슬러시`,payout:cOrder.payout+SLUSH_PRICE,chestnutDone:false,slushDone:false};}
+  const special=Math.random()<0.08;special?stats.specialOrders++:stats.normalOrders++;return createChestnutOrder(special);
 }
+function matchChestnutOrder(bag,order){if(!bag||!order)return false;const c=countMap(bag.items);return bag.items.length===15&&bag.items.every(v=>['perfect','under','burnt'].includes(v))&&(c.perfect||0)===order.counts.perfect&&(c.under||0)===order.counts.under&&(c.burnt||0)===order.counts.burnt;}
 
-function matchChestnutOrder(bag,order){
-  if(!bag||!order)return false;
-  const count=countMap(bag.items);
-  return bag.items.length===15
-    &&bag.items.every(v=>['perfect','under','burnt'].includes(v))
-    &&(count.perfect||0)===order.counts.perfect
-    &&(count.under||0)===order.counts.under
-    &&(count.burnt||0)===order.counts.burnt;
-}
-
-/* ═══════════════════════════════
-   제스처 바인딩
-═══════════════════════════════ */
+/* ─── 3단계 제스처 바인딩 ─── */
 function bindGesture3(node,{tap=null,hold1=null,hold2=null,tapMax=220,holdDelay=500,hold2Delay=900,repeatDelay=180,moveThreshold=12,preventDefault=false}={}){
-  let pointerId=null,startX=0,startY=0,startTime=0,moved=false;
-  let h1Timer=null,h2Timer=null,repeatTimer=null,h1Fired=false;
-  const clearAll=()=>{clearTimeout(h1Timer);clearTimeout(h2Timer);clearInterval(repeatTimer);h1Timer=null;h2Timer=null;repeatTimer=null;};
-  const cleanup=()=>{
-    clearAll();
-    window.removeEventListener('pointerup',onUp,{capture:true});
-    window.removeEventListener('pointercancel',onUp,{capture:true});
-    window.removeEventListener('pointermove',onMove,{capture:true});
-    if(pointerId!==null){try{node.releasePointerCapture(pointerId);}catch(e){}}
-    pointerId=null;
-  };
-  const onMove=e=>{if(e.pointerId!==pointerId)return;if(Math.hypot(e.clientX-startX,e.clientY-startY)>moveThreshold)moved=true;};
-  const onUp=e=>{
-    if(e.pointerId!==pointerId)return;
-    const duration=Date.now()-startTime;
-    const wasTap=!h1Fired&&!moved&&duration<=tapMax;
-    cleanup();
-    if(wasTap&&tap)tap();
-  };
+  let ptId=null,sX=0,sY=0,sT=0,moved=false,h1T=null,h2T=null,repT=null,h1F=false;
+  const clrAll=()=>{clearTimeout(h1T);clearTimeout(h2T);clearInterval(repT);h1T=h2T=repT=null;};
+  const cleanup=()=>{clrAll();window.removeEventListener('pointerup',onUp,{capture:true});window.removeEventListener('pointercancel',onUp,{capture:true});window.removeEventListener('pointermove',onMv,{capture:true});if(ptId!==null){try{node.releasePointerCapture(ptId);}catch(e){}}ptId=null;};
+  const onMv=e=>{if(e.pointerId!==ptId)return;if(Math.hypot(e.clientX-sX,e.clientY-sY)>moveThreshold)moved=true;};
+  const onUp=e=>{if(e.pointerId!==ptId)return;const dur=Date.now()-sT;const wasTap=!h1F&&!moved&&dur<=tapMax;cleanup();if(wasTap&&tap)tap();};
   node.addEventListener('pointerdown',e=>{
-    if(pointerId!==null)return;
-    if(preventDefault)e.preventDefault();
-    pointerId=e.pointerId;startX=e.clientX;startY=e.clientY;startTime=Date.now();
-    moved=false;h1Fired=false;
+    if(ptId!==null)return;if(preventDefault)e.preventDefault();
+    ptId=e.pointerId;sX=e.clientX;sY=e.clientY;sT=Date.now();moved=false;h1F=false;
     try{node.setPointerCapture(e.pointerId);}catch(err){}
-    window.addEventListener('pointerup',onUp,{capture:true});
-    window.addEventListener('pointercancel',onUp,{capture:true});
-    window.addEventListener('pointermove',onMove,{capture:true});
-    h1Timer=setTimeout(()=>{
-      if(pointerId===null||moved)return;
-      h1Fired=true;
-      if(hold1)hold1();
-      h2Timer=setTimeout(()=>{
-        if(pointerId===null||moved)return;
-        if(hold2){
-          hold2();
-          repeatTimer=setInterval(()=>{
-            if(pointerId===null){cleanup();return;}
-            const res=hold2?hold2():true;
-            if(res===false){clearInterval(repeatTimer);repeatTimer=null;}
-          },repeatDelay);
-        }
-      },hold2Delay-holdDelay);
-    },holdDelay);
+    window.addEventListener('pointerup',onUp,{capture:true});window.addEventListener('pointercancel',onUp,{capture:true});window.addEventListener('pointermove',onMv,{capture:true});
+    const tutSpeed=(typeof tut!=='undefined'&&tut.active&&tut.stepIndex>=15)?5:1;const hd=holdDelay/tutSpeed, h2d=hold2Delay/tutSpeed, rd=repeatDelay/tutSpeed;h1T=setTimeout(()=>{if(ptId===null||moved)return;h1F=true;if(hold1)hold1();h2T=setTimeout(()=>{if(ptId===null||moved)return;if(hold2){hold2();repT=setInterval(()=>{if(ptId===null){cleanup();return;}if(hold2&&hold2()===false){clearInterval(repT);repT=null;}},rd);}},h2d-hd);},hd);
   });
 }
 
-/* ═══════════════════════════════
-   손님 쫓아내기
-═══════════════════════════════ */
+/* ─── 손님 쫓아내기 ─── */
 function bindGuestDismiss(guestEl,guestObj){
-  let ptId=null,hTimer=null,holding=false;
-  const cleanup=()=>{
-    clearTimeout(hTimer);hTimer=null;holding=false;
-    guestEl.classList.remove('holding');
-    window.removeEventListener('pointerup',onUp,{capture:true});
-    window.removeEventListener('pointercancel',onUp,{capture:true});
-    ptId=null;
-  };
-  const onUp=e=>{
-    if(e.pointerId!==ptId)return;
-    if(!holding){cleanup();deliverOrder(guestObj);tut.onAction('guestDeliver');}
-    else{cleanup();}
-  };
+  let ptId=null,hT=null,holding=false,moved=false,sX=0,sY=0;
+  const limit=12;
+  const cancel=()=>{clearTimeout(hT);hT=null;};
+  const cleanup=()=>{cancel();holding=false;moved=false;guestEl.classList.remove('holding');window.removeEventListener('pointerup',onUp,{capture:true});window.removeEventListener('pointercancel',onUp,{capture:true});window.removeEventListener('pointermove',onMove,{capture:true});ptId=null;};
+  const onMove=e=>{if(e.pointerId!==ptId)return;if(Math.hypot(e.clientX-sX,e.clientY-sY)>limit){moved=true;cancel();guestEl.classList.remove('holding');}};
+  const onUp=e=>{if(e.pointerId!==ptId)return;if(!holding&&!moved){cleanup();deliverOrder(guestObj);tut.onAction('guestDeliver');}else cleanup();};
   guestEl.addEventListener('pointerdown',e=>{
-    if(!guestObj.active)return;
-    if(ptId!==null)return;
-    ptId=e.pointerId;holding=false;
-    try{guestEl.setPointerCapture(e.pointerId);}catch(err){}
-    guestEl.classList.remove('holding');
-    window.addEventListener('pointerup',onUp,{capture:true});
-    window.addEventListener('pointercancel',onUp,{capture:true});
-    hTimer=setTimeout(()=>{
-      holding=true;guestEl.classList.add('holding');
-      hTimer=setTimeout(()=>{
-        if(ptId===null)return;
-        cleanup();dismissGuest(guestObj);tut.onAction('guestDismiss');
-      },500);
-    },500);
+    if(!guestObj.active||ptId!==null)return;ptId=e.pointerId;sX=e.clientX;sY=e.clientY;holding=false;moved=false;
+    try{guestEl.setPointerCapture(e.pointerId);}catch(err){} guestEl.classList.remove('holding');
+    window.addEventListener('pointerup',onUp,{capture:true});window.addEventListener('pointercancel',onUp,{capture:true});window.addEventListener('pointermove',onMove,{capture:true});
+    hT=setTimeout(()=>{if(ptId===null||moved)return;holding=true;guestEl.classList.add('holding');hT=setTimeout(()=>{if(ptId===null||moved)return;cleanup();dismissGuest(guestObj);tut.onAction('guestDismiss');},500);},500);
   });
 }
 function dismissGuest(guest){
   if(!guest.active)return;
-  const slot=guest.slot;
-  guest.active=false;guest.order=null;
-  $(`guest${slot}`).classList.remove('show','holding');
-  $(`order${slot}`).classList.remove('show');
-  const toast=document.createElement('div');
-  toast.className='dismiss-toast';toast.textContent='손님을 쫓아냈습니다!';
-  $('appRoot').appendChild(toast);
+  guest.active=false;guest.order=null;chestnutServeStage=0;adjustSatisfaction(-0.5);
+  $(`guest${guest.slot}`).classList.remove('show','holding');
+  $(`order${guest.slot}`).classList.remove('show');
+  const toast=document.createElement('div');toast.className='dismiss-toast';toast.textContent='손님을 쫓아냈습니다!';$('appRoot').appendChild(toast);
   setTimeout(()=>{toast.style.opacity='0';toast.style.transition='opacity .3s';setTimeout(()=>toast.remove(),300);},1200);
   syncTop();
 }
 
-/* ═══════════════════════════════
-   칼질 캔버스 (이어진 선)
-═══════════════════════════════ */
-let peelCtx=null,peelDrawing=false,peelLastX=0,peelLastY=0,peelFadeTimer=null;
+/* ─── 칼질 캔버스 ─── */
+let peelCtx=null;
+const peelSegments=[];
+const SEGMENT_LIFE=600;
 
 function initPeelCanvas(){
-  const canvas=el.peelCanvas;
-  const card=el.peelCard;
-  canvas.width=card.offsetWidth;
-  canvas.height=card.offsetHeight;
+  const canvas=el.peelCanvas,card=el.peelCard;
+  canvas.width=card.offsetWidth;canvas.height=card.offsetHeight;
   peelCtx=canvas.getContext('2d');
-  peelCtx.lineCap='round';
-  peelCtx.lineJoin='round';
+  peelCtx.lineCap='round';peelCtx.lineJoin='round';
+  peelSegments.length=0;
 }
+function clearPeelCanvas(){if(!peelCtx)return;peelCtx.clearRect(0,0,el.peelCanvas.width,el.peelCanvas.height);}
 
-function clearPeelCanvas(){
+let _peelRafId=null;
+function schedulePeelRedraw(){
+  if(_peelRafId)return;
+  _peelRafId=requestAnimationFrame(()=>{_peelRafId=null;redrawPeelCanvas();});
+}
+function redrawPeelCanvas(){
   if(!peelCtx)return;
-  peelCtx.clearRect(0,0,el.peelCanvas.width,el.peelCanvas.height);
-}
-
-function fadePeelCanvas(){
-  if(!peelCtx)return;
-  if(peelFadeTimer)clearTimeout(peelFadeTimer);
-  peelFadeTimer=setTimeout(()=>{
-    let alpha=1;
-    const step=()=>{
-      if(!peelCtx)return;
-      alpha-=0.08;
-      if(alpha<=0){clearPeelCanvas();return;}
-      const imgData=peelCtx.getImageData(0,0,el.peelCanvas.width,el.peelCanvas.height);
-      // 알파 채널만 줄이기
-      for(let i=3;i<imgData.data.length;i+=4){imgData.data[i]=Math.max(0,imgData.data[i]-20);}
-      peelCtx.putImageData(imgData,0,0);
-      requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  },300);
-}
-
-/* ═══════════════════════════════
-   렌더 함수
-═══════════════════════════════ */
-function renderTray(){
-  if(grill.length===0){el.tray.classList.add('empty');el.tray.innerHTML='';return;}
-  el.tray.classList.remove('empty');el.tray.innerHTML='';
-  grill.forEach(type=>{const meta=metaOf(type);const img=document.createElement('img');img.src=meta.img;if(meta.cls)img.className=meta.cls;el.tray.appendChild(img);});
-}
-
-function renderSlush(){
-  el.slushPanel.innerHTML='';
-  slushMachines.forEach((m,idx)=>{
-    const box=document.createElement('div');
-    box.className='slush-machine-new';
-    box.style.borderColor=m.flavor?FRUITS[m.flavor].color:'rgba(255,255,255,.08)';
-    const liquidFrac=m.serves<=0?0:Math.min(m.serves/30,1);
-    const liquidHeight=Math.round(liquidFrac*60); // 0~60%
-    const liquidColor=m.flavor?FRUITS[m.flavor].color:'#fff';
-    const txt=m.serves<=0?'비어있음':`${FRUITS[m.flavor].kr}<br>${m.serves}잔`;
-    box.innerHTML=`<div class="slush-liquid-new" style="height:${liquidHeight}%;background:${liquidColor};"></div><img class="slush-img-new" src="Slushmachine.png" alt=""><div class="slush-base-new"></div><div class="slush-text-new">${txt}</div>`;
-    box.addEventListener('click',()=>slushTouch(idx));
-    el.slushPanel.appendChild(box);
+  const now=Date.now();
+  while(peelSegments.length>0&&now-peelSegments[0].t>SEGMENT_LIFE)peelSegments.shift();
+  clearPeelCanvas();
+  peelSegments.forEach(seg=>{
+    const age=now-seg.t;
+    const alpha=Math.max(0,1-age/SEGMENT_LIFE);
+    peelCtx.beginPath();
+    peelCtx.moveTo(seg.x1,seg.y1);peelCtx.lineTo(seg.x2,seg.y2);
+    peelCtx.strokeStyle=`rgba(255,255,255,${alpha*0.92})`;
+    peelCtx.lineWidth=5;peelCtx.shadowColor=`rgba(255,255,255,${alpha*0.6})`;peelCtx.shadowBlur=10;
+    peelCtx.stroke();peelCtx.shadowBlur=0;
   });
+  if(peelSegments.length>0)schedulePeelRedraw();
+}
+function addPeelSegment(x1,y1,x2,y2){
+  peelSegments.push({x1,y1,x2,y2,t:Date.now()});
+  schedulePeelRedraw();
 }
 
+/* ─── 껍질 벗겨지기 애니메이션 ─── */
+let peelRevealPct=0;
+function updateRevealClip(){
+  el.peelImgReveal.style.clipPath=`inset(${100-peelRevealPct}% 0 0 0)`;
+}
+function animateReveal(targetPct){
+  const start=peelRevealPct;const diff=targetPct-start;let elapsed=0;const dur=150;
+  const step=()=>{elapsed+=16;const t=Math.min(1,elapsed/dur);peelRevealPct=start+diff*t;updateRevealClip();if(t<1)requestAnimationFrame(step);};
+  requestAnimationFrame(step);
+}
+
+/* ─── 렌더 함수 ─── */
+function getGrillDisplayKey(type){
+  if(!cooking)return type;
+  if(type==='raw_shell')return 'raw_inner';
+  if(['raw_inner','cut_raw','under_inner','under','perfect_inner','perfect','burnt_inner','burnt'].includes(type))return resultType(type);
+  return type;
+}
+function renderTray(){const s=sigTray();if(s===_traySig)return;_traySig=s;if(grill.length===0){el.tray.classList.add('empty');el.tray.innerHTML='';return;}el.tray.classList.remove('empty');el.tray.innerHTML='';grill.forEach(type=>{const meta=metaOf(getGrillDisplayKey(type));const img=document.createElement('img');img.src=meta.img;if(meta.cls)img.className=meta.cls;el.tray.appendChild(img);});}
+function renderSlush(){const s=sigSlush();if(s===_slushSig)return;_slushSig=s;el.slushPanel.innerHTML='';slushMachines.forEach((m,idx)=>{const box=document.createElement('div');box.className='slush-machine-new';box.style.borderColor=m.flavor?FRUITS[m.flavor].color:'rgba(255,255,255,.08)';const lf=m.serves<=0?0:Math.min(m.serves/30,1);const txt=m.serves<=0?'비어있음':`${FRUITS[m.flavor].kr}<br>${m.serves}잔`;box.innerHTML=`<div class="slush-liquid-new" style="height:${Math.round(lf*60)}%;background:${m.flavor?FRUITS[m.flavor].color:'#fff'};"></div><img class="slush-img-new" src="Slushmachine.png" alt=""><div class="slush-base-new"></div><div class="slush-text-new">${txt}</div>`;box.addEventListener('click',()=>slushTouch(idx));el.slushPanel.appendChild(box);});}
 function makeCard({key,name,img,qty,cls,selected=false,tap=null,hold1=null,hold2=null}){
-  const card=document.createElement('button');
-  card.className=`card${selected?' selected':''}`;
-  card.style.touchAction='pan-y';
-  if(key)card.dataset.type=key;
-  const displayImg=(key==='bag'||String(key).startsWith('bag_'))?'Paperbag.png':img;
-  card.innerHTML=`<img src="${displayImg}" class="${cls||''}" alt=""><div class="name">${name}</div><div class="qty">×${qty}</div>`;
-  if(tap||hold1||hold2){bindGesture3(card,{tap,hold1,hold2,preventDefault:false});}
+  const card=document.createElement('button');card.className=`card${selected?' selected':''}`;card.style.touchAction='pan-y';if(key)card.dataset.type=key;
+  const dImg=(key==='bag'||String(key).startsWith('bag_'))?'Paperbag.png':img;
+  card.innerHTML=`<img src="${dImg}" class="${cls||''}" alt=""><div class="name">${name}</div><div class="qty">×${qty}</div>`;
+  if(tap||hold1||hold2)bindGesture3(card,{tap,hold1,hold2,preventDefault:false});
   return card;
 }
-
 function renderInventory(){
-  normalizeSelection();
-  el.stockGrid.innerHTML='';
+  normalizeSelection();const s=sigInv();if(s===_invSig)return;_invSig=s;el.stockGrid.innerHTML='';
   CHN_KEYS.forEach(key=>{
     const count=inventory[key]||0;if(count<=0)return;
     const meta=metaOf(key);
     el.stockGrid.appendChild(makeCard({
       key,name:meta.name,img:meta.img,qty:count,cls:meta.cls||'',selected:selectedType===key,
-      tap:()=>{selectedType=key;selectedBagIndex=-1;renderInventory();if(tut.active&&key==='raw_inner'&&tut.stepIndex===3)tut.onAction('selectRawInner');if(tut.active&&key==='cut_raw'&&tut.stepIndex===6)tut.onAction('selectCutRaw');if(tut.active&&key==='perfect_inner'&&tut.stepIndex===10)tut.onAction('selectPerfectInner');},
+      tap:()=>{handleChestnutSelection(key);if(tut.active)tut.onTapItem(key);},
       hold1:()=>{if(selectedType==='bag')return addItemToSelectedBag(key);},
       hold2:()=>{if(selectedType==='bag')return addItemToSelectedBag(key);return false;}
     }));
   });
   if(inventory.bag>0||(selectedType==='bag'&&selectedBagIndex===-1)){
-    el.stockGrid.appendChild(makeCard({
-      key:'bag',name:'종이봉지',img:'Paperbag.png',qty:inventory.bag,cls:'bagcard',
-      selected:selectedType==='bag'&&selectedBagIndex===-1,
-      tap:()=>{selectedType='bag';selectedBagIndex=-1;renderInventory();if(tut.active&&(tut.stepIndex===10||tut.stepIndex===13))tut.onAction('selectBag');}
-    }));
+    el.stockGrid.appendChild(makeCard({key:'bag',name:'종이봉지',img:'Paperbag.png',qty:inventory.bag,cls:'bagcard',selected:selectedType==='bag'&&selectedBagIndex===-1,tap:()=>{selectBagCard(-1);tut.onAction('selectBag');}}));
   }
   bagStacks.forEach((bag,index)=>{
-    el.stockGrid.appendChild(makeCard({
-      key:`bag_${index}`,
-      name:`봉지 ${index+1}<br>(${bag.items.length}/15)`,
-      img:'Paperbag.png',qty:1,cls:'bagcard',
-      selected:selectedType==='bag'&&selectedBagIndex===index,
-      tap:()=>{selectedType='bag';selectedBagIndex=index;renderInventory();if(tut.active&&(tut.stepIndex===10||tut.stepIndex===13))tut.onAction('selectBag');},
-      hold1:()=>{openBagView(index);}
-    }));
+    el.stockGrid.appendChild(makeCard({key:`bag_${index}`,name:`봉지 ${index+1}<br>(${bag.items.length}/15)`,img:'Paperbag.png',qty:1,cls:'bagcard',selected:selectedType==='bag'&&selectedBagIndex===index,tap:()=>{selectBagCard(index);tut.onAction('selectBag');},hold1:()=>{openBagView(index);}}));
   });
-  if(inventory.cup>0){
-    el.stockGrid.appendChild(makeCard({
-      key:'cup',name:'컵',img:'Cup.png',qty:inventory.cup,cls:'soft',
-      selected:selectedType==='cup',
-      tap:()=>{selectedType='cup';selectedBagIndex=-1;renderInventory();}
-    }));
-  }
+  if(inventory.cup>0)el.stockGrid.appendChild(makeCard({key:'cup',name:'컵',img:'Cup.png',qty:inventory.cup,cls:'soft',selected:selectedType==='cup',tap:()=>{selectedType='cup';selectedBagIndex=-1;renderInventory();if(tut.active&&tut.stepIndex===21)tut.onAction('selectCup');}}));
   FRUIT_KEYS.forEach(k=>{
     const key=`syrup_${k}`;if((inventory[key]||0)<=0)return;
-    const meta=metaOf(key);
-    el.stockGrid.appendChild(makeCard({
-      key,name:meta.name.replace(' (1병)','<br>(1병)'),img:meta.img,qty:inventory[key],cls:meta.cls||'',
-      selected:selectedType===key,
-      tap:()=>{selectedType=key;selectedBagIndex=-1;renderInventory();}
-    }));
+    const meta=metaOf(key);el.stockGrid.appendChild(makeCard({key,name:meta.name.replace(' (1병)','<br>(1병)'),img:meta.img,qty:inventory[key],cls:meta.cls||'',selected:selectedType===key,tap:()=>{selectedType=key;selectedBagIndex=-1;renderInventory();if(tut.active&&tut.stepIndex===19&&key==='syrup_papaya')tut.onAction('selectSlushSyrup');}}));
   });
   FRUIT_KEYS.forEach(k=>{
     const key=`slush_${k}`;if((inventory[key]||0)<=0)return;
-    const meta=metaOf(key);
-    el.stockGrid.appendChild(makeCard({
-      key,name:meta.name,img:meta.img,qty:inventory[key],cls:meta.cls||'',
-      selected:selectedType===key,
-      tap:()=>{selectedType=key;selectedBagIndex=-1;renderInventory();},
-      hold1:()=>{if(selectedType==='bag')return addItemToSelectedBag(key);},
-      hold2:()=>{if(selectedType==='bag')return addItemToSelectedBag(key);return false;}
-    }));
+    const meta=metaOf(key);el.stockGrid.appendChild(makeCard({key,name:meta.name,img:meta.img,qty:inventory[key],cls:meta.cls||'',selected:selectedType===key,tap:()=>{selectedType=key;selectedBagIndex=-1;renderInventory();},hold1:()=>{if(selectedType==='bag')return addItemToSelectedBag(key);},hold2:()=>{if(selectedType==='bag')return addItemToSelectedBag(key);return false;}}));
   });
   renderTray();renderSlush();updateGauge();syncTop();
+  if(selectedType==='bag')scrollBagArea();
 }
 
-/* ═══════════════════════════════
-   봉지 관리
-═══════════════════════════════ */
+/* ─── 봉지 관리 ─── */
 function addItemToSelectedBag(itemType){
   if(!selectedType||selectedType!=='bag')return false;
   if(String(itemType).startsWith('slush_'))return false;
   if((inventory[itemType]||0)<=0)return false;
   let bagIndex=selectedBagIndex;
-  if(bagIndex<0){
-    if(inventory.bag<=0)return false;
-    bagStacks.push({items:[]});
-    bagIndex=bagStacks.length-1;
-    selectedBagIndex=bagIndex;
-    inventory.bag--;
-  }
-  const bag=bagStacks[bagIndex];
-  if(!bag)return false;
-  if(bag.items.length>=15)return false;
-  inventory[itemType]--;
-  bag.items.push(itemType);
-  renderInventory();
+  if(bagIndex<0){if(inventory.bag<=0)return false;bagStacks.push({items:[]});bagIndex=bagStacks.length-1;selectedBagIndex=bagIndex;inventory.bag--;}
+  const bag=bagStacks[bagIndex];if(!bag||bag.items.length>=15)return false;
+  inventory[itemType]--;bag.items.push(itemType);renderInventory();
   if(el.bagOverlay.classList.contains('show')&&bagStacks[bagIndex])renderBagView(bagIndex);
+  if(tut.active&&tut.stepIndex===16){const b=bagStacks[selectedBagIndex];if(b&&b.items.length>=15)tut.onAction('bagFull');}
   return true;
 }
-function openBagView(index){
-  const bag=bagStacks[index];if(!bag)return;
-  selectedType='bag';selectedBagIndex=index;
-  renderInventory();renderBagView(index);openOverlay(el.bagOverlay);
-}
-function handleBagRemoval(removedIndex){
-  if(selectedType!=='bag')return;
-  if(selectedBagIndex===removedIndex){
-    if(bagStacks.length===0)selectedBagIndex=-1;
-    else if(removedIndex>=bagStacks.length)selectedBagIndex=bagStacks.length-1;
-  }else if(selectedBagIndex>removedIndex){selectedBagIndex--;}
-}
-function removeItemFromBag(bagIndex,itemIndex){
-  const bag=bagStacks[bagIndex];if(!bag)return;
-  const removed=bag.items.splice(itemIndex,1)[0];
-  if(removed)inventory[removed]=(inventory[removed]||0)+1;
-  if(bag.items.length===0){bagStacks.splice(bagIndex,1);inventory.bag++;handleBagRemoval(bagIndex);}
-  renderInventory();
-  if(bagStacks.length===0){selectedBagIndex=-1;if(selectedType==='bag'&&inventory.bag===0)selectedType=null;closeOverlay(el.bagOverlay);return;}
-  const nextIndex=Math.max(0,Math.min(bagIndex,bagStacks.length-1));
-  if(el.bagOverlay.classList.contains('show'))renderBagView(nextIndex);
-}
-function renderBagView(index){
-  const bag=bagStacks[index];if(!bag)return;
-  el.bagList.dataset.index=String(index);
-  el.bagTitle.textContent=`봉지 내용 (${bag.items.length}/15)`;
-  el.bagList.innerHTML='';
-  const head=document.createElement('div');head.className='bag-card';
-  head.innerHTML=`<div class="bag-head"><div>${bag.items.length?'봉지 내용물':'비어있음'}</div><div>${bag.items.length}/15</div></div><div class="bag-sub">${summarizeBagItems(bag.items)}</div>`;
-  el.bagList.appendChild(head);
-  if(bag.items.length===0){const empty=document.createElement('div');empty.className='bag-sub';empty.style.padding='10px 2px 0';empty.textContent='봉지가 비었습니다.';el.bagList.appendChild(empty);return;}
-  const items=document.createElement('div');items.className='bag-items';
-  bag.items.forEach((key,itemIndex)=>{
-    const meta=metaOf(key);const btn=document.createElement('button');btn.className='bag-item';btn.dataset.index=String(itemIndex);
-    btn.innerHTML=`<img src="${meta.img}" class="${meta.cls||''}" alt=""><span>${meta.name}</span>`;
-    btn.onclick=()=>removeItemFromBag(index,itemIndex);
-    items.appendChild(btn);
-  });
-  el.bagList.appendChild(items);
-}
-function emptyCurrentBag(){
-  if(selectedType!=='bag'||selectedBagIndex<0)return;
-  const bag=bagStacks[selectedBagIndex];if(!bag)return;
-  bag.items.forEach(key=>inventory[key]=(inventory[key]||0)+1);
-  const removedIndex=selectedBagIndex;
-  bagStacks.splice(removedIndex,1);inventory.bag++;
-  handleBagRemoval(removedIndex);
-  renderInventory();
-  if(bagStacks.length===0){selectedBagIndex=-1;closeOverlay(el.bagOverlay);}
-  else{const nextIndex=Math.max(0,Math.min(removedIndex,bagStacks.length-1));renderBagView(nextIndex);}
-}
+function openBagView(index){const bag=bagStacks[index];if(!bag)return;chestnutServeStage=2;selectedType='bag';selectedBagIndex=index;renderInventory();renderBagView(index);openOverlay(el.bagOverlay);}
+function handleBagRemoval(removedIndex){if(selectedType!=='bag')return;if(selectedBagIndex===removedIndex){if(bagStacks.length===0)selectedBagIndex=-1;else if(removedIndex>=bagStacks.length)selectedBagIndex=bagStacks.length-1;}else if(selectedBagIndex>removedIndex)selectedBagIndex--;if(bagStacks.length===0)chestnutServeStage=0;}
+function removeItemFromBag(bagIndex,itemIndex){const bag=bagStacks[bagIndex];if(!bag)return;const removed=bag.items.splice(itemIndex,1)[0];if(removed)inventory[removed]=(inventory[removed]||0)+1;if(bag.items.length===0){bagStacks.splice(bagIndex,1);inventory.bag++;handleBagRemoval(bagIndex);}renderInventory();if(bagStacks.length===0){selectedBagIndex=-1;chestnutServeStage=0;closeOverlay(el.bagOverlay);return;}const ni=Math.max(0,Math.min(bagIndex,bagStacks.length-1));if(el.bagOverlay.classList.contains('show'))renderBagView(ni);}
+function renderBagView(index){const bag=bagStacks[index];if(!bag)return;const s=sigBag(index);if(s===_bagViewSig)return;_bagViewSig=s;el.bagList.dataset.index=String(index);el.bagTitle.textContent=`봉지 내용 (${bag.items.length}/15)`;el.bagList.innerHTML='';const head=document.createElement('div');head.className='bag-card';head.innerHTML=`<div class="bag-head"><div>${bag.items.length?'봉지 내용물':'비어있음'}</div><div>${bag.items.length}/15</div></div><div class="bag-sub">${summarizeBagItems(bag.items)}</div>`;el.bagList.appendChild(head);if(bag.items.length===0)return;const items=document.createElement('div');items.className='bag-items';bag.items.forEach((key,ii)=>{const meta=metaOf(key);const btn=document.createElement('button');btn.className='bag-item';btn.innerHTML=`<img src="${meta.img}" class="${meta.cls||''}" alt=""><span>${meta.name}</span>`;btn.onclick=()=>removeItemFromBag(index,ii);items.appendChild(btn);});el.bagList.appendChild(items);}
+function emptyCurrentBag(){if(selectedType!=='bag'||selectedBagIndex<0)return;const bag=bagStacks[selectedBagIndex];if(!bag)return;bag.items.forEach(key=>inventory[key]=(inventory[key]||0)+1);const ri=selectedBagIndex;bagStacks.splice(ri,1);inventory.bag++;handleBagRemoval(ri);renderInventory();if(bagStacks.length===0){selectedBagIndex=-1;chestnutServeStage=0;closeOverlay(el.bagOverlay);}else{renderBagView(Math.max(0,Math.min(ri,bagStacks.length-1)));}}
 
-/* ═══════════════════════════════
-   정보 렌더
-═══════════════════════════════ */
+/* ─── 정보 렌더 ─── */
 function renderInfo(){
-  const activeOrders=guests.filter(v=>v.active).map(g=>{
-    if(g.order.kind==='combo')return`#${g.slot+1} 콤보: ${g.order.text} [군밤:${g.order.chestnutDone?'완료':'대기'} / 슬러시:${g.order.slushDone?'완료':'대기'}]`;
-    const extra=g.order.kind==='slush'?g.order.text:`${g.order.mode==='special'?'특수':'일반'} / ${g.order.text}`;
-    return`#${g.slot+1} ${extra}`;
-  }).join('<br>')||'없음';
-  const slushStatus=slushMachines.map((m,i)=>{
-    const flavor=m.flavor?FRUITS[m.flavor].kr:'없음';
-    const fill=m.serves<=0?'비어있음':`${m.serves}잔`;
-    return`#${i+1} : ${flavor} / ${fill}`;
-  }).join('<br>');
-  const inventoryChestnuts=CHN_KEYS.map(k=>`${metaOf(k).name} ${inventory[k]}개`).join('<br>');
-  const bagSummary=bagStacks.length?bagStacks.map((b,i)=>`#${i+1} 봉지 (${b.items.length}/15) : ${summarizeBagItems(b.items)}`).join('<br>'):'없음';
-  const selectedLabel=selectedType?(selectedType==='bag'?(selectedBagIndex>=0&&bagStacks[selectedBagIndex]?`봉지 (${bagStacks[selectedBagIndex].items.length}/15)`:'종이봉지'):metaOf(selectedType).name):'없음';
+  const ao=guests.filter(v=>v.active).map(g=>{if(g.order.kind==='combo')return`#${g.slot+1} 밤+슬러시: ${g.order.text} [군밤:${g.order.chestnutDone?'완료':'대기'}/슬러시:${g.order.slushDone?'완료':'대기'}]`;return`#${g.slot+1} ${g.order.kind==='slush'?g.order.text:(g.order.mode==='special'?'특이취향:':'일반:')+g.order.text}`;}).join('<br>')||'없음';
+  const ss=slushMachines.map((m,i)=>`#${i+1}: ${m.flavor?FRUITS[m.flavor].kr:'없음'} / ${m.serves<=0?'비어있음':m.serves+'잔'}`).join('<br>');
+  const ic=CHN_KEYS.map(k=>`${metaOf(k).name} ${inventory[k]}개`).join('<br>');
+  const bs=bagStacks.length?bagStacks.map((b,i)=>`#${i+1}봉지(${b.items.length}/15): ${summarizeBagItems(b.items)}`).join('<br>'):'없음';
+  const sl=selectedType?(selectedType==='bag'?(selectedBagIndex>=0&&bagStacks[selectedBagIndex]?`봉지(${bagStacks[selectedBagIndex].items.length}/15)`:'종이봉지'):metaOf(selectedType).name):'없음';
   const state=cooking?'굽는 중':(grill.length>0?'대기 중':'비어있음');
-  const successRate=(stats.served+stats.failed)>0?((stats.served/(stats.served+stats.failed))*100).toFixed(1)+'%':'0%';
-  el.infoText.innerHTML=`<div class="info-box"><h3>현재 주문 정보</h3><p>${activeOrders}</p></div><div class="info-box"><h3>슬러시 상태</h3><p>${slushStatus}</p></div><div class="info-box"><h3>재고</h3><p>돈: ${money.toLocaleString()}원<br>컵: ${inventory.cup}개<br>종이봉지: ${inventory.bag}개<br>선택 중인 것: ${selectedLabel}<br>그릴: ${grill.length}개 / 최대 ${maxMachine}개</p></div><div class="info-box"><h3>봉투 내부 상태</h3><p>${bagSummary}</p></div><div class="info-box"><h3>군밤 종류별 개수</h3><p>${inventoryChestnuts}</p></div><div class="info-box"><h3>굽기 상태</h3><p>상태: ${state}<br>현재: ${current.toFixed(2)} / 목표: ${target.toFixed(2)}<br>성공 판정 범위: ±0.25</p></div><div class="info-box"><h3>판매 통계</h3><p>총 주문: ${stats.ordersCreated}회<br>군밤: ${stats.normalOrders+stats.specialOrders}회 / 슬러시: ${stats.slushOrders}회 / 콤보: ${stats.comboOrders}회<br>성공: ${stats.served}회 / 실패: ${stats.failed}회<br>총 매출: ${stats.revenue.toLocaleString()}원<br>성공률: ${successRate}<br><br>군밤 봉지: ${BAG_PRICE.toLocaleString()}원 / 슬러시: ${SLUSH_PRICE.toLocaleString()}원</p></div>`;
+  const sr=(stats.served+stats.failed)>0?((stats.served/(stats.served+stats.failed))*100).toFixed(1)+'%':'0%';
+  el.infoText.innerHTML=`<div class="info-box"><h3>현재 주문</h3><p>${ao}</p></div><div class="info-box"><h3>슬러시 상태</h3><p>${ss}</p></div><div class="info-box"><h3>재고</h3><p>돈: ${money.toLocaleString()}원<br>컵: ${inventory.cup}개<br>봉지: ${inventory.bag}개<br>선택: ${sl}<br>그릴: ${grill.length}/${maxMachine}</p></div><div class="info-box"><h3>봉투 상태</h3><p>${bs}</p></div><div class="info-box"><h3>군밤 재고</h3><p>${ic}</p></div><div class="info-box"><h3>굽기 상태</h3><p>${state}<br>현재: ${current.toFixed(2)} / 목표: ${target.toFixed(2)}</p></div><div class="info-box"><h3>판매 통계</h3><p>총 주문: ${stats.ordersCreated}회<br>성공: ${stats.served}회 / 실패: ${stats.failed}회<br>매출: ${stats.revenue.toLocaleString()}원<br>성공률: ${sr}</p></div>`;
 }
 
-/* ═══════════════════════════════
-   상점 UI
-═══════════════════════════════ */
+/* ─── 상점 UI ─── */
 function buildCartUI(){
   el.cartList.innerHTML='';
   const entries=Object.entries(cart).filter(([,q])=>q>0);
-  if(entries.length===0){
-    const empty=document.createElement('div');empty.className='cart-item noimg';
-    empty.innerHTML='<div class="cart-empty-text">장바구니가 비어있습니다<br>아래 목록에서 담으세요</div><div></div>';
-    el.cartList.appendChild(empty);
-  }else{
-    entries.forEach(([id,qty])=>{
-      const item=SHOP_ITEMS.find(v=>v.id===id);if(!item)return;
-      const row=document.createElement('div');row.className='cart-item';
-      row.innerHTML=`<img src="${item.img}" alt=""><div><div class="cart-item-title">${item.name}</div><div class="cart-item-sub">${item.desc} · ${item.price.toLocaleString()}원</div></div><div class="cart-step"><button data-act="minus">-</button><span>${qty}</span><button data-act="plus">+</button></div>`;
-      row.querySelector('[data-act="minus"]').onclick=()=>{cart[id]--;if(cart[id]<=0)delete cart[id];renderShop();};
-      row.querySelector('[data-act="plus"]').onclick=()=>{cart[id]++;renderShop();};
-      el.cartList.appendChild(row);
-    });
-  }
+  if(entries.length===0){const e=document.createElement('div');e.className='cart-item noimg';e.innerHTML='<div class="cart-empty-text">장바구니가 비어있습니다</div><div></div>';el.cartList.appendChild(e);}
+  else entries.forEach(([id,qty])=>{const item=SHOP_ITEMS.find(v=>v.id===id);if(!item)return;const row=document.createElement('div');row.className='cart-item';row.innerHTML=`<img src="${item.img}" alt=""><div><div class="cart-item-title">${item.name}</div><div class="cart-item-sub">${item.desc} · ${item.price.toLocaleString()}원</div></div><div class="cart-step"><button data-act="minus">-</button><span>${qty}</span><button data-act="plus">+</button></div>`;row.querySelector('[data-act="minus"]').onclick=()=>{cart[id]--;if(cart[id]<=0)delete cart[id];renderShop();};row.querySelector('[data-act="plus"]').onclick=()=>{cart[id]++;renderShop();};el.cartList.appendChild(row);});
   const sub=entries.reduce((sum,[id,qty])=>{const item=SHOP_ITEMS.find(v=>v.id===id);return sum+(item?item.price*qty:0);},0);
-  const shipping=entries.length?3000:0;const total=sub+shipping;
-  if(tut.active&&tut.stepIndex===1){
-    const hasChn=(cart['chestnutPack']||0)>0;
-    const hasBag=(cart['bagPack']||0)>0;
-    if(hasChn&&hasBag&&!tut._cartHasBoth)tut.onAction('shopCartAdd');
-  }
-  el.cartSub.textContent=sub.toLocaleString();el.cartShip.textContent=shipping.toLocaleString();el.cartTotal.textContent=total.toLocaleString();
-  el.checkoutBtn.textContent=entries.length?`장바구니 배송하기 (${total.toLocaleString()}원)`:'장바구니 배송하기';
+  const ship=entries.length?3000:0;
+  el.cartSub.textContent=sub.toLocaleString();el.cartShip.textContent=ship.toLocaleString();el.cartTotal.textContent=(sub+ship).toLocaleString();
+  el.checkoutBtn.textContent=entries.length?`장바구니 배송하기 (${(sub+ship).toLocaleString()}원)`:'장바구니 배송하기';
 }
 function renderShop(){
-  el.shopMaterials.innerHTML='';el.shopSyrups.innerHTML='';el.shopSupplies.innerHTML='';
+  el.shopMaterials.innerHTML='';el.shopSyrups.innerHTML='';el.shopSupplies.innerHTML='';updateSliceUpgradeUI();
   SHOP_ITEMS.forEach(item=>{
     const row=document.createElement('div');row.className='shop-item';
-    row.innerHTML=`<div class="shop-top"><img src="${item.img}" alt=""><div class="shop-text">${item.name}<br>${item.desc} · ${item.price.toLocaleString()}원<br>배송비 3000원</div></div><button class="shop-add">장바구니에 담기</button>`;
-    row.querySelector('.shop-add').onclick=()=>{cart[item.id]=(cart[item.id]||0)+1;renderShop();};
+    row.innerHTML=`<div class="shop-top"><img src="${item.img}" alt=""><div class="shop-text">${item.name}<br>${item.desc} · ${item.price.toLocaleString()}원</div></div><button class="shop-add" data-id="${item.id}">장바구니에 담기</button>`;
+    row.querySelector('.shop-add').onclick=()=>{
+      cart[item.id]=(cart[item.id]||0)+1;
+      if(tut.active&&(item.id==='bagPack'||item.id==='chestnutPack'))tutorialPurchased[item.id]=(tutorialPurchased[item.id]||0)+1;
+      if(tut.active&&tut.stepIndex===2&&item.id==='chestnutPack')tut.onAction('chestnutAdded');
+      if(tut.active&&tut.stepIndex===3&&item.id==='bagPack')tut.onAction('bagAdded');
+      renderShop();
+    };
     if(item.group==='재료')el.shopMaterials.appendChild(row);
     else if(item.group==='슬러시')el.shopSyrups.appendChild(row);
-    else el.shopSupplies.appendChild(row);
+    else el.shopSupplies.appendChild(row); // 용기 그룹
   });
   buildCartUI();
 }
-function checkoutCart(){
-  const entries=Object.entries(cart).filter(([,q])=>q>0);
-  if(entries.length===0)return;
-  let sub=0;entries.forEach(([id,qty])=>{const item=SHOP_ITEMS.find(v=>v.id===id);if(item)sub+=item.price*qty;});
-  const total=sub+3000;
-  if(money<total){alert('돈이 부족합니다.');return;}
-  money-=total;
-  entries.forEach(([id,qty])=>{const item=SHOP_ITEMS.find(v=>v.id===id);if(item)item.onBuy(qty);});
-  Object.keys(cart).forEach(k=>delete cart[k]);
-  syncTop();renderInventory();renderShop();
-}
+function checkoutCart(){const entries=Object.entries(cart).filter(([,q])=>q>0);if(entries.length===0)return;let sub=0;entries.forEach(([id,qty])=>{const item=SHOP_ITEMS.find(v=>v.id===id);if(item)sub+=item.price*qty;});const total=sub+3000;if(money<total){alert('돈이 부족합니다.');return;}money-=total;entries.forEach(([id,qty])=>{const item=SHOP_ITEMS.find(v=>v.id===id);if(item)item.onBuy(qty);});Object.keys(cart).forEach(k=>delete cart[k]);syncTop();renderInventory();renderShop();}
 
-/* ═══════════════════════════════
-   손님 & 주문
-═══════════════════════════════ */
+/* ─── 손님 & 주문 ─── */
 function spawnGuest(guest){
-  if(guest.active)return;
-  guest.active=true;guest.order=createOrder();
+  if(guest.active)return;guest.active=true;guest.order=createOrder();
   const guestEl=$(`guest${guest.slot}`),orderEl=$(`order${guest.slot}`),bubble=$(`bubble${guest.slot}`),badge=$(`badge${guest.slot}`);
   const ord=guest.order;
-  if(ord.kind==='slush'){
-    bubble.innerHTML=ord.text;
-    badge.textContent='슬러시';badge.className='badge wait slush';
-  }else if(ord.kind==='combo'){
-    bubble.innerHTML=ord.text;
-    badge.textContent='콤보';badge.className='badge wait combo';
-  }else if(ord.mode==='special'){
-    bubble.innerHTML=ord.text;
-    badge.textContent='특수';badge.className='badge wait special';
-  }else{
-    bubble.innerHTML=ord.text;
-    badge.textContent='일반';badge.className='badge wait normal';
-  }
-  guestEl.classList.add('show');orderEl.classList.add('show');
-  syncTop();
+  if(ord.kind==='slush'){bubble.innerHTML=ord.text;badge.textContent='슬러시';badge.className='badge wait slush';}
+  else if(ord.kind==='combo'){bubble.innerHTML=ord.text;badge.textContent='밤+슬러시';badge.className='badge wait combo';}
+  else if(ord.mode==='special'){bubble.innerHTML=ord.text;badge.textContent='특이취향';badge.className='badge wait special';}
+  else{bubble.innerHTML=ord.text;badge.textContent='일반 주문';badge.className='badge wait normal';}
+  guestEl.classList.add('show');orderEl.classList.add('show');syncTop();
 }
-function spawnGuestBatch(){
+function spawnGuestBatchActive(){
   const free=guests.filter(v=>!v.active);if(free.length===0)return;
-  const count=Math.min(free.length,1+(Math.random()<0.2?1:0));
-  for(let i=0;i<count;i++)spawnGuest(free[i]);
+  if(!(tut.active&&tut.stepIndex>=15)){if(Math.random()>getGuestSpawnChance())return;}
+  const phase=getTimePhase(gameMinutes);
+  const baseCount=(phase==='저녁'||phase==='밤')?2:1;
+  const extraChance=(phase==='저녁'||phase==='밤')?0.55:(phase==='오후'?0.3:0.12);
+  const count=Math.min(free.length,baseCount+(Math.random()<extraChance?1:0));
+  free.slice(0,count).forEach(g=>{
+    if(tut.active&&tut.stepIndex>=15){
+      g.active=true;g.order={kind:'chestnut',mode:'normal',counts:{perfect:15,under:0,burnt:0},total:15,text:'잘 익은 군밤 15개 주세요',payout:BAG_PRICE};
+      const guestEl=$(`guest${g.slot}`),orderEl=$(`order${g.slot}`),bubble=$(`bubble${g.slot}`),badge=$(`badge${g.slot}`);
+      bubble.innerHTML=g.order.text;badge.textContent='일반 주문';badge.className='badge wait normal';
+      guestEl.classList.add('show');orderEl.classList.add('show');syncTop();tut.onAction('guestSpawned');
+    }else spawnGuest(g);
+  });
 }
-
-/* 배달 처리 - 콤보 주문 지원 */
 function deliverOrder(guest){
   if(!guest.active||!guest.order)return;
-  const ord=guest.order;
-  const slot=guest.slot;
+  const ord=guest.order,slot=guest.slot;
   const guestEl=$(`guest${slot}`),orderEl=$(`order${slot}`),badge=$(`badge${slot}`);
-
-  // ── 슬러시 단일 ──
   if(ord.kind==='slush'){
-    const slushKey=`slush_${ord.flavor}`;
-    if(selectedType!==slushKey||(inventory[slushKey]||0)<=0)return;
-    inventory[slushKey]--;
-    money+=ord.payout;stats.revenue+=ord.payout;stats.served++;stats.slushSold++;
+    const sk=`slush_${ord.flavor}`;if(selectedType!==sk||(inventory[sk]||0)<=0)return;
+    inventory[sk]--;money+=ord.payout;stats.revenue+=ord.payout;stats.served++;stats.slushSold++;adjustSatisfaction(0.5);if(tut.active&&tut.stepIndex===24)tut.onAction('slushDeliver');
     badge.textContent='완료';badge.className='badge done';
-    if((inventory[slushKey]||0)<=0&&selectedType===slushKey)selectedType=null;
-    renderInventory();syncTop();
-    setTimeout(()=>{guest.active=false;guest.order=null;guestEl.classList.remove('show');orderEl.classList.remove('show');syncTop();},700);
-    return;
+    if((inventory[sk]||0)<=0&&selectedType===sk)selectedType=null;
+    renderInventory();setTimeout(()=>{guest.active=false;guest.order=null;guestEl.classList.remove('show');orderEl.classList.remove('show');syncTop();},700);return;
   }
-
-  // ── 군밤 단일 ──
   if(ord.kind==='chestnut'){
-    if(selectedType!=='bag'||selectedBagIndex<0)return;
-    const bag=bagStacks[selectedBagIndex];
-    if(!bag||!matchChestnutOrder(bag,ord))return;
-    money+=ord.payout;stats.revenue+=ord.payout;stats.served++;stats.chestnutsSold+=15;
-    const removedIndex=selectedBagIndex;
-    bagStacks.splice(removedIndex,1);handleBagRemoval(removedIndex);
-    badge.textContent='완료';badge.className='badge done';
+    if(chestnutServeStage<2||selectedType!=='bag'||selectedBagIndex<0){showToast('주문과 맞는 봉지를 선택하세요.');return;}
+    const bag=bagStacks[selectedBagIndex];if(!bag||!matchChestnutOrder(bag,ord)){showToast('잘 익은 군밤 15개가 담긴 봉지가 필요합니다.');return;}
+    money+=ord.payout;stats.revenue+=ord.payout;stats.served++;stats.chestnutsSold+=15;adjustSatisfaction(0.5);
+    const ri=selectedBagIndex;bagStacks.splice(ri,1);handleBagRemoval(ri);
+    badge.textContent='완료';badge.className='badge done';chestnutServeStage=0;
     if(bagStacks.length===0){selectedType=null;selectedBagIndex=-1;}
-    renderInventory();syncTop();
-    setTimeout(()=>{guest.active=false;guest.order=null;guestEl.classList.remove('show');orderEl.classList.remove('show');syncTop();},700);
-    return;
+    renderInventory();setTimeout(()=>{guest.active=false;guest.order=null;guestEl.classList.remove('show');orderEl.classList.remove('show');syncTop();},700);return;
   }
-
-  // ── 콤보 ──
   if(ord.kind==='combo'){
-    // 슬러시 배달 시도
-    if(!ord.slushDone){
-      const slushKey=`slush_${ord.flavor}`;
-      if(selectedType===slushKey&&(inventory[slushKey]||0)>0){
-        inventory[slushKey]--;
-        ord.slushDone=true;
-        stats.slushSold++;
-        renderInventory();
-        updateComboBubble(guest);
-        if(ord.chestnutDone){finalizeOrder(guest);return;}
-        return;
-      }
-    }
-    // 군밤 배달 시도
-    if(!ord.chestnutDone){
-      if(selectedType==='bag'&&selectedBagIndex>=0){
-        const bag=bagStacks[selectedBagIndex];
-        if(bag&&matchChestnutOrder(bag,ord.chestnut)){
-          stats.chestnutsSold+=15;
-          const removedIndex=selectedBagIndex;
-          bagStacks.splice(removedIndex,1);handleBagRemoval(removedIndex);
-          ord.chestnutDone=true;
-          if(bagStacks.length===0){selectedType=null;selectedBagIndex=-1;}
-          renderInventory();
-          updateComboBubble(guest);
-          if(ord.slushDone){finalizeOrder(guest);return;}
-          return;
-        }
-      }
-    }
+    if(!ord.slushDone){const sk=`slush_${ord.flavor}`;if(selectedType===sk&&(inventory[sk]||0)>0){inventory[sk]--;ord.slushDone=true;stats.slushSold++;renderInventory();updateComboBubble(guest);if(ord.chestnutDone){finalizeOrder(guest);}return;}}
+    if(!ord.chestnutDone){if(chestnutServeStage<2){showToast('먼저 주문에 맞는 봉지를 선택하세요.');return;}if(selectedType==='bag'&&selectedBagIndex>=0){const bag=bagStacks[selectedBagIndex];if(bag&&matchChestnutOrder(bag,ord.chestnut)){stats.chestnutsSold+=15;const ri=selectedBagIndex;bagStacks.splice(ri,1);handleBagRemoval(ri);ord.chestnutDone=true;chestnutServeStage=0;if(bagStacks.length===0){selectedType=null;selectedBagIndex=-1;}renderInventory();updateComboBubble(guest);if(ord.slushDone){finalizeOrder(guest);}return;}}}
   }
 }
-
-function updateComboBubble(guest){
-  const ord=guest.order;const slot=guest.slot;
-  const bubble=$(`bubble${slot}`),badge=$(`badge${slot}`);
-  const cTxt=ord.chestnutDone?'✅군밤':'⏳군밤';
-  const sTxt=ord.slushDone?`✅슬러시`:`⏳슬러시`;
-  bubble.innerHTML=`콤보: ${cTxt} / ${sTxt}`;
-  badge.textContent='콤보 진행중';badge.className='badge wait combo';
-}
-
-function finalizeOrder(guest){
-  const slot=guest.slot;
-  const guestEl=$(`guest${slot}`),orderEl=$(`order${slot}`),badge=$(`badge${slot}`);
-  const payout=guest.order.payout;
-  money+=payout;stats.revenue+=payout;stats.served++;
-  badge.textContent='완료';badge.className='badge done';
-  syncTop();
-  setTimeout(()=>{guest.active=false;guest.order=null;guestEl.classList.remove('show');orderEl.classList.remove('show');syncTop();},700);
-}
-
+function updateComboBubble(guest){const ord=guest.order,slot=guest.slot;const c=ord.chestnut;const chestText=c?(c.mode==='special'?'특이취향 군밤':'군밤'):'군밤';const slushText=`${FRUITS[ord.flavor].kr} 슬러시`;const bubble=$(`bubble${slot}`);bubble.innerHTML=`${chestText}: ${ord.chestnutDone?'✅ 완료':'⏳ 대기'}<br>${slushText}: ${ord.slushDone?'✅ 완료':'⏳ 대기'}`;const badge=$(`badge${slot}`);badge.textContent='밤+슬러시 진행중';badge.className='badge wait combo';}
+function finalizeOrder(guest){const slot=guest.slot;const guestEl=$(`guest${slot}`),orderEl=$(`order${slot}`),badge=$(`badge${slot}`);money+=guest.order.payout;stats.revenue+=guest.order.payout;stats.served++;adjustSatisfaction(guest.order.kind==='combo'?1.0:0.5);badge.textContent='완료';badge.className='badge done';chestnutServeStage=0;syncTop();setTimeout(()=>{guest.active=false;guest.order=null;guestEl.classList.remove('show');orderEl.classList.remove('show');syncTop();},700);}
 guests.forEach(g=>bindGuestDismiss($(`guest${g.slot}`),g));
 
-/* ═══════════════════════════════
-   슬러시 머신 - 병 추가 로직 개선
-   1병 = 15잔, 최대 30잔
-   현재 잔 수에 15 더하기 (최대 30 초과 불가)
-═══════════════════════════════ */
+/* ─── 슬러시 머신 ─── */
 function slushTouch(index){
-  const m=slushMachines[index];
-  const syrupKeys=FRUIT_KEYS.map(k=>`syrup_${k}`);
-
-  // 시럽 넣기
-  if(selectedType&&syrupKeys.includes(selectedType)){
-    if((inventory[selectedType]||0)<=0)return;
+  const m=slushMachines[index];const sk=FRUIT_KEYS.map(k=>`syrup_${k}`);
+  if(selectedType&&sk.includes(selectedType)){
+    if((inventory[selectedType]||0)<=0||m.serves>=30)return;
     const flavor=selectedType.replace('syrup_','');
-    // 이미 꽉 찼으면 안 됨
-    if(m.serves>=30)return;
-    // 맛이 다르면 안 됨 (이미 있을 때)
     if(m.serves>0&&m.flavor!==flavor)return;
-    inventory[selectedType]--;
-    m.flavor=flavor;
-    m.serves=Math.min(30,m.serves+15); // 현재 잔 수에 15 더하기
-    renderInventory();renderSlush();return;
+    inventory[selectedType]--;m.flavor=flavor;m.serves=Math.min(30,m.serves+15);renderInventory();if(tut.active&&tut.stepIndex===20)tut.onAction('fillSlush');return;
   }
-
-  // 컵으로 따르기 (재고에 추가)
-  if(selectedType==='cup'){
-    if(inventory.cup<=0||m.serves<=0)return;
-    inventory.cup--;inventory[`slush_${m.flavor}`]=(inventory[`slush_${m.flavor}`]||0)+1;
-    m.serves--;
-    if(m.serves<=0){m.flavor=null;}
-    renderInventory();renderSlush();return;
-  }
-
-  // 클릭 → 판매 모달
+  if(selectedType==='cup'){if(inventory.cup<=0||m.serves<=0)return;inventory.cup--;inventory[`slush_${m.flavor}`]=(inventory[`slush_${m.flavor}`]||0)+1;selectedType=`slush_${m.flavor}`;selectedBagIndex=-1;m.serves--;if(m.serves<=0)m.flavor=null;renderInventory();if(tut.active&&tut.stepIndex===22)tut.onAction('pourSlush');return;}
   if(m.serves>0){
     pendingSlushMachineIndex=index;
     el.slushSellTitle.textContent=`${FRUITS[m.flavor].kr} 슬러시 담기`;
@@ -1015,536 +803,437 @@ function slushTouch(index){
     openOverlay(el.slushSellOverlay);
   }
 }
-el.slushToCupBtn.onclick=()=>{
-  const idx=pendingSlushMachineIndex;if(idx<0)return;
-  const m=slushMachines[idx];
-  if(inventory.cup<=0){alert('컵이 없습니다.');return;}
-  if(m.serves<=0)return;
-  inventory.cup--;inventory[`slush_${m.flavor}`]=(inventory[`slush_${m.flavor}`]||0)+1;
-  m.serves--;
-  if(m.serves<=0){m.flavor=null;}
-  closeOverlay(el.slushSellOverlay);renderInventory();renderSlush();
-};
+el.slushToCupBtn.onclick=()=>{const idx=pendingSlushMachineIndex;if(idx<0)return;const m=slushMachines[idx];if(inventory.cup<=0){alert('컵이 없습니다.');return;}if(m.serves<=0)return;inventory.cup--;inventory[`slush_${m.flavor}`]=(inventory[`slush_${m.flavor}`]||0)+1;selectedType=`slush_${m.flavor}`;selectedBagIndex=-1;m.serves--;if(m.serves<=0)m.flavor=null;closeOverlay(el.slushSellOverlay);renderInventory();};
 el.slushSellCancelBtn.onclick=()=>{closeOverlay(el.slushSellOverlay);pendingSlushMachineIndex=-1;};
 el.slushSellOverlay.addEventListener('click',e=>{if(e.target===el.slushSellOverlay){closeOverlay(el.slushSellOverlay);pendingSlushMachineIndex=-1;}});
 
-/* ═══════════════════════════════
-   그릴 로직
-═══════════════════════════════ */
-function explodeChestnut(){
-  exploded=true;if(timer)clearInterval(timer);timer=null;cooking=false;
-  grill.forEach(()=>{inventory.burnt_inner++;});
-  grill=[];current=0;target=0;
-  renderTray();updateGauge();renderInventory();
-  alert('생 밤 (속껍질)이 터졌습니다!');
-}
-function startCooking(){
-  if(grill.length===0||cooking)return;
-  exploded=false;cooking=true;
-  timer=setInterval(()=>{
-    current=Number((current+0.01).toFixed(2));
-    if(!exploded){
-      const hasRawInner=grill.some(v=>v==='raw_inner');
-      if(hasRawInner&&current>=target*0.2){explodeChestnut();return;}
-    }
-    updateGauge();
-  },10);
-}
+/* ─── 그릴 로직 ─── */
+function explodeChestnut(){exploded=true;if(timer)clearInterval(timer);timer=null;cooking=false;grill.forEach(()=>{inventory.burnt_inner++;});grill=[];current=0;target=0;renderInventory();alert('생 밤 (속껍질)이 터졌습니다!');}
+function randomChestnutTarget(){return grill.length?getRoastTarget():0;}
+function startCooking(){if(grill.length===0||cooking)return;exploded=false;cooking=true;timer=setInterval(()=>{current=Number((current+0.01/(1+roastTimeUpgrades*0.25)).toFixed(2));if(!exploded){const hasRaw=grill.some(v=>v==='raw_inner');if(hasRaw&&current>=target*0.2){explodeChestnut();return;}}renderTray();updateGauge();},10);}
 function takeOutAll(){
   if(grill.length===0)return;
+  const tutRes=grill.length>0?resultType(grill[0]):null;
   if(timer)clearInterval(timer);timer=null;cooking=false;exploded=false;
-  grill.forEach(type=>{inventory[resultType(type)]++;});
-  grill=[];current=0;target=0;
-  renderInventory();renderTray();updateGauge();
+  grill.forEach(type=>{inventory[resultType(type)]++;});grill=[];current=0;target=0;renderInventory();
+  if(tut.active&&tut.stepIndex===11){
+    if(tutRes==='under_inner'||tutRes==='burnt_inner'){
+      const badKey=tutRes==='under_inner'?'under_inner':'burnt_inner';
+      inventory.cut_raw=(inventory.cut_raw||0)+(inventory[badKey]||0);inventory[badKey]=0;inventory.cut_raw+=(tutRes==='under_inner'||tutRes==='burnt_inner')?0:0;
+      selectedType='cut_raw';selectedBagIndex=-1;
+      tut.stepIndex=8;tut.waitingFor='grillInsert';renderInventory();
+      tut.showNotice(tutRes==='under_inner'?'<b>덜 익었네요!</b><br>다시 구워보죠.':'<b>많이 익었네요!</b><br>다시 구워보죠.',8);return;
+    }
+    tut.onAction('heatTouchOut');
+  }
 }
 function chestnutTouch(){if(grill.length===0)return;if(cooking)takeOutAll();else startCooking();}
-function insertSelectedToGrill(){
-  if(!selectedType)return false;
-  if(!CHN_KEYS.includes(selectedType))return false;
-  if((inventory[selectedType]||0)<=0)return false;
-  if(grill.length>=maxMachine)return false;
-  inventory[selectedType]--;grill.push(selectedType);
-  if(grill.length===1)target=randomChestnutTarget();
-  target+=0.35;
-  renderInventory();renderTray();updateGauge();
-  return true;
-}
-function removeLastFromGrill(){
-  if(grill.length===0)return false;
-  const removed=grill.pop();inventory[removed]++;
-  if(grill.length===0){if(timer)clearInterval(timer);timer=null;cooking=false;current=0;target=0;}
-  else target=Math.max(0.5,target-.35);
-  renderInventory();renderTray();updateGauge();
-  return true;
-}
+function insertSelectedToGrill(){if(cooking||!selectedType||!CHN_KEYS.includes(selectedType)||(inventory[selectedType]||0)<=0||grill.length>=maxMachine)return false;inventory[selectedType]--;grill.push(selectedType);target=randomChestnutTarget();renderInventory();return true;}
+function removeLastFromGrill(){if(cooking||grill.length===0)return false;const removed=grill.pop();inventory[removed]++;if(grill.length===0){if(timer)clearInterval(timer);timer=null;cooking=false;current=0;target=0;}else target=randomChestnutTarget();renderInventory();return true;}
 
 bindGesture3(el.tray,{tap:()=>{const r=insertSelectedToGrill();if(r)tut.onAction('grillInsert');},hold1:removeLastFromGrill,hold2:removeLastFromGrill});
-el.heatControl.addEventListener('pointerdown',e=>{e.preventDefault();chestnutTouch();tut.onAction('heatTouch');});
+el.heatControl.addEventListener('pointerdown',e=>{
+  e.preventDefault();
+  const wasCooking=cooking;
+  chestnutTouch();
+  if(!wasCooking)tut.onAction('heatTouchStart');
+  else tut.onAction('heatTouchOut');
+});
 
-/* ═══════════════════════════════
-   버튼 이벤트
-═══════════════════════════════ */
-$('clearBtn').onclick=()=>{selectedType=null;selectedBagIndex=-1;renderInventory();};
+/* ─── 버튼 이벤트 ─── */
+$('clearBtn').onclick=()=>{selectedType=null;selectedBagIndex=-1;chestnutServeStage=0;renderInventory();};
 $('discardBtn').onclick=()=>{
   if(!selectedType)return;
-  if(selectedType==='bag'){
-    if(selectedBagIndex>=0){
-      bagStacks.splice(selectedBagIndex,1);handleBagRemoval(selectedBagIndex);
-      if(bagStacks.length===0){selectedType=null;selectedBagIndex=-1;}
-      renderInventory();
-      if(bagStacks.length>0){const nextIndex=Math.max(0,Math.min(selectedBagIndex,bagStacks.length-1));if(el.bagOverlay.classList.contains('show'))renderBagView(nextIndex);}
-      else closeOverlay(el.bagOverlay);return;
-    }
-    if(inventory.bag<=0)return;inventory.bag--;renderInventory();return;
-  }
-  if(selectedType==='under_inner'||selectedType==='burnt_inner'){
-    if((inventory[selectedType]||0)<=0)return;
-    inventory[selectedType]--;
-    inventory.raw_inner=(inventory.raw_inner||0)+1;
-    selectedType='raw_inner';
-    selectedBagIndex=-1;
-    renderInventory();
-    return;
-  }
+  if(selectedType==='bag'){if(selectedBagIndex>=0){const ri=selectedBagIndex;bagStacks.splice(ri,1);handleBagRemoval(ri);if(bagStacks.length===0){selectedType=null;selectedBagIndex=-1;}renderInventory();if(bagStacks.length>0){const ni=Math.max(0,Math.min(ri,bagStacks.length-1));if(el.bagOverlay.classList.contains('show'))renderBagView(ni);}else closeOverlay(el.bagOverlay);return;}if(inventory.bag<=0)return;inventory.bag--;renderInventory();return;}
+  if(selectedType==='under_inner'||selectedType==='burnt_inner'){if((inventory[selectedType]||0)<=0)return;inventory[selectedType]--;inventory.raw_inner=(inventory.raw_inner||0)+1;selectedType='raw_inner';selectedBagIndex=-1;renderInventory();return;}
   if((inventory[selectedType]||0)<=0)return;inventory[selectedType]--;renderInventory();
 };
-
 function toggleShop(){
   shopOpen=!shopOpen;
-  if(shopOpen){
-    el.shopStatus.textContent='영업중';el.shopStatus.className='status on';
-    $('shopBtn').textContent='🏪 장사 종료';
-    if(guestLoop)clearInterval(guestLoop);
-    spawnGuestBatchActive();
-    guestLoop=setInterval(spawnGuestBatchActive,2500);
-  }else{
-    el.shopStatus.textContent='영업 종료';el.shopStatus.className='status off';
-    $('shopBtn').textContent='🏪 장사 시작';
-    if(guestLoop)clearInterval(guestLoop);guestLoop=null;
-    guests.forEach(g=>{
-      g.active=false;g.order=null;
-      $(`guest${g.slot}`).classList.remove('show','holding');
-      $(`order${g.slot}`).classList.remove('show');
-    });
-    syncTop();
-  }
+  if(shopOpen){el.shopStatus.textContent='영업중';el.shopStatus.className='status on';$('shopBtn').textContent='🏪 장사 종료';stopGuestLoop();spawnGuestBatchActive();scheduleGuestLoop();}
+  else{el.shopStatus.textContent='영업 종료';el.shopStatus.className='status off';$('shopBtn').textContent='🏪 장사 시작';stopGuestLoop();guests.forEach(g=>{g.active=false;g.order=null;$(`guest${g.slot}`).classList.remove('show','holding');$(`order${g.slot}`).classList.remove('show');});syncTop();}
 }
-function spawnGuestBatchActive(){
-  const free=guests.filter(v=>!v.active);if(free.length===0)return;
-  const count=Math.min(free.length,tut.active?1:(1+(Math.random()<0.2?1:0)));
-  free.slice(0,count).forEach(g=>{
-    if(tut.active&&tut.stepIndex>=15){
-      g.active=true;
-      g.order={kind:'chestnut',mode:'normal',counts:{perfect:15,under:0,burnt:0},total:15,text:'잘 익은 군밤 15개 주세요',payout:BAG_PRICE};
-      const guestEl=$(`guest${g.slot}`),orderEl=$(`order${g.slot}`),bubble=$(`bubble${g.slot}`),badge=$(`badge${g.slot}`);
-      bubble.innerHTML=g.order.text;badge.textContent='일반';badge.className='badge wait normal';
-      guestEl.classList.add('show');orderEl.classList.add('show');
-      syncTop();tut.onAction('guestSpawned');
-    }else{spawnGuest(g);}
-  });
-}
-
 $('shopBtn').onclick=()=>{toggleShop();tut.onAction('shopBtn');};
 $('storeBtn').onclick=()=>{openOverlay(el.shopOverlay);renderShop();tut.onAction('storeBtn');};
 $('checkoutBtn').onclick=()=>{checkoutCart();tut.onAction('checkoutBtn');};
 $('infoBtn').onclick=()=>{renderInfo();openOverlay(el.infoOverlay);};
 $('bagCloseBtn').onclick=()=>closeOverlay(el.bagOverlay);
+$('bagCloseModalBtn').onclick=()=>closeOverlay(el.bagOverlay);
 $('bagEmptyBtn').onclick=()=>emptyCurrentBag();
 $('infoCloseBtn').onclick=()=>closeOverlay(el.infoOverlay);
-$('upgradeCapBtn').onclick=()=>{if(money<50000)return;money-=50000;maxMachine+=5;syncTop();};
-$('upgradeRangeBtn').onclick=()=>{if(money<50000)return;if(timingRange<=0.5)return;money-=50000;timingRange=Math.max(0.5,timingRange-.35);syncTop();};
+$('infoCloseModalBtn').onclick=()=>closeOverlay(el.infoOverlay);
+$('shopCloseBtn').onclick=()=>{closeOverlay(el.shopOverlay);tut.onAction('shopOverlayClosed');};
+$('upgradeCapBtn').onclick=()=>{const cost=30000;if(money<cost)return;money-=cost;maxMachine+=5;syncTop();};
+$('upgradeRangeBtn').onclick=()=>{const cost=40000;if(money<cost||timingRange<=0.5)return;money-=cost;timingRange=Math.max(0.5,timingRange-.2);updateGauge();syncTop();};
+$('upgradeSliceBtn').onclick=()=>{const cost=sliceUpgradeCost();if(money<cost)return;money-=cost;sliceLevel++;slicePerSwipe=1+sliceLevel;updateSliceUpgradeUI();syncTop();};
+$('upgradeRoastBtn').onclick=()=>{const cost=35000;if(money<cost)return;money-=cost;roastTimeUpgrades++;syncTop();};
 el.shopOverlay.addEventListener('click',e=>{if(e.target===el.shopOverlay){closeOverlay(el.shopOverlay);tut.onAction('shopOverlayClosed');}});
-el.peelOverlay.addEventListener('click',e=>{
-  if(e.target===el.peelOverlay){
-    closeOverlay(el.peelOverlay);
-    clearPeelCanvas();
-    el.peelOverlay.dataset.peelType='';
-    el.peelOverlay.dataset.peelDone='0';
-    el.peelOverlay.dataset.peelTotal='0';
-  }
-});
 el.bagOverlay.addEventListener('click',e=>{if(e.target===el.bagOverlay)closeOverlay(el.bagOverlay);});
 el.infoOverlay.addEventListener('click',e=>{if(e.target===el.infoOverlay)closeOverlay(el.infoOverlay);});
+const sliceUpgradeCost=()=>Math.round(8000*Math.pow(1.35,sliceLevel));
+function updateSliceUpgradeUI(){if(!el.upgradeSliceBtn)return;el.upgradeSliceBtn.innerHTML=`한 번 썰 때 썰리는 개수 +${sliceLevel+1}<br>${sliceUpgradeCost().toLocaleString()}원`;}
 
-/* 칼 버튼 */
+/* ─── 칼 버튼 ─── */
 $('knifeBtn').onclick=()=>{
-  if(!selectedType)return;
-  if(!STAGES[selectedType]||!STAGES[selectedType].next)return;
-  if((inventory[selectedType]||0)<=0)return;
-  el.peelImg.src=STAGES[selectedType].img;
-  el.peelName.textContent=STAGES[selectedType].name;
-  el.peelOverlay.dataset.peelType=selectedType;
+  if(!selectedType||!STAGES[selectedType]||!STAGES[selectedType].next||(inventory[selectedType]||0)<=0)return;
+  const type=selectedType;const stage=STAGES[type];
+  el.peelImgBase.src=stage.img;
+  el.peelImgReveal.src=stage.revealImg||STAGES[stage.next]?.img||stage.img;
+  el.peelName.textContent=stage.name;
+  el.peelOverlay.dataset.peelType=type;
   el.peelOverlay.dataset.peelDone='0';
-  el.peelOverlay.dataset.peelTotal=String(inventory[selectedType]);
-  el.peelCount.textContent=`0 / ${inventory[selectedType]}`;
+  el.peelOverlay.dataset.peelTotal=String(inventory[type]);
+  el.peelCount.textContent=`0 / ${inventory[type]}`;
+  peelRevealPct=0;updateRevealClip();
   openOverlay(el.peelOverlay);
-  // 오버레이가 표시된 후 캔버스 초기화
-  requestAnimationFrame(()=>{
-    requestAnimationFrame(()=>{
-      initPeelCanvas();
-      clearPeelCanvas();
-    });
-  });
-  tut.onAction('knifeBtn');
-};
-
-/* ═══════════════════════════════
-   칼질 스와이프 - 개선된 이어진 선 버전
-   핵심 수정:
-   1. peelCard의 z-index를 tut보다 낮게 유지하되,
-      스와이프 이벤트는 peelCard에서 직접 받음
-   2. 이어진 선: canvas path로 drawLine
-   3. 튜토리얼 중에도 pointer-events 정상 동작
-═══════════════════════════════ */
-(()=>{
-  let ptId=null,drawing=false,lastX=0,lastY=0,traveled=0,triggered=false;
-  const SWIPE_DIST=20; // 더 민감하게 (30→20)
-
-  function drawLine(x1,y1,x2,y2){
-    if(!peelCtx)return;
-    peelCtx.beginPath();
-    peelCtx.moveTo(x1,y1);
-    peelCtx.lineTo(x2,y2);
-    peelCtx.strokeStyle='rgba(255,255,255,0.92)';
-    peelCtx.lineWidth=5;
-    peelCtx.shadowColor='rgba(255,255,255,0.6)';
-    peelCtx.shadowBlur=10;
-    peelCtx.stroke();
-    peelCtx.shadowBlur=0;
-    // 페이드 타이머 갱신
-    fadePeelCanvas();
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{initPeelCanvas();}));
+  if(tut.active){
+    if(tut.stepIndex===6)tut.onAction('knifeBtn');
+    else if(tut.stepIndex===13)tut.onAction('knifeBtn');
   }
+};
+$('peelCloseBtn').onclick=()=>{
+  closeOverlay(el.peelOverlay);peelSegments.length=0;clearPeelCanvas();
+  el.peelOverlay.dataset.peelType='';el.peelOverlay.dataset.peelDone='0';el.peelOverlay.dataset.peelTotal='0';
+};
+el.peelOverlay.addEventListener('click',e=>{
+  if(e.target===el.peelOverlay){closeOverlay(el.peelOverlay);peelSegments.length=0;clearPeelCanvas();el.peelOverlay.dataset.peelType='';el.peelOverlay.dataset.peelDone='0';el.peelOverlay.dataset.peelTotal='0';}
+});
+
+/* ═══════════════════════════════════════════════════
+   칼질 스와이프 — 핵심 수정:
+   1) 전체 항목 소진 시에만 다음 단계 진행
+   2) 스와이프 연속 허용 (traveled 리셋 + fired 없음)
+   ═══════════════════════════════════════════════════ */
+(()=>{
+  let ptId=null,drawing=false,lastX=0,lastY=0,traveled=0;
+  // fired 제거 → 연속 스와이프 허용
+  const SWIPE_DIST=14; // 최소 스와이프 거리(px)
+  const SWIPE_COOLDOWN=24; // ms: 튜토리얼 칼질은 5배 빠르게
+  let lastSliceAt=0;
 
   function doSlice(){
-    const type=el.peelOverlay.dataset.peelType;if(!type)return;
-    if((inventory[type]||0)<=0)return;
-    inventory[type]--;inventory[STAGES[type].next]++;
-    const done=Number(el.peelOverlay.dataset.peelDone||0)+1,total=Number(el.peelOverlay.dataset.peelTotal||0);
+    const now=Date.now();
+    if(now-lastSliceAt<SWIPE_COOLDOWN)return false;
+    const type=el.peelOverlay.dataset.peelType;
+    if(!type||(inventory[type]||0)<=0)return false;
+    const next=STAGES[type].next;
+    if(!next)return false;
+
+    lastSliceAt=now;
+    el.peelCard.classList.remove('knife-slice-flash');
+    void el.peelCard.offsetWidth;
+    el.peelCard.classList.add('knife-slice-flash');
+    if(tut.active&&!el.peelCard.querySelector('.tut-speed-note')){const n=document.createElement('div');n.className='tut-speed-note';n.textContent='튜토리얼 속도 5배 적용됨';n.style.cssText='position:absolute;left:50%;bottom:8px;transform:translateX(-50%);z-index:30;background:#ffd768;color:#1a1200;border-radius:999px;padding:4px 9px;font-size:10px;font-weight:900;white-space:nowrap;pointer-events:none';el.peelCard.appendChild(n);} 
+    const amount=Math.min(slicePerSwipe,inventory[type]);
+    inventory[type]-=amount;
+    inventory[next]+=amount;
+    const done=Number(el.peelOverlay.dataset.peelDone||0)+amount;
+    const total=Number(el.peelOverlay.dataset.peelTotal||0);
     el.peelOverlay.dataset.peelDone=String(done);
     el.peelCount.textContent=`${done} / ${total}`;
+
+    const pct=total>0?(done/total)*100:0;
+    animateReveal(Math.min(100,pct));
     renderInventory();
+
+    // 튜토리얼 알림 (매 스와이프마다)
     tut.onAction('peelSwipe');
+
+    // ★ 전량 소진 시에만 닫기 + 단계 진행
     if(inventory[type]<=0){
       setTimeout(()=>{
         closeOverlay(el.peelOverlay);
+        peelSegments.length=0;
         clearPeelCanvas();
         el.peelOverlay.dataset.peelType='';
-        el.peelOverlay.dataset.peelDone='0';
-        el.peelOverlay.dataset.peelTotal='0';
-      },100);
+      },150);
     }
+    return true;
   }
 
-  // peelCard에 직접 이벤트 - capture:true 로 튜토리얼 오버레이보다 먼저 받음
   el.peelCard.addEventListener('pointerdown',e=>{
-    // 오버레이가 열려 있지 않으면 무시
     if(!el.peelOverlay.classList.contains('show'))return;
     if(ptId!==null)return;
     ptId=e.pointerId;
-    drawing=true;triggered=false;traveled=0;
+    drawing=true;
+    traveled=0;
     const box=el.peelCard.getBoundingClientRect();
     lastX=e.clientX-box.left;
     lastY=e.clientY-box.top;
-    // 캔버스가 없으면 초기화
     if(!peelCtx)initPeelCanvas();
     try{el.peelCard.setPointerCapture(e.pointerId);}catch(err){}
+    e.preventDefault();
     e.stopPropagation();
   },{capture:true});
 
   el.peelCard.addEventListener('pointermove',e=>{
     if(!drawing||e.pointerId!==ptId)return;
     const box=el.peelCard.getBoundingClientRect();
-    const cx=e.clientX-box.left;
-    const cy=e.clientY-box.top;
+    const cx=e.clientX-box.left,cy=e.clientY-box.top;
+    addPeelSegment(lastX,lastY,cx,cy);
     const dx=cx-lastX,dy=cy-lastY;
-    const step=Math.hypot(dx,dy);
-
-    // 선 그리기
-    drawLine(lastX,lastY,cx,cy);
-    traveled+=step;
-
-    if(!triggered&&traveled>=SWIPE_DIST){
-      triggered=true;traveled=0;
+    traveled+=Math.hypot(dx,dy);
+    // SWIPE_DIST 초과 시마다 썰기 실행 후 traveled 리셋 → 연속 썰기
+    if(traveled>=SWIPE_DIST){
       doSlice();
-      // 80ms 뒤 다음 슬라이스 허용 (연속 스와이프)
-      setTimeout(()=>{triggered=false;},80);
+      traveled=0; // ★ 리셋으로 연속 스와이프 허용
     }
-
     lastX=cx;lastY=cy;
+    e.preventDefault();
     e.stopPropagation();
   },{capture:true});
 
   const endSlice=e=>{
     if(e.pointerId!==ptId)return;
-    drawing=false;ptId=null;triggered=false;traveled=0;
+    drawing=false;
+    ptId=null;
+    traveled=0;
   };
   el.peelCard.addEventListener('pointerup',endSlice,{capture:true});
   el.peelCard.addEventListener('pointercancel',endSlice,{capture:true});
-  el.peelCard.addEventListener('pointerleave',endSlice,{capture:true});
 })();
 
-/* stockGrid 클릭 → 튜토리얼 감지 */
-$('stockGrid').addEventListener('click',()=>{
-  if(!tut.active)return;
-  setTimeout(()=>{
-    if(tut.stepIndex===3&&selectedType==='raw_inner')tut.onAction('selectRawInner');
-    if(tut.stepIndex===6&&selectedType==='cut_raw')tut.onAction('selectCutRaw');
-    if(tut.stepIndex===10&&selectedType==='perfect_inner')tut.onAction('selectPerfectInner');
-    if(tut.stepIndex===13&&selectedType==='bag')tut.onAction('selectBag');
-  },50);
-},true);
-
-/* ═══════════════════════════════
-   튜토리얼 시스템
-═══════════════════════════════ */
+/* ══════════════════════════════════════════
+   튜토리얼 시스템 (18단계)
+══════════════════════════════════════════ */
+function beginSlushTutorial(){
+  inventory.syrup_papaya=(inventory.syrup_papaya||0)+1;inventory.cup=(inventory.cup||0)+1;renderInventory();
+}
+function spawnSlushTutorialGuest(){
+  const g=guests[0];g.active=true;g.order={kind:'slush',flavor:'papaya',total:1,text:'파파야 슬러시 1개 주세요',payout:SLUSH_PRICE};
+  $('bubble0').innerHTML=g.order.text;$('badge0').textContent='슬러시';$('badge0').className='badge wait slush';$('guest0').classList.add('show');$('order0').classList.add('show');syncTop();tut.onAction('slushGuestSpawned');
+}
 const tut={
   active:false,stepIndex:0,waitingFor:null,
-  tutEl:{spotlight:$('tutSpotlight'),highlight:$('tutHighlight'),bubble:$('tutBubble'),skip:$('tutSkipBtn')},
-  _activeTarget:null,_heatTouches:0,
+  tutEl:{spotlight:$('tutSpotlight'),highlight:$('tutHighlight'),bubble:$('tutBubble'),skip:$('tutSkipBtn'),start:$('tutStartBtn')},
 
   _updateSpotlight(rect){
-    const appRect=$('appRoot').getBoundingClientRect();
+    const aR=$('appRoot').getBoundingClientRect();
     if(!rect){this.tutEl.spotlight.style.clipPath='none';return;}
-    const pad=8;
-    const x1=rect.left-appRect.left-pad;
-    const y1=rect.top-appRect.top-pad;
-    const x2=x1+(rect.width+pad*2);
-    const y2=y1+(rect.height+pad*2);
-    const W=appRect.width,H=appRect.height;
-    this.tutEl.spotlight.style.clipPath=
-      `polygon(0 0,${W}px 0,${W}px ${H}px,0 ${H}px,0 0,`+
-      `${x1}px ${y1}px,${x1}px ${y2}px,${x2}px ${y2}px,${x2}px ${y1}px,${x1}px ${y1}px)`;
+    const pad=8,x1=rect.left-aR.left-pad,y1=rect.top-aR.top-pad,x2=x1+(rect.width+pad*2),y2=y1+(rect.height+pad*2),W=aR.width,H=aR.height;
+    this.tutEl.spotlight.style.clipPath=`polygon(0 0,${W}px 0,${W}px ${H}px,0 ${H}px,0 0,${x1}px ${y1}px,${x1}px ${y2}px,${x2}px ${y2}px,${x2}px ${y1}px,${x1}px ${y1}px)`;
   },
 
-  highlight(selector,bubbleText,arrowDir='top',bubbleOffsetY=0){
+  highlight(selector,bubbleHtml,arrowDir='top'){
     const el2=typeof selector==='string'?document.querySelector(selector):selector;
-    const appRect=$('appRoot').getBoundingClientRect();
+    const aR=$('appRoot').getBoundingClientRect();
     this.tutEl.spotlight.classList.add('active');
+    // 건너뛰기는 항상 표시
     this.tutEl.skip.style.display='block';
-    if(this._activeTarget){
-      this._activeTarget.style.pointerEvents='';
-      this._activeTarget.style.touchAction='';
-      this._activeTarget.style.position='';
-      this._activeTarget.style.zIndex='';
-      this._activeTarget=null;
-    }
+    this._clearTarget();
+
     if(!el2){
       this._updateSpotlight(null);
       this.tutEl.highlight.style.display='none';
-      const bubble=this.tutEl.bubble;
-      bubble.style.display='block';bubble.style.left='50%';bubble.style.transform='translateX(-50%)';
-      bubble.style.top='40%';bubble.className='tut-bubble';bubble.innerHTML=bubbleText;return;
+      const b=this.tutEl.bubble;
+      b.style.display='block';b.style.left='50%';b.style.transform='translateX(-50%)';b.style.top='40%';b.className='tut-bubble';b.innerHTML=bubbleHtml;
+      return;
     }
-    // peelCard는 pointer-events를 all로 설정해서 스와이프 받게 함
-    if(selector==='#peelCard'||el2===el.peelCard){
-      el2.style.pointerEvents='all';
-      el2.style.position='relative';
-      el2.style.zIndex='10000';
-    }else{
-      el2.style.pointerEvents='auto';
-      el2.style.touchAction=(selector==='#tray'||selector==='#grillZone'||selector==='#heatControl')?'none':'auto';
-      el2.style.position='relative';
-      el2.style.zIndex='10000';
-    }
+
+    const scope=el2.closest?.('.modal,.stock-scroll,.shop-cart,.bag-list')||null;
+    if(scope&&typeof el2.scrollIntoView==='function'){try{el2.scrollIntoView({block:'center',inline:'nearest'});}catch(err){}}
     this._activeTarget=el2;
-    const rect=el2.getBoundingClientRect();
-    const pad=8;
-    const hl=this.tutEl.highlight;
-    hl.style.display='block';
-    hl.style.left=(rect.left-appRect.left-pad)+'px';
-    hl.style.top=(rect.top-appRect.top-pad)+'px';
-    hl.style.width=(rect.width+pad*2)+'px';
-    hl.style.height=(rect.height+pad*2)+'px';
-    this._updateSpotlight(rect);
-    const bubble=this.tutEl.bubble;
-    bubble.style.display='none';
-    void bubble.offsetWidth;
-    bubble.style.display='block';
-    bubble.className='tut-bubble'+(arrowDir?' arrow-'+arrowDir:'');
-    bubble.style.transform='';bubble.style.left='';bubble.style.top='';bubble.style.bottom='';bubble.style.right='';
-    const bw=200,bh=90;
-    if(arrowDir==='top'){
-      let bLeft=rect.left-appRect.left;
-      let bTop=rect.bottom-appRect.top+18;
-      if(bLeft+bw>appRect.width-8)bLeft=appRect.width-8-bw;
-      if(bLeft<8)bLeft=8;
-      bubble.style.left=bLeft+'px';bubble.style.top=bTop+bubbleOffsetY+'px';
-    }else if(arrowDir==='bottom'){
-      let bLeft=rect.left-appRect.left;
-      let bTop=rect.top-appRect.top-bh-18;
-      if(bLeft+bw>appRect.width-8)bLeft=appRect.width-8-bw;
-      if(bLeft<8)bLeft=8;if(bTop<8)bTop=8;
-      bubble.style.left=bLeft+'px';bubble.style.top=bTop+bubbleOffsetY+'px';
-    }else if(arrowDir==='left'){
-      bubble.style.left=(rect.right-appRect.left+18)+'px';bubble.style.top=(rect.top-appRect.top)+'px';
-    }else{
-      bubble.style.left='50%';bubble.style.transform='translateX(-50%)';bubble.style.top='45%';
-    }
-    bubble.innerHTML=bubbleText;
+
+    const paint=()=>{
+      const aR2=$('appRoot').getBoundingClientRect();
+      const rect=el2.getBoundingClientRect(),pad=8;
+      const hl=this.tutEl.highlight;
+      hl.style.display='block';
+      hl.style.left=(rect.left-aR2.left-pad)+'px';
+      hl.style.top=(rect.top-aR2.top-pad)+'px';
+      hl.style.width=(rect.width+pad*2)+'px';
+      hl.style.height=(rect.height+pad*2)+'px';
+      this._updateSpotlight(rect);
+      const b=this.tutEl.bubble;
+      b.style.display='none';void b.offsetWidth;b.style.display='block';
+      b.className='tut-bubble'+(arrowDir?' arrow-'+arrowDir:'');
+      b.style.transform='';b.style.left='';b.style.top='';b.style.bottom='';b.style.right='';
+      const bw=200,bh=90;
+      if(arrowDir==='top'){let bl=rect.left-aR2.left;let bt=rect.bottom-aR2.top+18;if(bl+bw>aR2.width-8)bl=aR2.width-8-bw;if(bl<8)bl=8;b.style.left=bl+'px';b.style.top=bt+'px';}
+      else if(arrowDir==='bottom'){let bl=rect.left-aR2.left;let bt=rect.top-aR2.top-bh-18;if(bl+bw>aR2.width-8)bl=aR2.width-8-bw;if(bl<8)bl=8;if(bt<8)bt=8;b.style.left=bl+'px';b.style.top=bt+'px';}
+      else if(arrowDir==='left'){b.style.left=(rect.right-aR2.left+18)+'px';b.style.top=(rect.top-aR2.top)+'px';}
+      else{b.style.left='50%';b.style.transform='translateX(-50%)';b.style.top='45%';}
+      b.innerHTML=bubbleHtml;
+    };
+    requestAnimationFrame(()=>requestAnimationFrame(paint));
   },
 
-  hide(){
-    if(this._activeTarget){
-      this._activeTarget.style.pointerEvents='';
-      this._activeTarget.style.touchAction='';
-      this._activeTarget.style.position='';
-      this._activeTarget.style.zIndex='';
-      this._activeTarget=null;
-    }
-    this.tutEl.spotlight.classList.remove('active');
-    this.tutEl.spotlight.style.clipPath='none';
-    this.tutEl.highlight.style.display='none';
-    this.tutEl.bubble.style.display='none';
+  _activeTarget:null,
+  _clearTarget(){if(this._activeTarget){this._activeTarget.style.pointerEvents='';this._activeTarget.style.touchAction='';this._activeTarget.style.position='';this._activeTarget.style.zIndex='';this._activeTarget=null;}},
+  hide(){this._clearTarget();this.tutEl.spotlight.classList.remove('active');this.tutEl.spotlight.style.clipPath='none';this.tutEl.highlight.style.display='none';this.tutEl.bubble.style.display='none';
+    // 건너뛰기 버튼은 active 중에만 숨김 처리 → end()에서 숨김
+  },
+  end(){this.active=false;this.waitingFor=null;this.hide();this.tutEl.skip.style.display='none';this.tutEl.start.style.display='none';},
+
+  showNotice(html,goStep=null,delay=1400){
+    this.hide();this.tutEl.spotlight.classList.add('active');this.tutEl.spotlight.style.clipPath='none';this.tutEl.skip.style.display='block';
+    const b=this.tutEl.bubble;b.className='tut-bubble';b.style.display='block';b.style.left='50%';b.style.transform='translateX(-50%)';b.style.top='38%';b.innerHTML=html;
+    if(goStep!==null)setTimeout(()=>{if(this.active)this.goStep(goStep);},delay);
+  },
+
+  showCompletion(){
+    this.hide();this.tutEl.spotlight.classList.add('active');this.tutEl.spotlight.style.clipPath='none';
+    const b=this.tutEl.bubble;b.className='tut-bubble';b.style.display='block';b.style.left='50%';b.style.transform='translateX(-50%)';b.style.top='32%';
+    b.innerHTML='<b>튜토리얼 완료! 🎉</b><br>이제 직접 군밤 푸드트럭<br>장사를 해보자.<br>즐기세요!';
+    this.tutEl.start.style.display='block';this.tutEl.start.textContent='게임 시작! 🎉';
     this.tutEl.skip.style.display='none';
   },
 
-  end(){this.active=false;this.waitingFor=null;this.hide();},
-
-  steps:[
-    {waitFor:'storeBtn',show(){tut.highlight('#storeBtn',`<div class="tut-step-badge">1 / 17</div>상점 버튼을 눌러<br>재료를 구입해보세요!`,'bottom');}},
-    {waitFor:'shopCartAdd',show(){tut.highlight('#shopMaterials',`<div class="tut-step-badge">2 / 17</div>생 밤(속껍질)과<br>종이봉지를 장바구니에<br>담아보세요!`,'top');},onOpen(){tut._watchCart();}},
-    {waitFor:'checkoutBtn',show(){tut.highlight('#checkoutBtn',`<div class="tut-step-badge">3 / 17</div>장바구니 배송하기를<br>눌러 주문하세요!`,'top');}},
-    {waitFor:'selectRawInner',show(){tut.hide();closeOverlay(el.shopOverlay);setTimeout(()=>{tut.highlight('#stockGrid',`<div class="tut-step-badge">4 / 17</div>재고에서 생 밤(속껍질)을<br>탭해서 선택하세요!`,'bottom');},400);}},
-    {waitFor:'knifeBtn',show(){tut.highlight('#knifeBtn',`<div class="tut-step-badge">5 / 17</div>칼 사용하기를<br>눌러 칼집을 내세요!`,'bottom');}},
-    {waitFor:'peelSwipe',show(){tut.highlight('#peelCard',`<div class="tut-step-badge">6 / 17</div>카드 위를 스와이프해서<br>칼집을 내세요!`,'bottom');}},
-    {waitFor:'selectCutRaw',show(){closeOverlay(el.peelOverlay);tut.highlight('#stockGrid',`<div class="tut-step-badge">7 / 17</div>이번엔 칼집을 낸 생 밤을<br>탭해서 선택하세요!`,'bottom');}},
-    {waitFor:'grillInsert',show(){tut.highlight('.grill-zone',`<div class="tut-step-badge">8 / 17</div>그릴 트레이를 눌러<br>밤을 넣어보세요!`,'bottom');}},
-    {waitFor:'heatTouch',show(){tut.highlight('#heatControl',`<div class="tut-step-badge">9 / 17</div>온도 게이지를 눌러<br>굽기 시작하세요.<br>초록 구간이 목표입니다`,'top');}},
-    {waitFor:'heatTouchOut',show(){tut.highlight('#heatControl',`<div class="tut-step-badge">10 / 17</div>바늘이 적정 구간에<br>올 때 다시 눌러서<br>꺼내세요!`,'top');}},
-    {waitFor:'selectPerfectInner',show(){tut.highlight('#stockGrid',`<div class="tut-step-badge">11 / 17</div>잘 익은 밤(속껍질)을<br>탭해서 선택하세요!`,'bottom');}},
-    {waitFor:'knifeBtn',show(){tut.highlight('#knifeBtn',`<div class="tut-step-badge">12 / 17</div>칼 사용하기를<br>눌러 껍질을 벗기세요!`,'bottom');}},
-    {waitFor:'peelSwipe',show(){tut.highlight('#peelCard',`<div class="tut-step-badge">13 / 17</div>카드 위를 스와이프해서<br>껍질을 벗기세요!`,'bottom');}},
-    {waitFor:'selectBag',show(){tut.highlight('#stockGrid',`<div class="tut-step-badge">14 / 17</div>종이봉지를 선택하고<br>군밤을 길게 눌러<br>봉지에 15개 담으세요!`,'bottom');}},
-    {waitFor:'shopBtn',show(){tut.highlight('#shopBtn',`<div class="tut-step-badge">15 / 17</div>장사 시작을 눌러<br>손님을 받아보세요!`,'bottom');}},
-    {waitFor:'guestSpawned',show(){tut.highlight('.window',`<div class="tut-step-badge">16 / 17</div>봉지를 선택한 뒤<br>손님을 탭해서<br>판매해보세요!`,'top');}},
-    {waitFor:'guestDeliver',show(){tut.highlight('.window',`<div class="tut-step-badge">17 / 17</div>주문에 맞는 봉지를<br>선택하고 손님을 탭하세요!`,'top');}},
-  ],
-
-  _cartWatcher:null,_cartHasBoth:false,
-  _watchCart(){
-    this._cartHasBoth=false;
-    this._cartWatcher=setInterval(()=>{
-      const hasChn=(cart['chestnutPack']||0)>0;
-      const hasBag=(cart['bagPack']||0)>0;
-      if(hasChn&&hasBag&&!this._cartHasBoth){this._cartHasBoth=true;clearInterval(this._cartWatcher);this.advance();}
-    },300);
-  },
-  _invWatcher:null,
-  _watchForSelect(type,action){
-    if(this._invWatcher)clearInterval(this._invWatcher);
-    this._invWatcher=setInterval(()=>{
-      if(selectedType===type){clearInterval(this._invWatcher);this._invWatcher=null;this.onAction(action);}
-    },200);
-  },
-  _bagWatcher:null,
-  _watchBagFull(){
-    if(this._bagWatcher)clearInterval(this._bagWatcher);
-    this._bagWatcher=setInterval(()=>{
-      const bag=bagStacks[selectedBagIndex];
-      if(bag&&bag.items.length>=15){clearInterval(this._bagWatcher);this._bagWatcher=null;this.onAction('bagFull');}
-    },300);
-  },
+  badge(n){return `<div class="tut-step-badge">${n} / 25</div>`;},
 
   goStep(index){
-    this.stepIndex=index;this.waitingFor=this.steps[index]?.waitFor||null;this._heatTouches=0;
-    this.steps[index]?.show?.call(this);
+    this.stepIndex=index;
+    const B=this.badge.bind(this);
+    switch(index){
+      case 0: // 환영
+        this.hide();
+        this.tutEl.spotlight.classList.add('active');this.tutEl.spotlight.style.clipPath='none';
+        // ★ 처음에도 건너뛰기 표시
+        this.tutEl.skip.style.display='block';
+        const bw=this.tutEl.bubble;bw.className='tut-bubble';bw.style.display='block';bw.style.left='50%';bw.style.transform='translateX(-50%)';bw.style.top='30%';
+        bw.innerHTML=`${B(1)}군밤 타이쿤에 오신걸<br>환영합니다!<br>일반주문 튜토리얼을<br>시작해볼까요?`;
+        this.tutEl.start.style.display='block';this.tutEl.start.textContent='튜토리얼 시작!';this.waitingFor='welcomeStart';break;
+      case 1:
+        this.highlight('#storeBtn',`${B(2)}밤과 종이봉지를<br>구매해보자.`,'bottom');this.waitingFor='storeBtn';break;
+      case 2:
+        setTimeout(()=>{this.highlight('#shopMaterials',`${B(3)}생밤을 장바구니에<br>담자.`,'top');},400);this.waitingFor='chestnutAdded';break;
+      case 3:
+        setTimeout(()=>{
+          // ★ 봉지 아이템만 하이라이트 (shopSupplies 전체 X)
+          const bagItem=document.querySelector('#shopSupplies .shop-item');
+          if(bagItem){
+            this.highlight(bagItem,`${B(4)}종이봉지를 장바구니에<br>담자.`,'top');
+            bagItem.scrollIntoView({behavior:'smooth',block:'nearest'});
+          }else{
+            this.highlight('#shopSupplies',`${B(4)}종이봉지를 장바구니에<br>담자.`,'top');
+          }
+        },300);this.waitingFor='bagAdded';break;
+      case 4:
+        this.highlight('#checkoutBtn',`${B(5)}장바구니에 담긴 물건을<br>주문해보자!`,'top');this.waitingFor='checkoutBtn';break;
+      case 5:
+        setTimeout(()=>{closeOverlay(el.shopOverlay);setTimeout(()=>{this.highlight('#stockGrid [data-type="raw_inner"]',`${B(6)}재고에서<br><b>생밤(속껍질)</b>을<br>선택하자.`,'bottom');},400);},100);this.waitingFor='selectRawInner';break;
+      case 6:
+        this.highlight('#knifeBtn',`${B(7)}칼 사용하기를 눌러서<br>칼집을 내보자.`,'bottom');this.waitingFor='knifeBtn';break;
+      case 7:
+        setTimeout(()=>{this.highlight('#peelCard',`${B(8)}생밤(속껍질) 위를<br>스와이프해서<br>전부 칼집을 내자.`,'bottom');},300);this.waitingFor='peelSwipe';break;
+      case 8:
+        setTimeout(()=>{this.highlight('#stockGrid [data-type="cut_raw"]',`${B(9)}재고에서<br><b>칼집을 낸 생 밤(속껍질)</b>을<br>선택하자.`,'bottom');},400);this.waitingFor='selectCutRaw';break;
+      case 9:
+        this.highlight('.grill-zone',`${B(10)}그릴트레이를 눌러<br>생밤 30개를<br>구이통에 넣어보세요.<br>남은밤 ${30-grill.length}/30`,'bottom');this.waitingFor='grillInsert';break;
+      case 10:
+        this.highlight('#heatControl',`${B(11)}게이지를 클릭해<br>초록구간까지 구우세요.`,'top');this.waitingFor='heatTouchStart';break;
+      case 11:
+        this.highlight('#heatControl',`${B(12)}바늘이 초록구간에<br>오면 다시 클릭해<br>굽기를 멈추세요!`,'top');this.waitingFor='heatTouchOut';break;
+      case 12:
+        setTimeout(()=>{this.highlight('#stockGrid [data-type="perfect_inner"]',`${B(13)}재고에서<br><b>잘 익은 군밤(속껍질)</b>을<br>선택하세요.`,'bottom');},300);this.waitingFor='selectPerfectInner';break;
+      case 13:
+        this.highlight('#knifeBtn',`${B(14)}칼 사용하기를 눌러<br>껍질을 벗기세요.`,'bottom');this.waitingFor='knifeBtn2';break;
+      case 14:
+        setTimeout(()=>{this.highlight('#peelCard',`${B(15)}잘 익은 군밤(속껍질)<br>위를 스와이프해서<br>전부 껍질을 벗기자.`,'bottom');},300);this.waitingFor='peelSwipe2';break;
+      case 15:
+        setTimeout(()=>{this.highlight('#stockGrid [data-type="bag"]',`${B(16)}재고에서<br><b>종이봉지</b>를 선택하세요.`,'bottom');},400);this.waitingFor='selectBag';break;
+      case 16:
+        this.highlight('#stockGrid [data-type=\"perfect\"]',`${B(17)}종이봉지를 선택한 후<br><b>군밤을 길게 눌러<br>봉지에 15개 담으세요!</b>`,'bottom');this.waitingFor='bagFill';break;
+      case 17:
+        this.highlight('#shopBtn',`${B(18)}장사 시작을 눌러<br>손님을 받으세요.`,'bottom');this.waitingFor='shopBtn';break;
+      case 18:
+        this.highlight('.window',`${B(19)}봉지를 선택한 뒤<br>손님을 탭해서<br>팔아보자!`,'top');this.waitingFor='guestDeliver';break;
+      case 19:
+        this.highlight('#stockGrid [data-type=\"syrup_papaya\"]',`${B(20)}파파야 시럽을 선택하고<br>슬러시 기계를 채워보세요.`,'bottom');this.waitingFor='selectSlushSyrup';break;
+      case 20:
+        this.highlight('#slushPanel',`${B(21)}슬러시 기계를 눌러<br>원액을 넣으세요.`,'top');this.waitingFor='fillSlush';break;
+      case 21:
+        this.highlight('#stockGrid [data-type=\"cup\"]',`${B(22)}컵을 선택하세요.`,'bottom');this.waitingFor='selectCup';break;
+      case 22:
+        this.highlight('#slushPanel',`${B(23)}슬러시 기계를 다시 눌러<br>컵에 담으세요.`,'top');this.waitingFor='pourSlush';break;
+      case 23:
+        this.highlight('.window',`${B(24)}슬러시 손님이 왔어요.<br>파파야 슬러시를 선택하고<br>손님을 탭하세요.`,'top');this.waitingFor='slushGuestSpawned';break;
+      case 24:
+        this.highlight('.window',`${B(25)}파파야 슬러시를 선택한 뒤<br>손님을 탭해서<br>팔아보세요!`,'top');this.waitingFor='slushDeliver';break;
+    }
   },
-  advance(){
-    const next=this.stepIndex+1;
-    if(next>=this.steps.length){this.end();return;}
-    this.goStep(next);
-  },
+
+  _knifeForPerfect:false,
 
   onAction(action){
     if(!this.active)return;
-    const step=this.steps[this.stepIndex];if(!step)return;
-    if(this.stepIndex===0&&action==='storeBtn'){
-      this.advance();
-      setTimeout(()=>step.onOpen?.call(this),400);
-      setTimeout(()=>{if(this.stepIndex===1)this.steps[1].show?.call(this);},500);return;
+    if(this.stepIndex===0&&this.waitingFor==='welcomeStart'&&action==='tutStart'){this.goStep(1);return;}
+    if(this.stepIndex===1&&action==='storeBtn'){this.goStep(2);return;}
+    if(this.stepIndex===2&&action==='chestnutAdded'){this.goStep(3);return;}
+    if(this.stepIndex===3&&action==='bagAdded'){this.goStep(4);return;}
+    if(this.stepIndex===4&&action==='checkoutBtn'){this.goStep(5);return;}
+    if(this.stepIndex===5&&action==='selectRawInner'){this.goStep(6);return;}
+    if(this.stepIndex===6&&action==='knifeBtn'){this._knifeForPerfect=false;this.goStep(7);return;}
+    // ★ 7단계: peelSwipe → 전량 소진 시에만 다음 단계
+    if(this.stepIndex===7&&action==='peelSwipe'){
+      // 전량 소진(=오버레이가 닫혀있거나 재고 없음) 체크
+      const type=el.peelOverlay.dataset.peelType;
+      if(!type||(inventory[type]||0)<=0){this.goStep(8);}
+      return;
     }
-    if(this.stepIndex===1){if(action==='shopCartAdd'){this._cartHasBoth=true;this.advance();}return;}
-    if(this.stepIndex===2&&action==='checkoutBtn'){this.advance();setTimeout(()=>{this._watchForSelect('raw_inner','selectRawInner');},800);return;}
-    if(this.stepIndex===3&&action==='selectRawInner'){this.advance();return;}
-    if(this.stepIndex===4&&action==='knifeBtn'){this.advance();return;}
-    if(this.stepIndex===5&&action==='peelSwipe'){
-      if(inventory.raw_inner > 0){
-        this.steps[5].show?.call(this);
+    if(this.stepIndex===8&&action==='selectCutRaw'){this.goStep(9);return;}
+    if(this.stepIndex===9&&action==='grillInsert'){
+      if(grill.length<30){
+        const b=this.tutEl.bubble;
+        if(b.style.display!=='none')b.innerHTML=`${this.badge(10)}그릴트레이를 눌러<br>생밤 30개를<br>구이통에 넣어보세요.<br>남은밤 ${30-grill.length}/30`;
         return;
       }
-      this.advance();
+      this.goStep(10);return;
+    }
+    if(this.stepIndex===10&&action==='heatTouchStart'){cooking=true;this.goStep(11);return;}
+    if(this.stepIndex===11&&action==='heatTouchOut'){this.goStep(12);return;}
+    if(this.stepIndex===12&&action==='selectPerfectInner'){this._knifeForPerfect=true;this.goStep(13);return;}
+    if(this.stepIndex===13&&action==='knifeBtn'){if(this._knifeForPerfect)this.goStep(14);return;}
+    // ★ 14단계: peelSwipe → 전량 소진 시에만 다음 단계
+    if(this.stepIndex===14&&action==='peelSwipe'){
+      const type=el.peelOverlay.dataset.peelType;
+      if(!type||(inventory[type]||0)<=0){this.goStep(15);}
       return;
     }
-    if(this.stepIndex===6&&action==='selectCutRaw'){this.advance();return;}
-    if(this.stepIndex===7&&action==='grillInsert'){
-      if(grill.length < 30){
-        this.steps[7].show?.call(this);
-        return;
-      }
-      this.advance();
-      return;
-    }
-    if(this.stepIndex===8&&action==='heatTouch'){cooking=true;this.advance();return;}
-    if(this.stepIndex===9&&action==='heatTouch'){
-      this.advance();
-      setTimeout(()=>{
-        this._watchForSelect('perfect_inner','selectPerfectInner');
-      },300);return;
-    }
-    if(this.stepIndex===10&&action==='selectPerfectInner'){this.advance();return;}
-    if(this.stepIndex===11&&action==='knifeBtn'){this.advance();return;}
-   if(this.stepIndex===12&&action==='peelSwipe'){
-
-  // 아직 안 깐 잘 익은 군밤 남아있음
-  if(inventory.perfect_inner > 0){
-    this.steps[12].show?.call(this);
-    return;
-  }
-
-  // 30개 전부 깠을 때만 진행
-  this.advance();
-  return;
-}
-    if(this.stepIndex===13&&action==='selectBag'){
-      this._watchBagFull();
-      return;
-    }
-    if(this.stepIndex===13&&action==='bagFull'){this.advance();return;}
-    if(this.stepIndex===14&&action==='shopBtn'){this.advance();return;}
-    if(this.stepIndex===15&&action==='guestSpawned'){this.advance();return;}
-    if(this.stepIndex===16&&action==='guestDeliver'){
-      this.end();
-      setTimeout(()=>{
-        tut.tutEl.spotlight.classList.add('active');
-        tut.tutEl.spotlight.style.clipPath='none';
-        tut.tutEl.highlight.style.display='none';
-        const bubble=tut.tutEl.bubble;
-        bubble.style.display='block';bubble.className='tut-bubble';
-        bubble.style.left='50%';bubble.style.transform='translateX(-50%)';bubble.style.top='35%';
-        bubble.innerHTML='<b>튜토리얼 완료!</b><br>이제 군밤 타이쿤을<br>마음껏 즐겨보세요!';
-        tut.tutEl.skip.textContent='시작하기!';tut.tutEl.skip.style.display='block';
-      },800);return;
-    }
+    if(this.stepIndex===15&&action==='selectBag'){this.goStep(16);return;}
+    if(this.stepIndex===16&&action==='selectBag'){this.highlight('#stockGrid [data-type=\"perfect\"]',`${this.badge(17)}종이봉지를 선택했어요.<br><b>잘 익은 군밤</b>을 길게 눌러 담으세요.`,'bottom');return;}
+    if(this.stepIndex===16&&action==='bagFull'){this.goStep(17);return;}
+    if(this.stepIndex===17&&action==='shopBtn'){this.goStep(18);return;}
+    if(this.stepIndex===18&&action==='guestSpawned'){return;}
+    if(this.stepIndex===18&&action==='guestDeliver'){this.waitingFor=null;setTimeout(()=>{beginSlushTutorial();this.active=true;this.goStep(19);},800);return;}
+    if(this.stepIndex===19&&action==='selectSlushSyrup'){this.goStep(20);return;}
+    if(this.stepIndex===20&&action==='fillSlush'){this.goStep(21);return;}
+    if(this.stepIndex===21&&action==='selectCup'){this.goStep(22);return;}
+    if(this.stepIndex===22&&action==='pourSlush'){this.goStep(23);setTimeout(spawnSlushTutorialGuest,350);return;}
+    if(this.stepIndex===23&&action==='slushGuestSpawned'){this.goStep(24);return;}
+    if(this.stepIndex===24&&action==='slushDeliver'){this.active=false;this.waitingFor=null;setTimeout(()=>this.showCompletion(),800);return;}
   },
 
-  start(){this.active=true;this.stepIndex=0;this.waitingFor=null;this._heatTouches=0;this.goStep(0);}
+  onTapItem(key){
+    if(!this.active)return;
+    if(this.stepIndex===5&&key==='raw_inner')this.onAction('selectRawInner');
+    else if(this.stepIndex===8&&key==='cut_raw')this.onAction('selectCutRaw');
+    else if(this.stepIndex===12&&key==='perfect_inner')this.onAction('selectPerfectInner');
+  },
+
+  start(){
+    this.active=true;this.stepIndex=0;this.waitingFor=null;this._knifeForPerfect=false;
+    this.goStep(0);
+  }
 };
 
-$('tutSkipBtn').addEventListener('click',()=>{
-  if(tut.tutEl.skip.textContent==='시작하기!'){
-    tut.tutEl.spotlight.classList.remove('active');
-    tut.tutEl.spotlight.style.clipPath='none';
-    tut.tutEl.bubble.style.display='none';
-    tut.tutEl.skip.style.display='none';
-  }else{tut.end();}
+/* 건너뛰기 버튼 — 항상 즉시 종료 */
+$('tutSkipBtn').addEventListener('click',()=>tut.end());
+
+/* 시작/완료 버튼 */
+$('tutStartBtn').addEventListener('click',()=>{
+  $('tutStartBtn').style.display='none';
+  if(tut.active&&tut.stepIndex===0){
+    tut.onAction('tutStart');
+  }else{
+    // 완료 화면에서 게임 시작
+    satisfaction=4.5;money+=tutorialPurchased.bagPack*2000+tutorialPurchased.chestnutPack*14000;tutorialPurchased={bagPack:0,chestnutPack:0};syncTop();tut.end();
+  }
 });
 
-/* ═══════════════════════════════
-   초기화
-═══════════════════════════════ */
-function initialRender(){
-  renderInventory();renderTray();renderSlush();renderShop();updateGauge();syncTop();
-}
+/* ─── 초기화 ─── */
+function initialRender(){renderInventory();renderShop();updateSliceUpgradeUI();syncTop();startClockReal();}
 initialRender();
 setTimeout(()=>tut.start(),600);
 </script>
