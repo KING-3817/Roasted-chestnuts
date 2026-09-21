@@ -122,7 +122,7 @@ img{-webkit-user-drag:none;pointer-events:none}
 .info-text{display:flex;flex-direction:column;gap:clamp(7px,1.3cqw,12px);font-size:clamp(10px,1.8cqh,14px);line-height:1.45;font-weight:900}
 .info-box{background:#1f1814;border:1px solid rgba(255,255,255,.08);border-radius:clamp(12px,2.5cqw,20px);padding:clamp(8px,1.5cqw,14px)}
 .save-box textarea{width:100%;height:clamp(70px,14cqh,120px);resize:none;background:#0d0a08;color:#d9c8a7;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:8px;font:clamp(8px,1.3cqh,11px) monospace;user-select:text;-webkit-user-select:text}
-.save-actions{flex-wrap:wrap}.save-actions button{min-width:30%;font-size:clamp(8px,1.3cqh,11px)}
+.save-actions{flex-wrap:wrap}.save-actions button{min-width:30%;font-size:clamp(8px,1.3cqh,11px)}#resetGameBtn{flex:1}
 .info-box h3{font-size:clamp(11px,2cqh,15px);margin-bottom:6px}.info-box p{color:#e8dccb;font-size:clamp(9px,1.5cqh,12px);line-height:1.45}
 .dismiss-toast{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(180,50,50,.95);color:#fff;font-size:clamp(11px,2cqh,15px);font-weight:900;border-radius:clamp(12px,2.5cqw,20px);padding:clamp(9px,1.8cqw,14px) clamp(18px,3.5cqw,26px);text-align:center;z-index:400;pointer-events:none;animation:toastPop .2s ease-out forwards}
 @keyframes toastPop{from{opacity:0;transform:translate(-50%,-50%) scale(.8)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
@@ -135,8 +135,8 @@ img{-webkit-user-drag:none;pointer-events:none}
 .tut-bubble::before{content:'';position:absolute;width:12px;height:12px;background:#2a2018;border:2px solid #ffd768;border-right:none;border-bottom:none;transform:rotate(45deg);top:-8px;left:20px}
 .tut-bubble.arrow-bottom::before{top:auto;bottom:-8px;border:2px solid #ffd768;border-left:none;border-top:none}.tut-bubble.arrow-left::before{top:50%;left:-8px;transform:translateY(-50%) rotate(-45deg);border:2px solid #ffd768;border-right:none;border-top:none}
 .tut-step-badge{display:inline-block;background:#ffd768;color:#1a1200;border-radius:999px;padding:2px 8px;font-size:clamp(8px,1.3cqh,10px);font-weight:900;margin-bottom:6px}
-.tut-skip-btn,.tut-start-btn{position:absolute;z-index:504;cursor:pointer;pointer-events:all}.tut-skip-btn{bottom:clamp(10px,2cqw,16px);right:clamp(10px,2cqw,16px);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:clamp(9px,1.5cqh,12px);font-weight:900;border-radius:999px;padding:clamp(5px,1cqw,8px) clamp(12px,2.5cqw,18px);display:none}
-.tut-start-btn{left:50%;top:calc(35% + 130px);transform:translateX(-50%);background:#ffd768;color:#1a1200;font-size:clamp(11px,2cqh,15px);font-weight:900;border-radius:999px;padding:clamp(9px,1.8cqw,13px) clamp(18px,3.5cqw,26px);display:none}
+.tut-skip-btn,.tut-start-btn,.multi-play-btn{position:absolute;z-index:504;cursor:pointer;pointer-events:all}.tut-skip-btn{bottom:clamp(10px,2cqw,16px);right:clamp(10px,2cqw,16px);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:clamp(9px,1.5cqh,12px);font-weight:900;border-radius:999px;padding:clamp(5px,1cqw,8px) clamp(12px,2.5cqw,18px);display:none}
+.tut-start-btn{left:50%;top:calc(35% + 130px);transform:translateX(-50%);background:#ffd768;color:#1a1200;font-size:clamp(11px,2cqh,15px);font-weight:900;border-radius:999px;padding:clamp(9px,1.8cqw,13px) clamp(18px,3.5cqw,26px);display:none}.multi-play-btn{top:clamp(8px,1.5cqw,14px);left:clamp(8px,1.5cqw,14px);background:rgba(20,16,13,.94);border:1px solid rgba(255,215,104,.72);color:#fff;font-size:clamp(8px,1.4cqh,12px);font-weight:900;border-radius:999px;padding:clamp(5px,.9cqw,8px) clamp(9px,1.8cqw,14px);box-shadow:0 5px 18px rgba(0,0,0,.35);display:none}
 .tut-mode-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;pointer-events:all}.tut-mode-btn{border:none;border-radius:12px;padding:9px 6px;background:#688d31;color:#fff;font:inherit;font-size:clamp(9px,1.5cqh,12px);font-weight:900;line-height:1.3}.tut-mode-btn.slush{background:#406f98}
 .tut-completion-actions{display:flex;flex-direction:column;gap:8px;margin-top:14px;pointer-events:all}.tut-completion-actions button{border:none;border-radius:12px;padding:10px;color:#1a1200;background:#ffd768;font:inherit;font-weight:900}.tut-completion-actions .next{background:#688d31;color:#fff}.golden-tip{color:#ffd768;font-weight:900}
 
@@ -154,7 +154,7 @@ img{-webkit-user-drag:none;pointer-events:none}
 .supply-qty{display:flex;align-items:center;gap:5px}.supply-qty button{width:clamp(24px,4cqw,30px);height:clamp(24px,4cqw,30px);border-radius:8px;background:#3b2d24;color:#fff;font-weight:900}.supply-qty input{width:clamp(42px,8cqw,58px);height:clamp(24px,4cqw,30px);border:1px solid rgba(255,255,255,.2);border-radius:8px;background:#0d0a08;color:#fff;text-align:center;font-weight:900;user-select:text;-webkit-user-select:text}
 .supply-config-actions{display:flex;gap:8px;margin-top:clamp(10px,1.8cqw,16px)}.supply-config-actions button{flex:1;border:0;border-radius:clamp(10px,2cqw,16px);padding:clamp(9px,1.8cqw,14px);font-weight:900;color:#fff}.supply-config-save{background:#688d31}.supply-config-clear{background:#7b2d24}
 
-.hide{display:none!important}
+.multi-player-overlay{position:fixed;inset:0;z-index:2000;background:#000;display:grid;grid-template-columns:1fr 1fr;overflow:hidden}.multi-player-slot{position:relative;min-width:0;height:100%;display:flex;align-items:center;justify-content:center;background:#000;overflow:hidden}.multi-player-slot iframe{width:100%;height:100%;border:0;display:block;background:#000}.multi-exit-btn{position:fixed;z-index:2100;left:50%;top:clamp(6px,1.2vw,12px);transform:translateX(-50%);border:1px solid rgba(255,255,255,.28);background:rgba(15,12,10,.9);color:#fff;border-radius:999px;padding:5px 10px;font-size:11px;font-weight:900;opacity:.8}.hide{display:none!important}
 .loading-screen{position:absolute;inset:0;z-index:1000;background:#0d0a08;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:18px;color:#ffd768;font-weight:900}.loading-screen.hide{opacity:0;pointer-events:none;transition:opacity .35s}.loading-spinner{width:42px;height:42px;border:5px solid rgba(255,215,104,.2);border-top-color:#ffd768;border-radius:50%;animation:loadingSpin .8s linear infinite}.loading-title{font-size:clamp(13px,2.5cqh,20px)}.loading-current{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:clamp(9px,1.5cqh,12px);color:#fff}.loading-tip{max-width:min(100%,360px);min-height:2.5em;text-align:center;color:#9fe870;font-size:clamp(9px,1.5cqh,12px);font-weight:800;line-height:1.35}.loading-columns{width:min(100%,360px);display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:left;font-size:clamp(8px,1.3cqh,11px)}.loading-list{height:clamp(70px,15cqh,130px);overflow:auto;margin-top:4px;padding:5px;background:rgba(255,255,255,.06);border-radius:8px;color:#d9c8a7;font-weight:700;line-height:1.45}.loading-failed{max-width:100%;color:#ff8c7a;font-size:clamp(8px,1.3cqh,11px);text-align:center}@keyframes loadingSpin{to{transform:rotate(360deg)}}
 </style>
 </head>
@@ -319,7 +319,10 @@ img{-webkit-user-drag:none;pointer-events:none}
       </div>
 
       <div class="info-text" id="infoText"></div>
-      <div class="bag-actions"><button class="bag-close" id="infoCloseBtn">닫기</button></div>
+      <div class="bag-actions">
+        <button class="bag-remove" id="resetGameBtn">처음부터 다시 시작</button>
+        <button class="bag-close" id="infoCloseBtn">닫기</button>
+      </div>
     </div>
   </div>
 
@@ -327,13 +330,23 @@ img{-webkit-user-drag:none;pointer-events:none}
     <div class="tut-spotlight" id="tutSpotlight"></div>
     <div class="tut-highlight" id="tutHighlight"></div>
     <div class="tut-bubble" id="tutBubble"></div>
+    <button class="multi-play-btn" id="multiPlayBtn">👥 여러 명 플레이하기</button>
     <button class="tut-skip-btn" id="tutSkipBtn" style="display:block">튜토리얼 건너뛰기</button>
     <button class="tut-start-btn" id="tutStartBtn">게임 시작! 🎉</button>
   </div>
 </div>
 
+<div class="multi-player-overlay hide" id="multiPlayerOverlay">
+  <div class="multi-player-slot"><iframe id="multiPlayerFrame1" title="플레이어 1"></iframe></div>
+  <div class="multi-player-slot"><iframe id="multiPlayerFrame2" title="플레이어 2"></iframe></div>
+  <button class="multi-exit-btn" id="multiExitBtn">× 나가기</button>
+</div>
+
 <script>
 const $=e=>document.getElementById(e),clamp=(e,t,n)=>Math.max(t,Math.min(n,e));
+const URL_PARAMS=new URLSearchParams(location.search);
+const IS_MULTI_CHILD=URL_PARAMS.get("multiChild")==="1";
+const MULTI_PLAYER_SLOT=URL_PARAMS.get("player")||"solo";
 const asset=e=>new URL(`./${e}`,document.baseURI).href;
 const FRUITS={
   papaya:{kr:"파파야",img:"Papaya.png",cup:"Papayacup.png",color:"#46b7ff"},
@@ -456,7 +469,7 @@ function strictStr(v,max,def,label){if(v===undefined)return def;if(typeof v!=="s
 function formatClock(e){const t=(e%1440+1440)%1440,n=Math.floor(t/60);return`${n<12?"오전":"오후"} ${n%12||12}:${String(t%60).padStart(2,"0")}`}
 function getTimePhase(e){const t=(e%1440+1440)%1440;return t<360?"새벽":t<600?"아침":t<840?"점심":t<1080?"오후":t<1320?"저녁":"밤"}
 function getRoastTarget(){return Number(Math.max(1.5,6+2*Math.random()-4*roastTimeUpgrades).toFixed(2))}
-function syncTop(){const e=sigTop();if(e===_topSig)return;_topSig=e;el.money.textContent=money.toLocaleString();el.guestCount.textContent=guests.filter(e=>e.active).length;el.servedCount.textContent=stats.served;el.clockText.textContent=formatClock(gameMinutes);el.satisfactionText.textContent=satisfaction.toFixed(1);el.shopStatus.textContent=shopOpen?"영업중":"영업 종료";el.shopStatus.className=`status ${shopOpen?"on":"off"}`;$("shopBtn").textContent=shopOpen?"🏪 장사 종료":"🏪 장사 시작"}
+function syncTop(){const e=sigTop();if(e===_topSig)return;_topSig=e;el.money.textContent=money.toLocaleString();el.guestCount.textContent=guests.filter(e=>e.active).length;el.servedCount.textContent=stats.served;el.clockText.textContent=formatClock(gameMinutes);el.satisfactionText.textContent=satisfaction.toFixed(1);el.shopStatus.textContent=shopOpen?"영업중":"영업 종료";el.shopStatus.className=`status ${shopOpen?"on":"off"}`;$("shopBtn").textContent=shopOpen?"🏪 장사 종료":"🏪 장사 시작";scheduleAutoSave()}
 function updateGauge(){const e=sigGauge();if(e!==_gaugeSig){_gaugeSig=e;el.timerNow.textContent=current.toFixed(2);el.timerTarget.textContent=target.toFixed(2);const a=clamp(current/12*100,0,100);el.fill.style.width=a+"%";el.cursor.style.left=a+"%"}const t=sigGaugeZone();if(t===_gaugeZoneSig)return;_gaugeZoneSig=t;const n=clamp(timingRange/8,.12,.28),s=clamp(.2*target,0,12),r=clamp(target-n,s,12),o=clamp(target+n,r,12),l=e=>e/12*100;el.gaugeZones.innerHTML="";if(target<=0){const e=document.createElement("div");e.className="gauge-zone gauge-unripe";e.style.width="100%";el.gaugeZones.appendChild(e)}else[["gauge-unripe",l(s)],["gauge-under",Math.max(0,l(r)-l(s))],["gauge-perfect",Math.max(0,l(o)-l(r))],["gauge-over",Math.max(0,100-l(o))]].forEach(([e,t])=>{const n=document.createElement("div");n.className="gauge-zone "+e;n.style.width=t+"%";el.gaugeZones.appendChild(n)});el.labelPerfect.style.left=(target>0?clamp(l(target),0,100):50)+"%"}
 function resultType(e){
   if(["perfect","perfect_inner","golden","golden_inner"].includes(e))return e;
@@ -674,8 +687,8 @@ function renderBagView(e){const t=bagStacks[e];if(!t)return;const n=sigBag(e);if
 function emptyCurrentBag(){if(selectedType!=="bag"||selectedBagIndex<0)return;const e=bagStacks[selectedBagIndex];if(!e)return;e.items.forEach(e=>inventory[e]++);const t=selectedBagIndex;bagStacks.splice(t,1);inventory.bag++;handleBagRemoval(t);renderInventory();if(!bagStacks.length){selectedBagIndex=-1;chestnutServeStage=0;closeOverlay(el.bagOverlay)}else{_bagViewSig="";renderBagView(Math.min(t,bagStacks.length-1))}}
 
 const SAVE_VERSION=3;
-function defaultSave(){return{v:3,money:60000,inventory:Object.fromEntries(Object.keys(inventory).map(e=>[e,0])),bagStacks:[],grill:[],slushMachines:[0,1,2].map(()=>({flavor:null,serves:0})),guests:[0,1,2].map(slot=>({slot,active:false,order:null})),stats:Object.fromEntries(Object.keys(stats).map(e=>[e,0])),cart:{},gameMinutes:480,satisfaction:3,selectedType:null,selectedBagIndex:-1,current:0,target:0,cooking:false,exploded:false,maxMachine:30,timingRange:1.2,shopOpen:false,guestLoopRemainingMs:null,sliceLevel:0,slicePerSwipe:1,chestnutServeStage:0,tutorialPurchased:{bagPack:0,chestnutPack:0,syrup_papaya:0,cupPack:0},roastTimeUpgrades:0,autoGrillLevel:0,autoSlushLevel:0,peelWorkerCount:0,promoWorkerCount:0,servingWorkerCount:0,purchaseWorkerCount:0,peelWorkerTarget:null,peelWorkerStock:{type:null,qty:0},purchaseWorkerTarget:null,purchaseWorkerQty:0,purchaseWorkerPlans:{},playTimeSeconds:0,tutorialCompleted:{normal:false,slush:false}}}
-function saveSnapshot(){return{v:3,money,inventory:{...inventory},bagStacks:bagStacks.map(e=>({items:[...e.items]})),grill:[...grill],slushMachines:slushMachines.map(e=>({...e})),guests:guests.map(e=>({slot:e.slot,active:e.active,order:e.order})),stats:{...stats},cart:{...cart},gameMinutes,satisfaction,selectedType,selectedBagIndex,current,target,cooking,exploded,maxMachine,timingRange,shopOpen,guestLoopRemainingMs:getGuestTimerRemaining(),sliceLevel,slicePerSwipe,chestnutServeStage,tutorialPurchased:{...tutorialPurchased},roastTimeUpgrades,autoGrillLevel,autoSlushLevel,peelWorkerCount,promoWorkerCount,servingWorkerCount,purchaseWorkerCount,peelWorkerTarget,peelWorkerStock:{...peelWorkerStock},purchaseWorkerTarget,purchaseWorkerQty,purchaseWorkerPlans:{...purchaseWorkerPlans},playTimeSeconds,tutorialCompleted:{...tutorialCompleted}}}
+function defaultSave(){return{v:3,money:60000,inventory:Object.fromEntries(Object.keys(inventory).map(e=>[e,0])),bagStacks:[],grill:[],slushMachines:[0,1,2].map(()=>({flavor:null,serves:0})),guests:[0,1,2].map(slot=>({slot,active:false,order:null})),stats:Object.fromEntries(Object.keys(stats).map(e=>[e,0])),cart:{},gameMinutes:480,satisfaction:3,selectedType:null,selectedBagIndex:-1,current:0,target:0,cooking:false,exploded:false,maxMachine:30,timingRange:1.2,shopOpen:false,guestLoopRemainingMs:null,sliceLevel:0,slicePerSwipe:1,chestnutServeStage:0,tutorialPurchased:{bagPack:0,chestnutPack:0,syrup_papaya:0,cupPack:0},roastTimeUpgrades:0,autoGrillLevel:0,autoSlushLevel:0,peelWorkerCount:0,promoWorkerCount:0,servingWorkerCount:0,purchaseWorkerCount:0,peelWorkerTarget:null,peelWorkerStock:{type:null,qty:0},purchaseWorkerTarget:null,purchaseWorkerQty:0,purchaseWorkerPlans:{},playTimeSeconds:0,tutorialCompleted:{normal:false,slush:false},tutorialState:{active:false,stepIndex:0,mode:null,waitingFor:null}}}
+function saveSnapshot(){return{v:3,money,inventory:{...inventory},bagStacks:bagStacks.map(e=>({items:[...e.items]})),grill:[...grill],slushMachines:slushMachines.map(e=>({...e})),guests:guests.map(e=>({slot:e.slot,active:e.active,order:e.order})),stats:{...stats},cart:{...cart},gameMinutes,satisfaction,selectedType,selectedBagIndex,current,target,cooking,exploded,maxMachine,timingRange,shopOpen,guestLoopRemainingMs:getGuestTimerRemaining(),sliceLevel,slicePerSwipe,chestnutServeStage,tutorialPurchased:{...tutorialPurchased},roastTimeUpgrades,autoGrillLevel,autoSlushLevel,peelWorkerCount,promoWorkerCount,servingWorkerCount,purchaseWorkerCount,peelWorkerTarget,peelWorkerStock:{...peelWorkerStock},purchaseWorkerTarget,purchaseWorkerQty,purchaseWorkerPlans:{...purchaseWorkerPlans},playTimeSeconds,tutorialCompleted:{...tutorialCompleted},tutorialState:{active:tut?.active===true,stepIndex:Number(tut?.stepIndex||0),mode:tut?.mode??null,waitingFor:tut?.waitingFor??null}}}
 function delta(e,t){if(e===t)return;if(e&&t&&typeof e==="object"&&typeof t==="object"&&!Array.isArray(e)&&!Array.isArray(t)){const n={};Object.keys(t).forEach(s=>{const r=delta(e[s],t[s]);if(r!==undefined)n[s]=r});return Object.keys(n).length?n:undefined}return t}
 function merge(e,t){if(!t||typeof t!=="object"||Array.isArray(t))return t===undefined?e:t;const n={...e};Object.keys(t).forEach(e=>n[e]=merge(n[e],t[e]));return n}
 function encodeSave(){const e=delta(defaultSave(),saveSnapshot())||{v:3};return"GUNBAM3."+btoa(unescape(encodeURIComponent(JSON.stringify(e))))}
@@ -769,6 +782,13 @@ function applySnapshot(e){
   if(e.tutorialPurchased){exactKeys(e.tutorialPurchased,Object.keys(pt),"튜토리얼 구매 기록");Object.keys(pt).forEach(k=>pt[k]=strictInt(e.tutorialPurchased[k],0,9999,0,`튜토리얼 구매 ${k}`))}
   let tc={normal:false,slush:false};
   if(e.tutorialCompleted){exactKeys(e.tutorialCompleted,["normal","slush"],"튜토리얼 완료 기록");tc.normal=strictBool(e.tutorialCompleted.normal,false,"일반 튜토리얼");tc.slush=strictBool(e.tutorialCompleted.slush,false,"슬러시 튜토리얼")}
+  const defaultTutState={active:false,stepIndex:0,mode:null,waitingFor:null};
+  const ts={...defaultTutState,...(e.tutorialState&&typeof e.tutorialState==="object"&&!Array.isArray(e.tutorialState)?e.tutorialState:{})};
+  const tutActive=strictBool(ts.active,false,"튜토리얼 활성 상태");
+  const tutStep=strictNum(ts.stepIndex,0,28,0,"튜토리얼 단계");
+  const tutMode=ts.mode==null?null:strictStr(ts.mode,20,null,"튜토리얼 유형");
+  if(tutMode!==null&&!['normal','slush'].includes(tutMode))throw Error("튜토리얼 유형이 올바르지 않습니다.");
+  const tutWaiting=ts.waitingFor==null?null:strictStr(ts.waitingFor,50,null,"튜토리얼 대기 상태");
 
   let workerTarget=null,workerStock={type:null,qty:0};
   if(e.peelWorkerTarget!=null){if(typeof e.peelWorkerTarget!=="string"||!STAGES[e.peelWorkerTarget]?.next)throw Error("밤까기 알바 대상이 올바르지 않습니다.");workerTarget=e.peelWorkerTarget}
@@ -789,11 +809,47 @@ function applySnapshot(e){
 
   _topSig=_gaugeSig=_gaugeZoneSig=_traySig=_slushSig=_invSig=_bagViewSig="";
   renderInventory();renderShop();renderSlush();updateGauge();syncTop();
+  if(tutActive){
+    tut.active=true;tut.mode=tutMode;tut.stepIndex=tutStep;tut.waitingFor=tutWaiting;
+    if(tutStep===0||!tutMode)tut.showModeChoice();else tut.goStep(tutStep);
+  }else if(tut?.active){tut.end()}
 
   if(shopOpen){el.shopStatus.className="status on";el.shopStatus.textContent="영업중";$("shopBtn").textContent="🏪 장사 종료";scheduleGuestLoop(remain??0)}
   else{el.shopStatus.className="status off";el.shopStatus.textContent="영업 종료";$("shopBtn").textContent="🏪 장사 시작";stopGuestLoop()}
   updateWorkerAnimations();showToast("게임을 불러왔습니다!")
 }
+
+const AUTO_SAVE_KEY=`gunbam_slush_tycoon_autosave_v1_${MULTI_PLAYER_SLOT}`;
+let autoSaveTimer=null,suppressAutoSave=false;
+function autoSaveNow(){
+  if(suppressAutoSave)return false;
+  try{localStorage.setItem(AUTO_SAVE_KEY,encodeSave());return true}catch(_e){return false}
+}
+function scheduleAutoSave(){
+  if(suppressAutoSave)return;
+  clearTimeout(autoSaveTimer);
+  autoSaveTimer=setTimeout(()=>{autoSaveTimer=null;autoSaveNow()},250);
+}
+function loadAutoSave(){
+  try{
+    const code=localStorage.getItem(AUTO_SAVE_KEY);
+    if(!code)return false;
+    applySnapshot(decodeSave(code));
+    return true;
+  }catch(e){
+    try{localStorage.removeItem(AUTO_SAVE_KEY)}catch(_e){}
+    return false;
+  }
+}
+function resetToFirstStart(){
+  if(!confirm("이 플레이어의 진행 상황, 재산, 재고, 업그레이드, 튜토리얼 기록을 모두 지우고 처음부터 다시 시작할까요?"))return;
+  suppressAutoSave=true;
+  clearTimeout(autoSaveTimer);
+  try{localStorage.removeItem(AUTO_SAVE_KEY)}catch(_e){}
+  location.reload();
+}
+window.addEventListener("pagehide",()=>{if(!suppressAutoSave)autoSaveNow()});
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden"&&!suppressAutoSave)autoSaveNow()});
 
 function renderInfo(){
   const active=guests.filter(e=>e.active);el.infoText.innerHTML="";
@@ -892,7 +948,8 @@ function toggleShop(){shopOpen=!shopOpen;if(shopOpen){syncTop();scheduleGuestLoo
 
 $("saveGameBtn").onclick=()=>{el.saveCode.value=encodeSave();el.saveCode.focus();el.saveCode.select();showToast("변경분 저장 코드가 만들어졌습니다.")};
 $("copySaveBtn").onclick=async()=>{if(!el.saveCode.value)el.saveCode.value=encodeSave();try{await navigator.clipboard.writeText(el.saveCode.value);showToast("저장 코드를 복사했습니다.")}catch(_e){el.saveCode.focus();el.saveCode.select();showToast("코드를 직접 복사하세요.")}};
-$("loadGameBtn").onclick=()=>{const code=el.saveCode.value.trim();if(code==="vip777"){money+=200000;syncTop();renderInventory();renderSlush();renderShop();showToast("보너스가 지급되었습니다.");return}try{applySnapshot(decodeSave(code))}catch(e){showToast(e.message||"불러오기에 실패했습니다.")}};
+$("loadGameBtn").onclick=()=>{const code=el.saveCode.value.trim();if(code==="vip777"){money+=200000;syncTop();renderInventory();renderSlush();renderShop();autoSaveNow();showToast("보너스가 지급되었습니다.");return}try{applySnapshot(decodeSave(code));autoSaveNow()}catch(e){showToast(e.message||"불러오기에 실패했습니다.")}};
+$("resetGameBtn").onclick=()=>resetToFirstStart();
 
 guests.forEach(e=>bindGuestDismiss($(`guest${e.slot}`),e));
 el.tray.onclick=()=>{if(insertSelectedToGrill())tut.onAction("grillInsert")};bindGesture3(el.tray,{tap:null,hold1:()=>grill.length===0&&selectedType==="cut_raw"?autoFillGrill():removeLastFromGrill(),hold2:()=>grill.length?removeLastFromGrill():false});
@@ -982,10 +1039,10 @@ const tut={
   _updateSpotlight(e){const t=$("appRoot").getBoundingClientRect();if(!e){this.tutEl.spotlight.style.clipPath="none";return}const n=e.left-t.left-8,s=e.top-t.top-8,r=n+e.width+16,l=s+e.height+16,a=t.width,o=t.height;this.tutEl.spotlight.style.clipPath=`polygon(0 0,${a}px 0,${a}px ${o}px,0 ${o}px,0 0,${n}px ${s}px,${n}px ${l}px,${r}px ${l}px,${r}px ${s}px,${n}px ${s}px)`},
   highlight(sel,text,arrow="top"){const s=typeof sel==="string"?document.querySelector(sel):sel;this.tutEl.spotlight.classList.add("active");this.tutEl.skip.style.display="block";if(!s){this._updateSpotlight(null);this.tutEl.highlight.style.display="none";const e=this.tutEl.bubble;e.style.display="block";e.style.left="50%";e.style.transform="translateX(-50%)";e.style.top="40%";e.className="tut-bubble";e.innerHTML=text;return}try{s.closest?.(".modal,.stock-scroll,.shop-cart,.bag-list")&&s.scrollIntoView({block:"center",inline:"nearest"})}catch(_e){}this._activeTarget=s;requestAnimationFrame(()=>requestAnimationFrame(()=>{const e=$("appRoot").getBoundingClientRect(),r=s.getBoundingClientRect(),h=this.tutEl.highlight;h.style.display="block";h.style.left=r.left-e.left-8+"px";h.style.top=r.top-e.top-8+"px";h.style.width=r.width+16+"px";h.style.height=r.height+16+"px";this._updateSpotlight(r);const b=this.tutEl.bubble;b.style.display="block";b.className="tut-bubble"+(arrow?" arrow-"+arrow:"");b.style.transform="";b.style.left="";b.style.top="";const w=200;if(arrow==="top"){let x=r.left-e.left,y=r.bottom-e.top+18;if(x+w>e.width-8)x=e.width-8-w;if(x<8)x=8;b.style.left=x+"px";b.style.top=y+"px"}else if(arrow==="bottom"){let x=r.left-e.left,y=r.top-e.top-108;if(x+w>e.width-8)x=e.width-8-w;if(x<8)x=8;if(y<8)y=8;b.style.left=x+"px";b.style.top=y+"px"}else if(arrow==="left"){b.style.left=r.right-e.left+18+"px";b.style.top=r.top-e.top+"px"}else{b.style.left="50%";b.style.transform="translateX(-50%)";b.style.top="45%"}b.innerHTML=text}))},
   hide(){this._activeTarget=null;this.tutEl.spotlight.classList.remove("active");this.tutEl.spotlight.style.clipPath="none";this.tutEl.highlight.style.display="none";this.tutEl.bubble.style.display="none"},
-  end(){document.querySelectorAll(".tut-speed-note").forEach(e=>e.remove());this.active=false;this.waitingFor=null;this.mode=null;this.hide();this.tutEl.skip.style.display="none";this.tutEl.start.style.display="none"},
+  end(){document.querySelectorAll(".tut-speed-note").forEach(e=>e.remove());this.active=false;this.waitingFor=null;this.mode=null;this.hide();this.tutEl.skip.style.display="none";this.tutEl.start.style.display="none";if($("multiPlayBtn"))$("multiPlayBtn").style.display="none"},
   showNotice(text,next=null,delay=1400){this.hide();this.tutEl.spotlight.classList.add("active");this.tutEl.spotlight.style.clipPath="none";this.tutEl.skip.style.display="block";const e=this.tutEl.bubble;e.className="tut-bubble";e.style.display="block";e.style.left="50%";e.style.transform="translateX(-50%)";e.style.top="38%";e.innerHTML=text;if(next!==null)setTimeout(()=>this.active&&this.goStep(next),delay)},
   badge(e){return`<div class="tut-step-badge">${e} / ${this.mode==="slush"?10:19}</div>`},
-  showCompletion(){this.hide();this.tutEl.spotlight.classList.add("active");this.tutEl.spotlight.style.clipPath="none";const next=this.mode==="slush"?"normal":"slush",box=this.tutEl.bubble,need=!tutorialCompleted[next];box.className="tut-bubble";box.style.display="block";box.style.left="50%";box.style.transform="translateX(-50%)";box.style.top="25%";if(need){const title=next==="slush"?"슬러시 튜토리얼":"군밤 튜토리얼";box.innerHTML=`<b>${this.mode==="slush"?"슬러시":"군밤"} 튜토리얼 완료! 🎉</b><br>다음 튜토리얼인 <b>${title}</b>도 진행할까요?<div class="tut-completion-actions"><button class="next" id="tutNextBtn">다음 튜토리얼 진행</button><button id="tutGameBtn">게임 시작</button></div>`;$("tutNextBtn").onclick=()=>this.start(next);$("tutGameBtn").onclick=()=>this.end()}else{box.innerHTML="<b>모든 튜토리얼 완료! 🎉</b><br>군밤과 슬러시 튜토리얼을 모두 끝냈습니다.<div class='tut-completion-actions'><button class='next' id='tutGameBtn'>게임 시작</button></div>";$("tutGameBtn").onclick=()=>this.end()}this.tutEl.skip.style.display="none"},
+  showCompletion(){this.hide();if($("multiPlayBtn")&&!IS_MULTI_CHILD)$("multiPlayBtn").style.display="block";this.tutEl.spotlight.classList.add("active");this.tutEl.spotlight.style.clipPath="none";const next=this.mode==="slush"?"normal":"slush",box=this.tutEl.bubble,need=!tutorialCompleted[next];box.className="tut-bubble";box.style.display="block";box.style.left="50%";box.style.transform="translateX(-50%)";box.style.top="25%";if(need){const title=next==="slush"?"슬러시 튜토리얼":"군밤 튜토리얼";box.innerHTML=`<b>${this.mode==="slush"?"슬러시":"군밤"} 튜토리얼 완료! 🎉</b><br>다음 튜토리얼인 <b>${title}</b>도 진행할까요?<div class="tut-completion-actions"><button class="next" id="tutNextBtn">다음 튜토리얼 진행</button><button id="tutGameBtn">게임 시작</button></div>`;$("tutNextBtn").onclick=()=>this.start(next);$("tutGameBtn").onclick=()=>this.end()}else{box.innerHTML="<b>모든 튜토리얼 완료! 🎉</b><br>군밤과 슬러시 튜토리얼을 모두 끝냈습니다.<div class='tut-completion-actions'><button class='next' id='tutGameBtn'>게임 시작</button></div>";$("tutGameBtn").onclick=()=>this.end()}this.tutEl.skip.style.display="none"},
   showModeChoice(){this.hide();this.active=true;this.waitingFor="chooseMode";this.tutEl.spotlight.classList.add("active");this.tutEl.spotlight.style.clipPath="none";this.tutEl.skip.style.display="block";const e=this.tutEl.bubble;e.className="tut-bubble";e.style.display="block";e.style.left="50%";e.style.transform="translateX(-50%)";e.style.top="30%";e.innerHTML='<b>군밤 타이쿤 튜토리얼</b><br>연습할 주문 유형을 선택하세요.<div class="tut-mode-actions"><button class="tut-mode-btn" data-tutorial-mode="normal">🌰 일반 주문<br>군밤 판매 배우기</button><button class="tut-mode-btn slush" data-tutorial-mode="slush">🥤 슬러시 주문<br>시럽·컵 판매 배우기</button></div>';e.querySelectorAll("[data-tutorial-mode]").forEach(e=>e.onclick=()=>this.start(e.dataset.tutorialMode))},
   goStep(e){
     this.stepIndex=e;const b=this.badge.bind(this);
@@ -1061,13 +1118,13 @@ const tut={
     if(s===28&&e==="slushDeliver"){this.active=false;completeTutorial("slush");setTimeout(()=>this.showCompletion(),800)}
   },
   onTapItem(e){if(!this.active)return;if(this.stepIndex===5&&e==="raw_inner")this.onAction("selectRawInner");else if(this.stepIndex===8&&e==="cut_raw")this.onAction("selectCutRaw");else if(this.stepIndex===12&&e==="perfect_inner")this.onAction("selectPerfectInner")},
-  start(e=null){this.active=true;this.waitingFor=null;this._knifeForPerfect=false;if(!e){this.stepIndex=0;return this.showModeChoice()}this.mode=e;this.goStep(e==="slush"?19:1)}
+  start(e=null){this.active=true;this.waitingFor=null;this._knifeForPerfect=false;if($("multiPlayBtn"))$("multiPlayBtn").style.display=IS_MULTI_CHILD?"none":"block";if(!e){this.stepIndex=0;return this.showModeChoice()}this.mode=e;this.goStep(e==="slush"?19:1)}
 };
 
 
 document.addEventListener("pointerdown",e=>{
   if(!tut.active||tut.waitingFor==="chooseMode")return;
-  if(e.target.closest("#tutSkipBtn,#tutStartBtn"))return;
+  if(e.target.closest("#tutSkipBtn,#tutStartBtn,#multiPlayBtn"))return;
   const target=tut._activeTarget;
   // 모든 단계에서 실제로 강조 표시된 요소와 그 자식만 허용합니다.
   // 강조 대상이 없거나 다른 곳을 터치하면 원래 동작도 실행하지 않습니다.
@@ -1078,12 +1135,57 @@ document.addEventListener("pointerdown",e=>{
 },true);
 
 function completeTutorial(e){if(!tutorialCompleted[e]){tutorialCompleted[e]=true;tutorialPurchased={bagPack:0,chestnutPack:0,syrup_papaya:0,cupPack:0};syncTop()}}
+
+function openMultiPlayerMode(){
+  if(IS_MULTI_CHILD)return;
+  const overlay=$("multiPlayerOverlay"),frame1=$("multiPlayerFrame1"),frame2=$("multiPlayerFrame2");
+  if(!overlay||!frame1||!frame2)return;
+  try{
+    tut.end();
+    stopGuestLoop();
+    if(timer){cancelAnimationFrame(timer);timer=null}
+    if(workerTimer){clearTimeout(workerTimer);workerTimer=null}
+    if(clockTimer){clearInterval(clockTimer);clockTimer=null}
+  }catch(_e){}
+  const makeUrl=(slot)=>{
+    const u=new URL(location.href);
+    u.searchParams.set("multiChild","1");
+    u.searchParams.set("player",String(slot));
+    return u.href;
+  };
+  frame1.src=makeUrl(1);
+  frame2.src=makeUrl(2);
+  $("appRoot").style.display="none";
+  overlay.classList.remove("hide");
+}
+
+function closeMultiPlayerMode(){
+  const overlay=$("multiPlayerOverlay");
+  if(!overlay)return;
+  overlay.classList.add("hide");
+  $("multiPlayerFrame1").src="about:blank";
+  $("multiPlayerFrame2").src="about:blank";
+  $("appRoot").style.display="";
+  location.reload();
+}
+
 function initialRender(){renderInventory();renderShop();updateSliceUpgradeUI();syncTop();startClockReal()}
 
 $("tutSkipBtn").onclick=()=>tut.end();
 $("tutStartBtn").onclick=()=>{satisfaction=4.5;tut.end()};
+$("multiPlayBtn").onclick=()=>openMultiPlayerMode();
+$("multiExitBtn").onclick=()=>closeMultiPlayerMode();
+if(IS_MULTI_CHILD){$("multiPlayerOverlay").classList.add("hide");$("multiPlayBtn").style.display="none"}else{$("multiPlayBtn").style.display="none"}
 
 initialRender();
+
+const restoredFromLocal=loadAutoSave();
+if(restoredFromLocal){
+  // applySnapshot() restores tutorial state when it was active.
+}else{
+  setTimeout(()=>tut.start(),600);
+}
+setInterval(()=>{if(!suppressAutoSave)autoSaveNow()},1000);
 
 (()=>{
   const assets=['1.png','2.png','3.png','4.png','5.png','6.png','Background.png','Cola.png','Colacup.png','Cup.png','Grape.png','Grapecup.png','Grill.png','Guest.png','Orange.png','Orangecup.png','Papaya.png','Papayacup.png','Paperbag.png','Peach.png','Peachcup.png','Slushmachine.png','밤까기1.png','밤까기2.png','보급1.png','보급2.png','서빙1.png','서빙2.png','홍보1.png','홍보2.png'];
@@ -1128,7 +1230,7 @@ initialRender();
   run();
 })();
 
-setTimeout(()=>tut.start(),600);
 </script>
 </body>
 </html>
+
